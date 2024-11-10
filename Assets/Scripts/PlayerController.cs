@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
@@ -15,8 +16,7 @@ public class PlayerController : MonoBehaviour
 	Rigidbody rb;
 	Vector3 moveDirection;
 	float jumpBufferCounter = 0;
-	bool wasGrounded = true;
-	bool fastFalling = true;
+	bool wasGrounded = true;	// whether IsGrounded() was true last frame or not
 	bool usedFastFall = false;
 	float groundedDistFromGround;   // the max distance the player can be from the ground in order to be grounded
 	float groundedDistFromGroundPadding = 0.1f;	// (10%)
@@ -59,8 +59,7 @@ public class PlayerController : MonoBehaviour
 
 		// Handle fast falling
 		// asked ChatGPT for help on how to integrate my old fast falling method with the new jump buffer system: "what's the best way to make it so that the velocity reduction from fast falling only happens once per jump"
-		fastFalling = !Input.GetButton("Jump");
-		if (fastFalling && rb.velocity.y > 0 && !usedFastFall)
+		if (!Input.GetButton("Jump") && !usedFastFall && rb.velocity.y > 0)
 		{
 			usedFastFall = true;
 			rb.AddForce(Vector3.down * rb.velocity.y * letGoOfJumpVelocityDecreaseRatio, ForceMode.VelocityChange);
@@ -73,7 +72,7 @@ public class PlayerController : MonoBehaviour
 	void FixedUpdate()
 	{
 		// Apply movement force
-		rb.AddRelativeForce(moveDirection * acceleration * Time.deltaTime, ForceMode.Acceleration);
+		rb.AddRelativeForce(moveDirection * acceleration, ForceMode.Acceleration);
 
 		// Limit movement velocity
 		// asked ChatGPT for help on how to do this: "how can i apply a vector in the opposite direction the player is moving in to ensure they don't go past max velocity"
@@ -91,7 +90,7 @@ public class PlayerController : MonoBehaviour
 		// Apply extra gravity when falling
 		if (rb.velocity.y < 0)
 		{
-			rb.AddForce(Vector3.down * extraGravityWhenFallingAcceleration * Time.deltaTime, ForceMode.Acceleration);
+			rb.AddForce(Vector3.down * extraGravityWhenFallingAcceleration, ForceMode.Acceleration);
 		}
 	}
 

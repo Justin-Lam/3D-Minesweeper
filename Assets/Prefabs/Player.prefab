@@ -146,9 +146,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e0f63832f1cf614ea3190ef902e83c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  acceleration: 1000
+  acceleration: 20
   maxVelocity: 3
   jumpStrength: 10
   jumpBufferDuration: 0.2
   letGoOfJumpVelocityDecreaseRatio: 0.25
-  extraGravityWhenFallingAcceleration: 3000
+  extraGravityWhenFallingAcceleration: 60
