@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
 	Rigidbody rb;
 	Vector3 moveDirection;
 	float jumpBufferCounter = 0;
+	bool wasGrounded = true;
 	bool fastFalling = true;
 	bool usedFastFall = false;
 	float groundedDistFromGround;   // the max distance the player can be from the ground in order to be grounded
@@ -51,14 +52,22 @@ public class PlayerController : MonoBehaviour
 		{
 			Jump();
 		}
+		else if (Input.GetButton("Jump") && JustLanded())
+		{
+			Jump();
+		}
 
 		// Handle fast falling
+		// asked ChatGPT for help on how to integrate my old fast falling method with the new jump buffer system: "what's the best way to make it so that the velocity reduction from fast falling only happens once per jump"
 		fastFalling = !Input.GetButton("Jump");
 		if (fastFalling && rb.velocity.y > 0 && !usedFastFall)
 		{
 			usedFastFall = true;
 			rb.AddForce(Vector3.down * rb.velocity.y * letGoOfJumpVelocityDecreaseRatio, ForceMode.VelocityChange);
 		}
+
+		// Set wasGrounded (this must come at the end of Update() so the next Update() call can use it)
+		wasGrounded = IsGrounded();
 	}
 
 	void FixedUpdate()
@@ -79,7 +88,7 @@ public class PlayerController : MonoBehaviour
 			rb.AddRelativeForce(counterForce, ForceMode.VelocityChange);
 		}
 
-		// Apply extra gravity
+		// Apply extra gravity when falling
 		if (rb.velocity.y < 0)
 		{
 			rb.AddForce(Vector3.down * extraGravityWhenFallingAcceleration * Time.deltaTime, ForceMode.Acceleration);
@@ -90,6 +99,10 @@ public class PlayerController : MonoBehaviour
 	{
 		// got this from https://discussions.unity.com/t/using-raycast-to-determine-if-player-is-grounded/85134/2
 		return Physics.Raycast(transform.position, Vector3.down, groundedDistFromGround);
+	}
+	bool JustLanded()
+	{
+		return !wasGrounded && IsGrounded();	// wasn't grounded last frame but is now
 	}
 
 	void Jump()
