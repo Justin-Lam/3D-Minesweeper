@@ -449,6 +449,7 @@ MonoBehaviour:
   acceleration: 1000
   maxVelocity: 3
   jumpStrength: 10
+  extraGravityWhenFallingAcceleration: 750
 --- !u!54 &1862696515
 Rigidbody:
   m_ObjectHideFlags: 0
