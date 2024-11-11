@@ -1,7 +1,10 @@
+// wrote this script with minor help from ChatGPT and https://gamedevbeginner.com/how-to-zoom-a-camera-in-unity-3-methods-with-examples/#movement_zoom
+
 using UnityEngine;
 
 public class GameplayCamera : MonoBehaviour
 {
+
 	[Header("Panning")]
 	[SerializeField] float panSensitivity;
 	float relativePanSensitivity;			// relative to zoom (pan less when zoomed in, pan more when zoomed out)
@@ -21,8 +24,8 @@ public class GameplayCamera : MonoBehaviour
 	[Header("Children")]
 	// this double parent setup for the camera is necessary so vertical panning doesn't get messed up by vertical rotating
 	// the panner's forward vector must always stay parallel with the ground
-	Transform panner;       // for panning
-	Transform rotater;      // for rotating
+	Transform panner;       // for panning and rotating horizontally
+	Transform rotater;      // for rotating vertically
 	Transform cam;          // for zooming
 
 

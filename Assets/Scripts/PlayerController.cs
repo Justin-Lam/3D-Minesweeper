@@ -7,6 +7,10 @@ public class PlayerController : MonoBehaviour
 	[SerializeField] float acceleration;
 	[SerializeField] float maxVelocity;
 
+	[Header("Rotational Movement")]
+	[SerializeField] float rotateSpeed;
+	[SerializeField] Transform gameplayCameraPanner;
+
 	[Header("Jumping")]
 	[SerializeField] float jumpStrength;
 	[SerializeField] float jumpBufferDuration;
@@ -35,7 +39,13 @@ public class PlayerController : MonoBehaviour
 	void Update()
 	{
 		// Get move direction
-		moveDirection = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")).normalized;
+		moveDirection = (gameplayCameraPanner.forward * Input.GetAxis("Vertical") + gameplayCameraPanner.right * Input.GetAxis("Horizontal")).normalized;
+
+		// Rotate towards move direction
+		if (moveDirection != Vector3.zero)
+		{
+			transform.forward = Vector3.Slerp(transform.forward, moveDirection, rotateSpeed * Time.deltaTime);
+		}
 
 		// Handle jump buffer
 		if (Input.GetButtonDown("Jump"))
@@ -72,7 +82,7 @@ public class PlayerController : MonoBehaviour
 	void FixedUpdate()
 	{
 		// Apply movement force
-		rb.AddRelativeForce(moveDirection * acceleration, ForceMode.Acceleration);
+		rb.AddForce(moveDirection * acceleration, ForceMode.Acceleration);
 
 		// Limit movement velocity
 		// asked ChatGPT for help on how to do this: "how can i apply a vector in the opposite direction the player is moving in to ensure they don't go past max velocity"
@@ -84,7 +94,7 @@ public class PlayerController : MonoBehaviour
 			Vector3 counterForce = -horizontalVelocity.normalized * amountOverMaxVelocity;
 
 			// Apply counter-force
-			rb.AddRelativeForce(counterForce, ForceMode.VelocityChange);
+			rb.AddForce(counterForce, ForceMode.VelocityChange);
 		}
 
 		// Apply extra gravity when falling
