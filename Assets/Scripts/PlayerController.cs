@@ -6,19 +6,18 @@ public class PlayerController : MonoBehaviour
 	[Header("Horizontal Movement")]
 	[SerializeField] float acceleration;
 	[SerializeField] float maxVelocity;
+	Rigidbody rb;
+	Vector3 moveDirection;
 
 	[Header("Rotational Movement")]
 	[SerializeField] float rotateSpeed;
-	[SerializeField] Transform gameplayCameraPanner;
+	Transform gameplayCameraPanner;
 
 	[Header("Jumping")]
 	[SerializeField] float jumpStrength;
 	[SerializeField] float jumpBufferDuration;
 	[SerializeField] float letGoOfJumpVelocityDecreaseRatio;
 	[SerializeField] float extraGravityWhenFallingAcceleration;
-
-	Rigidbody rb;
-	Vector3 moveDirection;
 	float jumpBufferCounter = 0;
 	bool wasGrounded = true;		// whether IsGrounded() was true last frame or not
 	bool usedFastFall = false;
@@ -30,6 +29,9 @@ public class PlayerController : MonoBehaviour
 	{
 		// Get rb
 		rb = GetComponent<Rigidbody>();
+
+		// Get gameplay camera panner
+		gameplayCameraPanner = GameObject.Find("Panner").transform;
 
 		// Calculate groundedDistFromGround
 		float colliderRadius = GetComponent<SphereCollider>().radius;
