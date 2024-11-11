@@ -2,8 +2,12 @@ using UnityEngine;
 
 public class GameplayCamera : MonoBehaviour
 {
-	Transform lookAt;
-	Transform verticalPivot;
+	[Header("Children")]
+	// this double parent setup is necessary so vertical panning doesn't get messed up by vertical rotating
+	// lookAt's forward vector must stay parallel with the ground
+	Transform panner;       // used for panning
+	Transform rotater;      // used for rotating
+	Transform camera;		// used for zooming
 
 	[Header("Panning")]
 	[SerializeField] float panSensitivity;
@@ -17,11 +21,14 @@ public class GameplayCamera : MonoBehaviour
 	[SerializeField] float rotateSensitivity;
 
 
-
 	void Start()
 	{
-		verticalPivot = transform.parent;
-		lookAt = verticalPivot.parent;
+		// Get children
+		panner = transform.GetChild(0);
+		rotater = panner.GetChild(0);
+		camera = rotater.GetChild(0);
+
+		// Set cursor lock state
 		Cursor.lockState = CursorLockMode.Locked;
 	}
 
@@ -30,23 +37,17 @@ public class GameplayCamera : MonoBehaviour
 		// Panning
 		if (Input.GetMouseButton(0))	// left click
 		{
-			lookAt.Translate(-Input.GetAxis("Mouse X") * panSensitivity, 0, -Input.GetAxis("Mouse Y") * panSensitivity, Space.Self);
+			panner.Translate(-Input.GetAxis("Mouse X") * panSensitivity, 0, -Input.GetAxis("Mouse Y") * panSensitivity, Space.Self);
+		}
+
+		// Rotating
+		if (Input.GetMouseButton(1))    // right click
+		{
+			panner.Rotate(0, Input.GetAxis("Mouse X") * rotateSensitivity, 0, Space.Self);
+			rotater.Rotate(-Input.GetAxis("Mouse Y") * rotateSensitivity, 0, 0, Space.Self);
 		}
 
 		// Zooming
-		transform.Translate(0, 0, Input.GetAxis("Mouse Scroll Wheel") * zoomSensitivity, Space.Self);
-
-		// Rotating
-		if (Input.GetMouseButton(1))	// right click
-		{
-			lookAt.Rotate(0, Input.GetAxis("Mouse X") * rotateSensitivity, 0, Space.Self);
-			verticalPivot.Rotate(-Input.GetAxis("Mouse Y") * rotateSensitivity, 0, 0, Space.Self);
-
-
-/*			horizontalRotation += Input.GetAxis("Mouse X") * rotateSensitivity;
-			verticalRotation -= Input.GetAxis("Mouse Y") * rotateSensitivity;
-			lookAt.rotation = Quaternion.Euler(verticalRotation, horizontalRotation, 0);*/
-		}
+		camera.Translate(0, 0, Input.GetAxis("Mouse Scroll Wheel") * zoomSensitivity, Space.Self);
 	}
-
 }
