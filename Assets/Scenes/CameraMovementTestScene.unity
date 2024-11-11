@@ -428,7 +428,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   panSensitivity: 0.5
-  initialZoom: 10
+  initialZoom: 15
   zoomSensitivity: 30
   zoomSpeed: 30
   maxZoomIn: 3

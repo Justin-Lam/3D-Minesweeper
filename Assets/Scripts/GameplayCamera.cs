@@ -4,6 +4,7 @@ public class GameplayCamera : MonoBehaviour
 {
 	[Header("Panning")]
 	[SerializeField] float panSensitivity;
+	float relativePanSensitivity;			// relative to zoom (less when zoomed in, more when zoomed out)
 
 	[Header("Zooming")]
 	[SerializeField] float initialZoom;		// initial dist cam is from panner
@@ -18,8 +19,8 @@ public class GameplayCamera : MonoBehaviour
 	[SerializeField] float rotateSensitivity;
 
 	[Header("Children")]
-	// this double parent setup is necessary so vertical panning doesn't get messed up by vertical rotating
-	// the panner's forward vector must stay parallel with the ground
+	// this double parent setup for the camera is necessary so vertical panning doesn't get messed up by vertical rotating
+	// the panner's forward vector must always stay parallel with the ground
 	Transform panner;       // for panning
 	Transform rotater;      // for rotating
 	Transform cam;          // for zooming
@@ -27,14 +28,17 @@ public class GameplayCamera : MonoBehaviour
 
 	void Start()
 	{
+		// Set panning variables
+		relativePanSensitivity = panSensitivity;
+
+		// Set zooming variables
+		currentZoom = initialZoom;
+		targetZoom = initialZoom;
+
 		// Get children
 		panner = transform.GetChild(0);
 		rotater = panner.GetChild(0);
 		cam = rotater.GetChild(0);
-
-		// Set current and target zoom levels
-		currentZoom = initialZoom;
-		targetZoom = initialZoom;
 
 		// Set cursor lock state
 		Cursor.lockState = CursorLockMode.Locked;
@@ -45,7 +49,8 @@ public class GameplayCamera : MonoBehaviour
 		// Panning
 		if (Input.GetMouseButton(0))	// left click
 		{
-			panner.Translate(-Input.GetAxis("Mouse X") * panSensitivity, 0, -Input.GetAxis("Mouse Y") * panSensitivity, Space.Self);
+			relativePanSensitivity = panSensitivity * (currentZoom / initialZoom);
+			panner.Translate(-Input.GetAxis("Mouse X") * relativePanSensitivity, 0, -Input.GetAxis("Mouse Y") * relativePanSensitivity, Space.Self);
 		}
 
 		// Rotating

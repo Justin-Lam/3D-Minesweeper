@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour
 	Rigidbody rb;
 	Vector3 moveDirection;
 	float jumpBufferCounter = 0;
-	bool wasGrounded = true;	// whether IsGrounded() was true last frame or not
+	bool wasGrounded = true;		// whether IsGrounded() was true last frame or not
 	bool usedFastFall = false;
 	float groundedDistFromGround;   // the max distance the player can be from the ground in order to be grounded
 	float groundedDistFromGroundPadding = 0.1f;	// (10%)
