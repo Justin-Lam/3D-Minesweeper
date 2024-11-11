@@ -4,7 +4,7 @@ public class GameplayCamera : MonoBehaviour
 {
 	[Header("Panning")]
 	[SerializeField] float panSensitivity;
-	float relativePanSensitivity;			// relative to zoom (less when zoomed in, more when zoomed out)
+	float relativePanSensitivity;			// relative to zoom (pan less when zoomed in, pan more when zoomed out)
 
 	[Header("Zooming")]
 	[SerializeField] float initialZoom;		// initial dist cam is from panner
