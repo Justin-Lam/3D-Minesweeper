@@ -3,6 +3,7 @@ using UnityEngine;
 public class GameplayCamera : MonoBehaviour
 {
 	Transform lookAt;
+	Transform verticalPivot;
 
 	[Header("Panning")]
 	[SerializeField] float panSensitivity;
@@ -14,13 +15,13 @@ public class GameplayCamera : MonoBehaviour
 
 	[Header("Rotating")]
 	[SerializeField] float rotateSensitivity;
-	float horizontalRotation = 0;
-	float verticalRotation = 0;
+
 
 
 	void Start()
 	{
-		lookAt = transform.parent;
+		verticalPivot = transform.parent;
+		lookAt = verticalPivot.parent;
 		Cursor.lockState = CursorLockMode.Locked;
 	}
 
@@ -29,7 +30,7 @@ public class GameplayCamera : MonoBehaviour
 		// Panning
 		if (Input.GetMouseButton(0))	// left click
 		{
-			lookAt.Translate(Input.GetAxis("Mouse X") * panSensitivity, Input.GetAxis("Mouse Y") * panSensitivity, 0, Space.Self);
+			lookAt.Translate(-Input.GetAxis("Mouse X") * panSensitivity, 0, -Input.GetAxis("Mouse Y") * panSensitivity, Space.Self);
 		}
 
 		// Zooming
@@ -38,9 +39,13 @@ public class GameplayCamera : MonoBehaviour
 		// Rotating
 		if (Input.GetMouseButton(1))	// right click
 		{
-			horizontalRotation += Input.GetAxis("Mouse X") * rotateSensitivity;
+			lookAt.Rotate(0, Input.GetAxis("Mouse X") * rotateSensitivity, 0, Space.Self);
+			verticalPivot.Rotate(-Input.GetAxis("Mouse Y") * rotateSensitivity, 0, 0, Space.Self);
+
+
+/*			horizontalRotation += Input.GetAxis("Mouse X") * rotateSensitivity;
 			verticalRotation -= Input.GetAxis("Mouse Y") * rotateSensitivity;
-			lookAt.rotation = Quaternion.Euler(verticalRotation, horizontalRotation, 0);
+			lookAt.rotation = Quaternion.Euler(verticalRotation, horizontalRotation, 0);*/
 		}
 	}
 
