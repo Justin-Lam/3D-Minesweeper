@@ -18,13 +18,9 @@ public class Block : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetButtonDown("Jump"))
-        {
-            OnEat();
-        }
     }
 
-    void OnEat()
+    public void OnEat()
     {
         if (type == Type.GRASS)
         {

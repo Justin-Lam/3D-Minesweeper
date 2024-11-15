@@ -22,7 +22,9 @@ public class PlayerController : MonoBehaviour
 	bool wasGrounded = true;		// whether IsGrounded() was true last frame or not
 	bool usedFastFall = false;
 	float groundedDistFromGround;   // the max distance the player can be from the ground in order to be grounded
-	float groundedDistFromGroundPadding = 0.1f;	// (10%)
+	float groundedDistFromGroundPadding = 0.1f; // (10%)
+	private RaycastHit blockHit;            // for use in checking for block collision
+	private Block blockScript;
 
 
 	void Start()
@@ -79,6 +81,11 @@ public class PlayerController : MonoBehaviour
 
 		// Set wasGrounded (this must come at the end of Update() so the next Update() call can use it)
 		wasGrounded = IsGrounded();
+
+		if (Input.GetKeyDown(KeyCode.E))
+		{
+			OnEat();
+		}
 	}
 
 	void FixedUpdate()
@@ -130,4 +137,27 @@ public class PlayerController : MonoBehaviour
 		// Set usedFastFall
 		usedFastFall = false;
 	}
+
+	bool IsOnBlock()
+	{
+		if (Physics.Raycast(transform.position, Vector3.down, out blockHit, groundedDistFromGround))
+		{
+			if (blockHit.collider != null && blockHit.collider.tag == "Block")
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	void OnEat()
+    {
+		if (IsOnBlock())
+        {
+			GameObject block = blockHit.transform.gameObject;
+			blockScript = block.GetComponent<Block>();
+			blockScript.OnEat();
+		}
+    }
 }
