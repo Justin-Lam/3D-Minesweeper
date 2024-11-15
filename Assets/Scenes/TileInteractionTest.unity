@@ -554,7 +554,7 @@ MonoBehaviour:
   type: 1
   player: {fileID: 206290787}
   radius: 50
-  power: 3000
+  power: 50
 --- !u!65 &972681712
 BoxCollider:
   m_ObjectHideFlags: 0

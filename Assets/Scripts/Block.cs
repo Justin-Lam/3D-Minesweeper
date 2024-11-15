@@ -44,12 +44,12 @@ public class Block : MonoBehaviour
 
                 if (rb != null)
                 {
-                    rb.AddExplosionForce(power, transform.position, radius, 3.0F);
+                    rb.AddExplosionForce(power, transform.position, radius, 3.0F, ForceMode.Impulse);
                     rb.useGravity = true;
                 }
             }
 
-            Vector3 explosionXZ = new Vector3(Random.Range(-1.0f, 1.0f) * (power / 20), 0, Random.Range(-1.0f, 1.0f) * (power / 20));
+            Vector3 explosionXZ = new Vector3(Random.Range(-1.0f, 1.0f) * power, 0, Random.Range(-1.0f, 1.0f) * power);
             playerRb.AddForce(explosionXZ, ForceMode.Impulse);
         }
     }
