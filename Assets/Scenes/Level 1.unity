@@ -370,8 +370,8 @@ MonoBehaviour:
   grassBlock: {fileID: 3814911561282062426, guid: 920afc9bcf262664bba1843d0831f480, type: 3}
   gridSpacing: 0.25
   blockSize: 1
-  gridX: 15
-  gridZ: 15
+  gridX: 8
+  gridZ: 8
   gridOrigin: {x: 0, y: 0, z: 0}
 --- !u!4 &1121657818
 Transform:

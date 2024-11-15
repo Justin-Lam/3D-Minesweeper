@@ -13,9 +13,9 @@ public class LevelGeneration : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        for (int x = 0; x < gridX; x++)
+        for (int x = gridX * -1; x < gridX; x++)
         {
-            for (int z = 0; z < gridZ; z++)
+            for (int z = gridZ * -1; z < gridZ; z++)
             {
                 if (x == 0 && z == 0) continue;
                 float randomHeight = Random.Range(0.0f, 0.13f);
