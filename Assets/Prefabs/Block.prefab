@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 630453254161312854}
   - component: {fileID: 7990042663945920586}
   - component: {fileID: 3670620381197145949}
-  - component: {fileID: 731084398164103260}
   - component: {fileID: 5363664939552066743}
+  - component: {fileID: 731084398164103260}
   m_Layer: 0
   m_Name: Block
   m_TagString: Block
@@ -107,24 +107,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &731084398164103260
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8184562119401177165}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d07ba7682ac92c4192193e1056920be, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dirtColor: {fileID: 2100000, guid: 0aae302ff9fdd5a40b2893952549f2eb, type: 2}
-  mineColor: {fileID: 2100000, guid: bba8d49971d2f784592ba4da0126da53, type: 2}
-  type: 0
-  player: {fileID: 0}
-  radius: 5
-  power: 10
 --- !u!54 &5363664939552066743
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -147,8 +129,26 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &731084398164103260
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8184562119401177165}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d07ba7682ac92c4192193e1056920be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 0
+  radius: 5
+  upwardsModifier: 3
+  power: 10
+  dirt: {fileID: 2100000, guid: 0aae302ff9fdd5a40b2893952549f2eb, type: 2}
+  mine: {fileID: 2100000, guid: bba8d49971d2f784592ba4da0126da53, type: 2}

@@ -6,7 +6,8 @@ public class GameManager : MonoBehaviour
 	[SerializeField] GameObject block;
 	[SerializeField] int width;
 	[SerializeField] int height;
-	GameObject[,] blocks;
+	[SerializeField] int numMines;
+	Block[,] blocks;
 
 	// Singleton Pattern
 	private static GameManager instance;
@@ -36,7 +37,7 @@ public class GameManager : MonoBehaviour
 	void GenerateLevel()
 	{
 		// Instantiate blocks
-		blocks = new GameObject[height, width];
+		blocks = new Block[height, width];
 
 		// Calculate offsets so the grid can be centered at (0, 0, 0)
 		float offsetX = (width % 2 == 0) ? 0.5f : 0f;
@@ -48,7 +49,8 @@ public class GameManager : MonoBehaviour
 			for (int x = 0; x < width; x++)
 			{
 				Vector3 position = new Vector3(x - width/2 + offsetX, 0.5f, z - height/2 + offsetZ);
-				blocks[z, x] = Instantiate(block, position, Quaternion.identity, transform);
+				GameObject go = Instantiate(block, position, Quaternion.identity, transform);
+				blocks[z, x] = go.GetComponent<Block>();
 			}
 		}
 	}

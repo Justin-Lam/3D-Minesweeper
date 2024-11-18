@@ -1,28 +1,33 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Block : MonoBehaviour
 {
-    public Material dirtColor;
-    public Material mineColor;
-    public enum Type {GRASS, MINE};
-    public Type type;
-    public GameObject player;
-    public float radius = 5.0F;
-    public float power = 500.0F;
+	public enum Type { GRASS, MINE };
 
-    private Renderer blockRenderer;
-    private Rigidbody playerRb;
+	[Header("Type")]
+	[SerializeField] Type type;
+    int x;  // position in grid
+    int y;  // position in grid
+
+	[Header("Explosion")]
+	[SerializeField] float radius = 5f;
+	[SerializeField] float upwardsModifier = 3f;
+	[SerializeField] float power = 500f;
+
+	[Header("Materials")]
+	[SerializeField] Material dirt;
+	[SerializeField] Material mine;
+    Renderer rr;
 
     void Start()
     {
-        blockRenderer = this.GetComponent<Renderer>();
-        playerRb = player.GetComponent<Rigidbody>();
+        // Get renderer
+        rr = GetComponent<Renderer>();
     }
 
-    void Update()
+    public void Initialize()
     {
+
     }
 
     public void OnEat()
@@ -30,12 +35,12 @@ public class Block : MonoBehaviour
         if (type == Type.GRASS)
         {
             Debug.Log("You ate grass!");
-            blockRenderer.material = dirtColor;
+            rr.material = dirt;
         }
-        else if (type == Type.MINE)
+        else
         {
             Debug.Log("BOOM");
-            blockRenderer.material = mineColor;
+            rr.material = mine;
 
             Collider[] colliders = Physics.OverlapSphere(transform.position, radius);
             foreach (Collider hit in colliders)
@@ -44,13 +49,16 @@ public class Block : MonoBehaviour
 
                 if (rb != null)
                 {
-                    rb.AddExplosionForce(power, transform.position, radius, 3.0F, ForceMode.Impulse);
+                    rb.AddExplosionForce(power, transform.position, radius, upwardsModifier, ForceMode.Impulse);
                     rb.useGravity = true;
+
+                    if (rb.gameObject.CompareTag("Player"))
+                    {
+						Vector3 explosionXZ = new Vector3(Random.Range(-1f, 1f) * power, 0, Random.Range(-1f, 1f) * power);
+						rb.AddForce(explosionXZ, ForceMode.Impulse);
+					}
                 }
             }
-
-            Vector3 explosionXZ = new Vector3(Random.Range(-1.0f, 1.0f) * power, 0, Random.Range(-1.0f, 1.0f) * power);
-            playerRb.AddForce(explosionXZ, ForceMode.Impulse);
         }
     }
 }
