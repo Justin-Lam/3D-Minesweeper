@@ -1,13 +1,14 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Block : MonoBehaviour
 {
 	public enum Type { GRASS, MINE };
 
-	[Header("Type")]
-	[SerializeField] Type type;
-    int x;  // position in grid
-    int y;  // position in grid
+	[Header("Data")]
+	Type type = Type.GRASS;
+    int x;
+    int y;
 
 	[Header("Explosion")]
 	[SerializeField] float radius = 5f;
@@ -17,30 +18,39 @@ public class Block : MonoBehaviour
 	[Header("Materials")]
 	[SerializeField] Material dirt;
 	[SerializeField] Material mine;
-    Renderer rr;
+    MeshRenderer mr;
 
     void Start()
     {
-        // Get renderer
-        rr = GetComponent<Renderer>();
+		// Get renderer
+		mr = GetComponent<MeshRenderer>();
     }
 
-    public void Initialize()
+    public void SetPosition(int x, int y)
     {
-
+        this.x = x;
+        this.y = y;
+    }
+    public bool IsGrass()
+    {
+        return type == Type.GRASS;
+    }
+    public void BecomeMine()
+    {
+        type = Type.MINE;
     }
 
-    public void OnEat()
+	public void OnEat()
     {
         if (type == Type.GRASS)
         {
             Debug.Log("You ate grass!");
-            rr.material = dirt;
+			mr.material = dirt;
         }
         else
         {
             Debug.Log("BOOM");
-            rr.material = mine;
+			mr.material = mine;
 
             Collider[] colliders = Physics.OverlapSphere(transform.position, radius);
             foreach (Collider hit in colliders)
