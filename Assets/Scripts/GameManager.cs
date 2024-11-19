@@ -14,6 +14,9 @@ public class GameManager : MonoBehaviour
 	[SerializeField] int numMines;
 	Block[,] blocks;
 
+	[Header("Gameplay")]
+	bool playerOnFirstAction = true;
+
 	// Singleton Pattern
 	private static GameManager instance;
 	public static GameManager Instance {  get { return instance; } }
@@ -65,13 +68,20 @@ public class GameManager : MonoBehaviour
 
 	void PlaceMines()
 	{
+		for (int i = 0; i < numMines; i++)
+		{
+			PlaceMine();
+		}
+	}
+	void PlaceMine()
+	{
 		// modified code from https://www.geeksforgeeks.org/cpp-implementation-minesweeper-game/ to create this function
 
-		// Loop until we've placed all the mines (notice there's no i++ in the loop header)
-		for (int i = 0; i < numMines;)
+		// Randomly find a block that's grass and turn it into a mine
+		while (true)
 		{
 			// Get the position of the block to turn into a mine in terms of a 1D array
-			int blockNum = Random.Range(0, width*height);
+			int blockNum = Random.Range(0, width * height);
 
 			// Get the position of the block in terms of a 2D array
 			int x = blockNum % width;
@@ -79,10 +89,11 @@ public class GameManager : MonoBehaviour
 
 			// Turn the block into a mine if it isn't one already
 			// only advance the loop counter (i) if we've successfully placed a new mine
-			if (blocks[y, x].IsGrass())
+			if (blocks[y, x].GetBlockType() == Block.Type.GRASS)
 			{
-				blocks[y, x].BecomeMine();
-				i++;
+				blocks[y, x].SetType(Block.Type.MINE);
+				blocks[y, x].transform.Translate(0, 0.25f, 0);
+				return;
 			}
 		}
 	}
@@ -92,6 +103,21 @@ public class GameManager : MonoBehaviour
 		int x = int.Parse(xInputField.text);
 		int y = int.Parse(yInputField.text);
 
+		// Handle special case where the first block eaten is a mine
+		if (blocks[y, x].GetBlockType() == Block.Type.MINE && playerOnFirstAction)
+		{
+			ReplaceMine(x, y);
+			playerOnFirstAction = false;
+		}
 
+	}
+	public void ReplaceMine(int x, int y)
+	{
+		// Place mine first otherwise there's a chance we place a mine where we just removed one
+		PlaceMine();
+
+		// Remove mine
+		blocks[y, x].SetType(Block.Type.GRASS);
+		blocks[y, x].transform.Translate(0, -0.25f, 0);
 	}
 }

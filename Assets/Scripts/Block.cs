@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Block : MonoBehaviour
@@ -6,7 +5,7 @@ public class Block : MonoBehaviour
 	public enum Type { GRASS, MINE };
 
 	[Header("Data")]
-	Type type = Type.GRASS;
+	Type type = Type.GRASS;     public Type GetBlockType() {  return type; }
     int x;
     int y;
 
@@ -31,13 +30,9 @@ public class Block : MonoBehaviour
         this.x = x;
         this.y = y;
     }
-    public bool IsGrass()
+    public void SetType(Type type)
     {
-        return type == Type.GRASS;
-    }
-    public void BecomeMine()
-    {
-        type = Type.MINE;
+        this.type = type;
     }
 
 	public void OnEat()
