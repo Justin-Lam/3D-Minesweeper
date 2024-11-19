@@ -1,7 +1,12 @@
+using TMPro;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+	[Header("Debuggin")]
+	[SerializeField] TMP_InputField xInputField;
+	[SerializeField] TMP_InputField yInputField;
+
 	[Header("Level Generation")]
 	[SerializeField] GameObject block;
 	[SerializeField] int width;
@@ -62,17 +67,31 @@ public class GameManager : MonoBehaviour
 	{
 		// modified code from https://www.geeksforgeeks.org/cpp-implementation-minesweeper-game/ to create this function
 
-		for (int i = 0; i < numMines;)	// no i++ here
+		// Loop until we've placed all the mines (notice there's no i++ in the loop header)
+		for (int i = 0; i < numMines;)
 		{
-			int blockNum = Random.Range(0, width * height);
-			int x = blockNum % width;	// integer division
-			int y = blockNum / height;
+			// Get the position of the block to turn into a mine in terms of a 1D array
+			int blockNum = Random.Range(0, width*height);
 
+			// Get the position of the block in terms of a 2D array
+			int x = blockNum % width;
+			int y = blockNum / height;  // integer division
+
+			// Turn the block into a mine if it isn't one already
+			// only advance the loop counter (i) if we've successfully placed a new mine
 			if (blocks[y, x].IsGrass())
 			{
 				blocks[y, x].BecomeMine();
 				i++;
 			}
 		}
+	}
+
+	public void OnEat()
+	{
+		int x = int.Parse(xInputField.text);
+		int y = int.Parse(yInputField.text);
+
+
 	}
 }
