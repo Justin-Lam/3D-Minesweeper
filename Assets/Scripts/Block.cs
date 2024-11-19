@@ -55,7 +55,6 @@ public class Block : MonoBehaviour
                 if (rb != null)
                 {
                     rb.AddExplosionForce(power, transform.position, radius, upwardsModifier, ForceMode.Impulse);
-                    rb.useGravity = true;
 
                     if (rb.gameObject.CompareTag("Player"))
                     {

@@ -107,9 +107,11 @@ public class GameManager : MonoBehaviour
 		if (blocks[y, x].GetBlockType() == Block.Type.MINE && playerOnFirstAction)
 		{
 			ReplaceMine(x, y);
-			playerOnFirstAction = false;
 		}
 
+		blocks[y, x].OnEat();
+
+		playerOnFirstAction = false;
 	}
 	public void ReplaceMine(int x, int y)
 	{

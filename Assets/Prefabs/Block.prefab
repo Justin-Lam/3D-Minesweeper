@@ -384,7 +384,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 5
-  upwardsModifier: 3
-  power: 10
+  upwardsModifier: 0
+  power: 100
   dirt: {fileID: 2100000, guid: 0aae302ff9fdd5a40b2893952549f2eb, type: 2}
   mine: {fileID: 2100000, guid: bba8d49971d2f784592ba4da0126da53, type: 2}
