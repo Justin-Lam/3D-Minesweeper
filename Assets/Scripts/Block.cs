@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 
@@ -15,16 +16,21 @@ public class Block : MonoBehaviour
 	[SerializeField] float upwardsModifier = 3f;
 	[SerializeField] float power = 500f;
 
+    [Header("Text")]
+    [SerializeField] Color[] numberColors = new Color[8];
+	TMP_Text nearbyMinesText;
+
 	[Header("Materials")]
 	[SerializeField] Material dirt;
 	[SerializeField] Material mine;
     MeshRenderer mr;
 
-    [Header("Text")]
-    [SerializeField] TMP_Text nearbyMinesText;
 
     void Start()
     {
+		// Get nearby mines text
+		nearbyMinesText = GetComponentInChildren<TMP_Text>();
+
 		// Get renderer
 		mr = GetComponent<MeshRenderer>();
     }
@@ -40,9 +46,14 @@ public class Block : MonoBehaviour
     }
     public void SetNearbyMinesText(int numMines)
     {
-        if (numMines != 0)
+        if (numMines > 0 && numMines < 9)
         {
 			nearbyMinesText.text = numMines.ToString();
+			nearbyMinesText.color = numberColors[numMines - 1];
+		}
+        else
+        {
+			throw new ArgumentException("Number of nearby mines must be between 0 and 8.");
 		}
     }
 
@@ -67,7 +78,7 @@ public class Block : MonoBehaviour
 
                     if (rb.gameObject.CompareTag("Player"))
                     {
-						Vector3 explosionXZ = new Vector3(Random.Range(-1f, 1f) * power, 0, Random.Range(-1f, 1f) * power);
+						Vector3 explosionXZ = new Vector3(UnityEngine.Random.Range(-1f, 1f) * power, 0, UnityEngine.Random.Range(-1f, 1f) * power);
 						rb.AddForce(explosionXZ, ForceMode.Impulse);
 					}
                 }
