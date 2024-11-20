@@ -24,6 +24,9 @@ public class PlayerController : MonoBehaviour
 	float groundedDistFromGround;   // the max distance the player can be from the ground in order to be grounded
 	float groundedDistFromGroundPadding = 0.1f; // (10%)
 
+	[Header("Flagging")]
+	[SerializeField] GameObject flag;
+
 	void Start()
 	{
 		// Get rb
@@ -76,10 +79,14 @@ public class PlayerController : MonoBehaviour
 			rb.AddForce(Vector3.down * rb.velocity.y * letGoOfJumpVelocityDecreaseRatio, ForceMode.VelocityChange);
 		}
 
-		// Check for eat
+		// Check for eat and flag
 		if (Input.GetButtonDown("Eat"))
 		{
 			Eat();
+		}
+		if (Input.GetButtonDown("Flag"))
+		{
+			Flag();
 		}
 
 		// Set wasGrounded (this must come at the end of Update() so the next Update() call can use it)
@@ -138,22 +145,49 @@ public class PlayerController : MonoBehaviour
 
 	void Eat()
     {
-		// Can only eat if standing on a block
+		// Can only eat if grounded
 		RaycastHit hit;
-		if (IsGroundedOnBlock(out hit))
+		if (IsGroundedOnSomething(out hit))
 		{
-			// Get the block the player is standing on and call its OnEat()
-			hit.collider.gameObject.GetComponent<Block>().OnEat();
+			// Can only eat if also grounded on a block
+			if (hit.collider.gameObject.CompareTag("Block"))
+			{
+				// Get the block and call its OnEat()
+				hit.collider.gameObject.GetComponent<Block>().OnEat();
+			}
 		}
     }
-	bool IsGroundedOnBlock(out RaycastHit hit)
+	void Flag()
 	{
-		// Check if the player is grounded, else return false
-		if (Physics.Raycast(transform.position, Vector3.down, out hit, groundedDistFromGround))
+		// Check that the player is grounded and set hit
+		RaycastHit hit;
+		if (!IsGroundedOnSomething(out hit))
 		{
-			// Return whether the player is grounded on a block
-			return hit.collider.gameObject.CompareTag("Block");
+			return;
 		}
-		return false;
+
+		// Flag
+		if (hit.collider.gameObject.CompareTag("Block"))	// standing on a block
+		{
+			// Jump
+			Jump();
+
+			// Get the block's transform
+			Transform block = hit.collider.transform;
+
+			// Spawn flag centered on top of the block
+			Instantiate(flag, new Vector3(block.position.x, block.position.y + block.localScale.y / 2, block.position.z), Quaternion.identity);
+		}
+
+		// Unflag
+		else if (hit.collider.gameObject.CompareTag("Flag"))	// standing on a flag
+		{
+			// Destroy the flag
+			Destroy(hit.collider.gameObject);
+		}
+	}
+	bool IsGroundedOnSomething(out RaycastHit hit)
+	{
+		return Physics.Raycast(transform.position, Vector3.down, out hit, groundedDistFromGround);
 	}
 }

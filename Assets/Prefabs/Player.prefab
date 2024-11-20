@@ -503,3 +503,4 @@ MonoBehaviour:
   jumpBufferDuration: 0.2
   letGoOfJumpVelocityDecreaseRatio: 0.25
   extraGravityWhenFallingAcceleration: 60
+  flag: {fileID: 4558276649568759549, guid: d6a3027ed4698fa41a3a7dcecbbacf93, type: 3}
