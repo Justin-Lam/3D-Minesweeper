@@ -114,7 +114,7 @@ GameObject:
   - component: {fileID: 8071371120547305254}
   - component: {fileID: 1685085323939910033}
   m_Layer: 0
-  m_Name: NumberText
+  m_Name: NearbyMinesText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -388,3 +388,4 @@ MonoBehaviour:
   power: 100
   dirt: {fileID: 2100000, guid: 0aae302ff9fdd5a40b2893952549f2eb, type: 2}
   mine: {fileID: 2100000, guid: bba8d49971d2f784592ba4da0126da53, type: 2}
+  nearbyMinesText: {fileID: 1685085323939910033}

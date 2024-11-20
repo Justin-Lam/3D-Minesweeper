@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 public class Block : MonoBehaviour
@@ -19,6 +20,9 @@ public class Block : MonoBehaviour
 	[SerializeField] Material mine;
     MeshRenderer mr;
 
+    [Header("Text")]
+    [SerializeField] TMP_Text nearbyMinesText;
+
     void Start()
     {
 		// Get renderer
@@ -34,17 +38,22 @@ public class Block : MonoBehaviour
     {
         this.type = type;
     }
+    public void SetNearbyMinesText(int numMines)
+    {
+        if (numMines != 0)
+        {
+			nearbyMinesText.text = numMines.ToString();
+		}
+    }
 
 	public void OnEat()
     {
         if (type == Type.GRASS)
         {
-            Debug.Log("You ate grass!");
 			mr.material = dirt;
         }
         else
         {
-            Debug.Log("BOOM");
 			mr.material = mine;
 
             Collider[] colliders = Physics.OverlapSphere(transform.position, radius);

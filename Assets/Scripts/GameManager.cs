@@ -1,9 +1,10 @@
+using System;
 using TMPro;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-	[Header("Debuggin")]
+	[Header("Debugging")]
 	[SerializeField] TMP_InputField xInputField;
 	[SerializeField] TMP_InputField yInputField;
 
@@ -39,8 +40,25 @@ public class GameManager : MonoBehaviour
 
 	void Start()
 	{
+		ValidateParameters();
 		CreateBlocks();
 		PlaceMines();
+	}
+
+	void ValidateParameters()
+	{
+		if (width < 0)
+		{
+			throw new ArgumentException("Width cannot be negative.");
+		}
+		if (height < 0)
+		{
+			throw new ArgumentException("Height cannot be negative.");
+		}
+		if (numMines > width * height)
+		{
+			throw new ArgumentException("Number of mines cannot exceed number of blocks.");
+		}
 	}
 
 	void CreateBlocks()
@@ -53,7 +71,7 @@ public class GameManager : MonoBehaviour
 		float offsetY = (height % 2 == 0) ? 0.5f : 0f;
 
 		// Create blocks
-		for (int y = 0; y < height; y++)	// note: y corresponds to the z axis
+		for (int y = 0; y < height; y++)	// note: y here corresponds to the z axis of the game world
 		{
 			for (int x = 0; x < width; x++)
 			{
@@ -81,11 +99,11 @@ public class GameManager : MonoBehaviour
 		while (true)
 		{
 			// Get the position of the block to turn into a mine in terms of a 1D array
-			int blockNum = Random.Range(0, width * height);
+			int blockNum = UnityEngine.Random.Range(0, width * height);
 
 			// Get the position of the block in terms of a 2D array
 			int x = blockNum % width;
-			int y = blockNum / height;  // integer division
+			int y = blockNum / width;  // integer division
 
 			// Turn the block into a mine if it isn't one already
 			// only advance the loop counter (i) if we've successfully placed a new mine
@@ -111,6 +129,8 @@ public class GameManager : MonoBehaviour
 
 		blocks[y, x].OnEat();
 
+		blocks[y, x].SetNearbyMinesText(GetNumNearbyMines(x, y));
+
 		playerOnFirstAction = false;
 	}
 	public void ReplaceMine(int x, int y)
@@ -121,5 +141,40 @@ public class GameManager : MonoBehaviour
 		// Remove mine
 		blocks[y, x].SetType(Block.Type.GRASS);
 		blocks[y, x].transform.Translate(0, -0.25f, 0);
+	}
+	int GetNumNearbyMines(int x, int y)
+	{
+		int result = 0;
+
+		// Scan the surrounding eight blocks for mines
+		for (int yOffset = -1; yOffset <= 1; yOffset++)
+		{
+			// Don't go out of array bounds
+			if (y + yOffset < 0 || y + yOffset > height - 1)
+			{
+				continue;
+			}
+
+			for (int xOffset = -1; xOffset <= 1; xOffset++)
+			{
+				// Don't go out of array bounds
+				if (x + xOffset < 0 || x + xOffset > width - 1)
+				{
+					continue;
+				}
+				// Don't scan self
+				if (xOffset == 0 && yOffset == 0)
+				{
+					continue;
+				}
+
+				// Mine found
+				if (blocks[y + yOffset, x + xOffset].GetBlockType() == Block.Type.MINE)
+				{
+					result++;
+				}
+			}
+		}
+		return result;
 	}
 }
