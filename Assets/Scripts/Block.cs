@@ -46,14 +46,10 @@ public class Block : MonoBehaviour
     }
     public void SetNearbyMinesText(int numMines)
     {
-        if (numMines > 0 && numMines < 9)
+        if (numMines != 0)
         {
 			nearbyMinesText.text = numMines.ToString();
 			nearbyMinesText.color = numberColors[numMines - 1];
-		}
-        else
-        {
-			throw new ArgumentException("Number of nearby mines must be between 0 and 8.");
 		}
     }
 
@@ -67,6 +63,7 @@ public class Block : MonoBehaviour
         {
 			mr.material = mine;
 
+            /*
             Collider[] colliders = Physics.OverlapSphere(transform.position, radius);
             foreach (Collider hit in colliders)
             {
@@ -83,6 +80,9 @@ public class Block : MonoBehaviour
 					}
                 }
             }
+            */
         }
+
+        GameManager.Instance.OnEat(x, y);
     }
 }

@@ -23,9 +23,6 @@ public class PlayerController : MonoBehaviour
 	bool usedFastFall = false;
 	float groundedDistFromGround;   // the max distance the player can be from the ground in order to be grounded
 	float groundedDistFromGroundPadding = 0.1f; // (10%)
-	private RaycastHit blockHit;            // for use in checking for block collision
-	private Block blockScript;
-
 
 	void Start()
 	{
@@ -79,13 +76,14 @@ public class PlayerController : MonoBehaviour
 			rb.AddForce(Vector3.down * rb.velocity.y * letGoOfJumpVelocityDecreaseRatio, ForceMode.VelocityChange);
 		}
 
+		// Check for eat
+		if (Input.GetButtonDown("Eat"))
+		{
+			Eat();
+		}
+
 		// Set wasGrounded (this must come at the end of Update() so the next Update() call can use it)
 		wasGrounded = IsGrounded();
-
-		if (Input.GetKeyDown(KeyCode.E))
-		{
-			OnEat();
-		}
 	}
 
 	void FixedUpdate()
@@ -138,26 +136,24 @@ public class PlayerController : MonoBehaviour
 		usedFastFall = false;
 	}
 
-	bool IsOnBlock()
-	{
-		if (Physics.Raycast(transform.position, Vector3.down, out blockHit, groundedDistFromGround))
-		{
-			if (blockHit.collider != null && blockHit.collider.tag == "Block")
-			{
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	void OnEat()
+	void Eat()
     {
-		if (IsOnBlock())
-        {
-			GameObject block = blockHit.transform.gameObject;
-			blockScript = block.GetComponent<Block>();
-			blockScript.OnEat();
+		// Can only eat if standing on a block
+		RaycastHit hit;
+		if (IsGroundedOnBlock(out hit))
+		{
+			// Get the block the player is standing on and call its OnEat()
+			hit.collider.gameObject.GetComponent<Block>().OnEat();
 		}
     }
+	bool IsGroundedOnBlock(out RaycastHit hit)
+	{
+		// Check if the player is grounded, else return false
+		if (Physics.Raycast(transform.position, Vector3.down, out hit, groundedDistFromGround))
+		{
+			// Return whether the player is grounded on a block
+			return hit.collider.gameObject.CompareTag("Block");
+		}
+		return false;
+	}
 }

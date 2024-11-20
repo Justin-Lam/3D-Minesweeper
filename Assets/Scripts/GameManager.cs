@@ -1,13 +1,8 @@
 using System;
-using TMPro;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-	[Header("Debugging")]
-	[SerializeField] TMP_InputField xInputField;
-	[SerializeField] TMP_InputField yInputField;
-
 	[Header("Level Generation")]
 	[SerializeField] GameObject block;
 	[SerializeField] int width;
@@ -75,7 +70,7 @@ public class GameManager : MonoBehaviour
 		{
 			for (int x = 0; x < width; x++)
 			{
-				Vector3 position = new Vector3(x - width/2 + offsetX, 0.5f, y - height/2 + offsetY);
+				Vector3 position = new Vector3(x - width/2 + offsetX, 0, y - height/2 + offsetY);
 				GameObject blockGO = Instantiate(block, position, Quaternion.identity, transform);
 				Block blockScript = blockGO.GetComponent<Block>();
 				blockScript.SetPosition(x, y);
@@ -110,24 +105,18 @@ public class GameManager : MonoBehaviour
 			if (blocks[y, x].GetBlockType() == Block.Type.GRASS)
 			{
 				blocks[y, x].SetType(Block.Type.MINE);
-				blocks[y, x].transform.Translate(0, 0.25f, 0);
 				return;
 			}
 		}
 	}
 
-	public void OnEat()
+	public void OnEat(int x, int y)
 	{
-		int x = int.Parse(xInputField.text);
-		int y = int.Parse(yInputField.text);
-
 		// Handle special case where the first block eaten is a mine
 		if (blocks[y, x].GetBlockType() == Block.Type.MINE && playerOnFirstAction)
 		{
 			ReplaceMine(x, y);
 		}
-
-		blocks[y, x].OnEat();
 
 		blocks[y, x].SetNearbyMinesText(GetNumNearbyMines(x, y));
 
@@ -140,7 +129,6 @@ public class GameManager : MonoBehaviour
 
 		// Remove mine
 		blocks[y, x].SetType(Block.Type.GRASS);
-		blocks[y, x].transform.Translate(0, -0.25f, 0);
 	}
 	int GetNumNearbyMines(int x, int y)
 	{
