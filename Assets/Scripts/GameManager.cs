@@ -13,7 +13,7 @@ public class GameManager : MonoBehaviour
 	[Header("Gameplay")]
 	bool playerOnFirstAction = true;
 
-	// Singleton Pattern
+	[Header("Singleton Pattern")]
 	private static GameManager instance;
 	public static GameManager Instance {  get { return instance; } }
 	void Singleton_SetInstance()
@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
 			instance = this;
 		}
 	}
+
 
 	void Awake()
 	{
