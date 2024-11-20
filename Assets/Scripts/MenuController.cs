@@ -27,7 +27,7 @@ public class MenuController : MonoBehaviour
     }
     public void StartGame()
     {
-        SceneManager.LoadScene("TileInteractionTest", LoadSceneMode.Single);
+        SceneManager.LoadScene("GameMenuTest", LoadSceneMode.Single);
     }
 
     public void QuitGame()
