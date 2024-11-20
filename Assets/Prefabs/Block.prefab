@@ -384,7 +384,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 5
-  upwardsModifier: 0
+  upwardsModifier: 3
   power: 100
   numberColors:
   - {r: 0, g: 0, b: 0.99215686, a: 1}

@@ -63,7 +63,7 @@ public class Block : MonoBehaviour
         {
 			mr.material = mine;
 
-            /*
+            
             Collider[] colliders = Physics.OverlapSphere(transform.position, radius);
             foreach (Collider hit in colliders)
             {
@@ -71,6 +71,8 @@ public class Block : MonoBehaviour
 
                 if (rb != null)
                 {
+                    rb.isKinematic = false;
+                    rb.useGravity = true;
                     rb.AddExplosionForce(power, transform.position, radius, upwardsModifier, ForceMode.Impulse);
 
                     if (rb.gameObject.CompareTag("Player"))
@@ -80,7 +82,7 @@ public class Block : MonoBehaviour
 					}
                 }
             }
-            */
+            
         }
 
         GameManager.Instance.OnEat(x, y);
