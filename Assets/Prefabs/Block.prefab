@@ -395,5 +395,6 @@ MonoBehaviour:
   - {r: 0, g: 0.5019608, b: 0.5019608, a: 1}
   - {r: 0, g: 0, b: 0, a: 1}
   - {r: 0.5019608, g: 0.5019608, b: 0.5019608, a: 1}
+  grass: {fileID: 2100000, guid: e234cfd7ffba27b4ea39fe8c8e45b5a3, type: 2}
   dirt: {fileID: 2100000, guid: 0aae302ff9fdd5a40b2893952549f2eb, type: 2}
   mine: {fileID: 2100000, guid: bba8d49971d2f784592ba4da0126da53, type: 2}

@@ -43,8 +43,8 @@ public class Block : MonoBehaviour
     public void SetType(Type type)
     {
         this.type = type;
-    }
-    public void SetNearbyMinesText(int numMines)
+	}
+	public void SetNearbyMinesText(int numMines)
     {
         if (numMines != 0)
         {
@@ -63,7 +63,7 @@ public class Block : MonoBehaviour
         {
 			mr.material = mine;
 
-            
+            /*
             Collider[] colliders = Physics.OverlapSphere(transform.position, radius);
             foreach (Collider hit in colliders)
             {
@@ -82,7 +82,7 @@ public class Block : MonoBehaviour
 					}
                 }
             }
-            
+            */
         }
 
         GameManager.Instance.OnEat(x, y);

@@ -51,9 +51,11 @@ public class GameManager : MonoBehaviour
 		{
 			throw new ArgumentException("Height cannot be negative.");
 		}
-		if (numMines > width * height)
+		if (numMines > width * height - 9)
 		{
-			throw new ArgumentException("Number of mines cannot exceed number of blocks.");
+			throw new ArgumentException("Player's first action is impossible with the current amount of mines.");
+			// when the player eats their first block, the block they ate and its surrounding eight blocks are guaranteed to not be mines
+			// this is why the number of mines cannot exceed the number of blocks - 9
 		}
 	}
 
@@ -110,32 +112,48 @@ public class GameManager : MonoBehaviour
 			}
 		}
 	}
+	void PlaceMineNotIn3x3(int x, int y)
+	{
+		// Randomly find a block that's grass and turn it into a mine
+		while (true)
+		{
+			// Get the position of the block to turn into a mine in terms of a 1D array
+			int blockNum = UnityEngine.Random.Range(0, width * height);
+
+			// Get the position of the block in terms of a 2D array
+			int blockX = blockNum % width;
+			int blockY = blockNum / width;  // integer division
+
+			// Ensure the position isn't in the 3x3
+			if ((blockX >= x-1 && blockX <= x+1) && (blockY >= y-1 && blockY <= y+1))
+			{
+				continue;
+			}
+
+			// Turn the block into a mine if it isn't one already
+			// only advance the loop counter (i) if we've successfully placed a new mine
+			if (blocks[blockY, blockX].GetBlockType() == Block.Type.GRASS)
+			{
+				blocks[blockY, blockX].SetType(Block.Type.MINE);
+				return;
+			}
+		}
+	}
 
 	public void OnEat(int x, int y)
 	{
-		// Handle special case where the first block eaten is a mine
-		if (blocks[y, x].GetBlockType() == Block.Type.MINE && playerOnFirstAction)
+		if (playerOnFirstAction)
 		{
-			ReplaceMine(x, y);
+			ReplaceMinesIn3x3(x, y);
 		}
 
-		blocks[y, x].SetNearbyMinesText(GetNumNearbyMines(x, y));
+		blocks[y, x].SetNearbyMinesText(GetNumMinesIn3x3(x, y));
 
 		playerOnFirstAction = false;
 	}
-	public void ReplaceMine(int x, int y)
+	public void ReplaceMinesIn3x3(int x, int y)
 	{
-		// Place mine first otherwise there's a chance we place a mine where we just removed one
-		PlaceMine();
-
-		// Remove mine
-		blocks[y, x].SetType(Block.Type.GRASS);
-	}
-	int GetNumNearbyMines(int x, int y)
-	{
-		int result = 0;
-
-		// Scan the surrounding eight blocks for mines
+		// Scan the nine blocks for mines
 		for (int yOffset = -1; yOffset <= 1; yOffset++)
 		{
 			// Don't go out of array bounds
@@ -151,8 +169,33 @@ public class GameManager : MonoBehaviour
 				{
 					continue;
 				}
-				// Don't scan self
-				if (xOffset == 0 && yOffset == 0)
+
+				// Mine found
+				if (blocks[y + yOffset, x + xOffset].GetBlockType() == Block.Type.MINE)
+				{
+					blocks[y + yOffset, x + xOffset].SetType(Block.Type.GRASS);
+					PlaceMineNotIn3x3(x, y);
+				}
+			}
+		}
+	}
+	int GetNumMinesIn3x3(int x, int y)
+	{
+		int result = 0;
+
+		// Scan the nine blocks for mines
+		for (int yOffset = -1; yOffset <= 1; yOffset++)
+		{
+			// Don't go out of array bounds
+			if (y + yOffset < 0 || y + yOffset > height - 1)
+			{
+				continue;
+			}
+
+			for (int xOffset = -1; xOffset <= 1; xOffset++)
+			{
+				// Don't go out of array bounds
+				if (x + xOffset < 0 || x + xOffset > width - 1)
 				{
 					continue;
 				}
