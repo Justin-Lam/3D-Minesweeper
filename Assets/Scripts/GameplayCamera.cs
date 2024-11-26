@@ -1,5 +1,6 @@
 // wrote this script with minor help from ChatGPT and https://gamedevbeginner.com/how-to-zoom-a-camera-in-unity-3-methods-with-examples/#movement_zoom
 
+using System;
 using UnityEngine;
 
 public class GameplayCamera : MonoBehaviour
@@ -7,7 +8,12 @@ public class GameplayCamera : MonoBehaviour
 
 	[Header("Panning")]
 	[SerializeField] float panSensitivity;
-	float relativePanSensitivity;			// relative to zoom (pan less when zoomed in, pan more when zoomed out)
+	float relativePanSensitivity;           // relative to zoom (pan less when zoomed in, pan more when zoomed out)
+
+	[Header("Rotating")]
+	[SerializeField] float rotateSensitivity;
+	float previousRotationSegment = 0;
+	public static event Action<int> OnCameraRotatedIntoNewSegment;
 
 	[Header("Zooming")]
 	[SerializeField] float initialZoom;		// initial dist cam is from panner
@@ -18,9 +24,6 @@ public class GameplayCamera : MonoBehaviour
 	float targetZoom;						// dist cam should be from panner
 	float currentZoom;						// dist cam is from panner
 
-	[Header("Rotating")]
-	[SerializeField] float rotateSensitivity;
-
 	[Header("Children")]
 	// this double parent setup for the camera is necessary so vertical panning doesn't get messed up by vertical rotating
 	// the panner's forward vector must always stay parallel with the ground
@@ -28,6 +31,26 @@ public class GameplayCamera : MonoBehaviour
 	Transform rotater;      // for rotating vertically
 	Transform cam;          // for zooming
 
+	[Header("Singleton Pattern")]
+	private static GameplayCamera instance;
+	public static GameplayCamera Instance { get { return instance; } }
+	void Singleton_SetInstance()
+	{
+		if (instance != null && instance != this)
+		{
+			Destroy(gameObject);
+		}
+		else
+		{
+			instance = this;
+		}
+	}
+
+
+	void Awake()
+	{
+		Singleton_SetInstance();
+	}
 
 	void Start()
 	{
@@ -56,11 +79,17 @@ public class GameplayCamera : MonoBehaviour
 			panner.Translate(-Input.GetAxis("Mouse X") * relativePanSensitivity, 0, -Input.GetAxis("Mouse Y") * relativePanSensitivity, Space.Self);
 		}
 
-		// Rotating
+		// Rotating the camera
 		if (Input.GetMouseButton(1))    // right click
 		{
 			panner.Rotate(0, Input.GetAxis("Mouse X") * rotateSensitivity, 0, Space.Self);
 			rotater.Rotate(-Input.GetAxis("Mouse Y") * rotateSensitivity, 0, 0, Space.Self);
+		}
+		// Rotating the blocks
+		int currentRotationSegment = GetRotationSegment();
+		if (previousRotationSegment != currentRotationSegment)
+		{
+			OnCameraRotatedIntoNewSegment?.Invoke(currentRotationSegment);
 		}
 
 		// Zooming
@@ -68,5 +97,20 @@ public class GameplayCamera : MonoBehaviour
 		targetZoom = Mathf.Clamp(targetZoom, maxZoomIn, maxZoomOut);
 		currentZoom = Mathf.MoveTowards(currentZoom, targetZoom, zoomSpeed * Time.deltaTime);
 		cam.position = panner.position + cam.forward * -currentZoom;
+
+		// Set previousRotationSegment (this must come at the end of Update() so the next Update() call can use it)
+		previousRotationSegment = currentRotationSegment;
+	}
+
+	int GetRotationSegment()
+	{
+		// got this formula from ChatGPT
+		// returns a number between 0 and 3
+		// 0: 315 < y or y <= 45
+		// 1: 45 < y <= 135
+		// 2: 135 < y <= 225
+		// 3: 225 < y <= 315
+		// where y is the y rotation of the panner in degrees
+		return Mathf.RoundToInt(panner.rotation.eulerAngles.y / 90) % 4;
 	}
 }

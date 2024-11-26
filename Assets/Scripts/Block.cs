@@ -25,8 +25,16 @@ public class Block : MonoBehaviour
 	[SerializeField] Material mine;
     MeshRenderer mr;
 
+	void OnEnable()
+	{
+		GameplayCamera.OnCameraRotatedIntoNewSegment += RotateIntoSegment;
+	}
+	void OnDisable()
+	{
+		GameplayCamera.OnCameraRotatedIntoNewSegment -= RotateIntoSegment;
+	}
 
-    void Start()
+	void Start()
     {
 		// Get nearby mines text
 		nearbyMinesText = GetComponentInChildren<TMP_Text>();
@@ -87,5 +95,11 @@ public class Block : MonoBehaviour
                 }
             }
 		}
+	}
+
+	void RotateIntoSegment(int cameraRotationSegment)
+	{
+		// Rotate the block to face the segment the camera is in so the player can read the block's nearby mines
+		transform.rotation = Quaternion.Euler(0, cameraRotationSegment * 90, 0);
 	}
 }
