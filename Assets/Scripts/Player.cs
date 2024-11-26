@@ -46,6 +46,14 @@ public class Player : MonoBehaviour
 	{
 		Singleton_SetInstance();
 	}
+	void OnEnable()
+	{
+		GameManager.OnLoseGame += OnLoseGame;
+	}
+	void OnDisable()
+	{
+		GameManager.OnLoseGame -= OnLoseGame;
+	}
 
 	void Start()
 	{

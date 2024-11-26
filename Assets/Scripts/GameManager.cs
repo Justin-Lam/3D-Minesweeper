@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -13,12 +12,14 @@ public class GameManager : MonoBehaviour
 	Block[,] blocks;
 
 	[Header("HUD")]
-	[SerializeField] TMP_Text grassLeftText;
-	[SerializeField] TMP_Text winLossText;
 	int grassLeft;
 
 	[Header("Gameplay")]
 	bool playerOnFirstAction = true;
+	// learned how to do this from https://www.reddit.com/r/gamedev/comments/u3hz2v/how_to_use_events_a_supersimple_unity_example/?rdt=39506
+	// and by asking ChatGPT: "how do i change my GameManager to communicate to my HUDManager via events instead of public functions"
+	public static event Action OnWinGame;
+	public static event Action OnLoseGame;
 
 	[Header("Singleton Pattern")]
 	private static GameManager instance;
@@ -70,11 +71,7 @@ public class GameManager : MonoBehaviour
 	void InitializeGameplayVariables()
 	{
 		grassLeft = width * height - numMines;
-		UpdateGrassLeftText();
-	}
-	void UpdateGrassLeftText()
-	{
-		grassLeftText.text = "Grass left: " + grassLeft;
+		HUDManager.Instance.SetGrassLeftText(grassLeft);
 	}
 
 	void CreateBlocks()
@@ -169,7 +166,7 @@ public class GameManager : MonoBehaviour
 			blocks[y, x].SetNearbyMinesText(getMinePositionsIn3x3(x, y).Count);
 
 			grassLeft--;
-			UpdateGrassLeftText();
+			HUDManager.Instance.SetGrassLeftText(grassLeft);
 			if (grassLeft <= 0)
 			{
 				WinGame();
@@ -225,9 +222,7 @@ public class GameManager : MonoBehaviour
 
 	void WinGame()
 	{
-		// Show win text
-		winLossText.gameObject.SetActive(true);
-		winLossText.text = "You Win!";
+		OnWinGame?.Invoke();
 	}
 	public void LoseGame()
 	{
@@ -240,11 +235,6 @@ public class GameManager : MonoBehaviour
 			}
 		}
 
-		// Call Player.OnLoseGame()
-		Player.Instance.OnLoseGame();
-
-		// Show lose text
-		winLossText.gameObject.SetActive(true);
-		winLossText.text = "You Lose...";
+		OnLoseGame?.Invoke();
 	}
 }
