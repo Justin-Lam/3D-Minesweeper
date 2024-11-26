@@ -9,6 +9,7 @@ public class Block : MonoBehaviour
 	Type type = Type.GRASS;     public Type GetBlockType() {  return type; }
     int x;
     int y;
+    bool eaten = false;
 
 	[Header("Explosion")]
 	[SerializeField] float radius = 5f;
@@ -54,36 +55,37 @@ public class Block : MonoBehaviour
 
 	public void OnEat()
     {
-        if (type == Type.GRASS)
+        // Do some stuff then tell the game manager that this block was eaten
+        // The game manager is going to do some stuff and then come back to this block and tell it to finish what it needs to do ( HandleOnEat() )
+
+        if (!eaten)
         {
+			eaten = true;
+			GameManager.Instance.OnBlockEaten(x, y);
+		} 
+    }
+    public void HandleOnEat()
+    {
+		if (type == Type.GRASS)
+		{
 			mr.material = dirt;
-        }
-        else
-        {
+		}
+		else
+		{
+            GameManager.Instance.LoseGame();
+
 			mr.material = mine;
 
-            /*
             Collider[] colliders = Physics.OverlapSphere(transform.position, radius);
             foreach (Collider hit in colliders)
             {
                 Rigidbody rb = hit.GetComponent<Rigidbody>();
 
-                if (rb != null)
+                if (rb)
                 {
-                    rb.isKinematic = false;
-                    rb.useGravity = true;
                     rb.AddExplosionForce(power, transform.position, radius, upwardsModifier, ForceMode.Impulse);
-
-                    if (rb.gameObject.CompareTag("Player"))
-                    {
-						Vector3 explosionXZ = new Vector3(UnityEngine.Random.Range(-1f, 1f) * power, 0, UnityEngine.Random.Range(-1f, 1f) * power);
-						rb.AddForce(explosionXZ, ForceMode.Impulse);
-					}
                 }
             }
-            */
-        }
-
-        GameManager.Instance.OnEat(x, y);
-    }
+		}
+	}
 }

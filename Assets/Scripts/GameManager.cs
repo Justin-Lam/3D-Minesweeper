@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -10,6 +11,11 @@ public class GameManager : MonoBehaviour
 	[SerializeField] int height;
 	[SerializeField] int numMines;
 	Block[,] blocks;
+
+	[Header("HUD")]
+	[SerializeField] TMP_Text grassLeftText;
+	[SerializeField] TMP_Text winLossText;
+	int grassLeft;
 
 	[Header("Gameplay")]
 	bool playerOnFirstAction = true;
@@ -38,6 +44,7 @@ public class GameManager : MonoBehaviour
 	void Start()
 	{
 		ValidateParameters();
+		InitializeGameplayVariables();
 		CreateBlocks();
 		PlaceMines();
 	}
@@ -58,6 +65,16 @@ public class GameManager : MonoBehaviour
 			// this is why the number of mines cannot exceed the number of blocks - 9
 			throw new ArgumentException("Player's first action is impossible with the current amount of mines.");
 		}
+	}
+
+	void InitializeGameplayVariables()
+	{
+		grassLeft = width * height - numMines;
+		UpdateGrassLeftText();
+	}
+	void UpdateGrassLeftText()
+	{
+		grassLeftText.text = "Grass left: " + grassLeft;
 	}
 
 	void CreateBlocks()
@@ -138,7 +155,7 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
-	public void OnEat(int x, int y)
+	public void OnBlockEaten(int x, int y)
 	{
 		// Handle special case for when it's the player's first action
 		if (playerOnFirstAction)
@@ -147,7 +164,19 @@ public class GameManager : MonoBehaviour
 			playerOnFirstAction = false;
 		}
 
-		blocks[y, x].SetNearbyMinesText(getMinePositionsIn3x3(x, y).Count);
+		if (blocks[y, x].GetBlockType() == Block.Type.GRASS)
+		{
+			blocks[y, x].SetNearbyMinesText(getMinePositionsIn3x3(x, y).Count);
+
+			grassLeft--;
+			UpdateGrassLeftText();
+			if (grassLeft <= 0)
+			{
+				WinGame();
+			}
+		}
+
+		blocks[y, x].HandleOnEat();
 	}
 	/// <summary> x and y refer to the center position of the 3x3 area. </summary>
 	public void ReplaceMinesIn3x3(int x, int y)
@@ -192,5 +221,30 @@ public class GameManager : MonoBehaviour
 
 		// Return positions
 		return positions;
+	}
+
+	void WinGame()
+	{
+		// Show win text
+		winLossText.gameObject.SetActive(true);
+		winLossText.text = "You Win!";
+	}
+	public void LoseGame()
+	{
+		// Set every block and flag to no longer be kinematic
+		foreach (GameObject go in FindObjectsOfType<GameObject>())
+		{
+			if (go.CompareTag("Block") || go.CompareTag("Flag"))
+			{
+				go.GetComponent<Rigidbody>().isKinematic = false;
+			}
+		}
+
+		// Call Player.OnLoseGame()
+		Player.Instance.OnLoseGame();
+
+		// Show lose text
+		winLossText.gameObject.SetActive(true);
+		winLossText.text = "You Lose...";
 	}
 }

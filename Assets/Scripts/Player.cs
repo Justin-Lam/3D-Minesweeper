@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class PlayerController : MonoBehaviour
+public class Player : MonoBehaviour
 {
 	[Header("Horizontal Movement")]
 	[SerializeField] float acceleration;
@@ -25,6 +25,27 @@ public class PlayerController : MonoBehaviour
 
 	[Header("Flagging")]
 	[SerializeField] GameObject flag;
+
+	[Header("Singleton Pattern")]
+	private static Player instance;
+	public static Player Instance { get { return instance; } }
+	void Singleton_SetInstance()
+	{
+		if (instance != null && instance != this)
+		{
+			Destroy(gameObject);
+		}
+		else
+		{
+			instance = this;
+		}
+	}
+
+
+	void Awake()
+	{
+		Singleton_SetInstance();
+	}
 
 	void Start()
 	{
@@ -188,5 +209,12 @@ public class PlayerController : MonoBehaviour
 	bool IsGroundedOnSomething(out RaycastHit hit)
 	{
 		return Physics.Raycast(transform.position, Vector3.down, out hit, groundedDistFromGround);
+	}
+
+	public void OnLoseGame()
+	{
+		rb.drag = 0;								// so player falls as fast as everything else
+		rb.constraints = RigidbodyConstraints.None;	// so player rotates like everything else
+		enabled = false;							// so player loses control of the player character
 	}
 }
