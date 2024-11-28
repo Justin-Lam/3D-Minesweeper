@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
 
 	[Header("Singleton Pattern")]
 	private static GameManager instance;
-	public static GameManager Instance {  get { return instance; } }
+	public static GameManager Instance { get { return instance; } }
 	void Singleton_SetInstance()
 	{
 		if (instance != null && instance != this)
@@ -84,11 +84,11 @@ public class GameManager : MonoBehaviour
 		float offsetY = (height % 2 == 0) ? 0.5f : 0f;
 
 		// Create blocks
-		for (int y = 0; y < height; y++)	// note: y here corresponds to the z axis of the game world
+		for (int y = 0; y < height; y++)    // note: y here corresponds to the z axis of the game world
 		{
 			for (int x = 0; x < width; x++)
 			{
-				Vector3 position = new Vector3(x - width/2 + offsetX, 0, y - height/2 + offsetY);
+				Vector3 position = new Vector3(x - width / 2 + offsetX, 0, y - height / 2 + offsetY);
 				GameObject blockGO = Instantiate(block, position, Quaternion.identity, transform);
 				Block blockScript = blockGO.GetComponent<Block>();
 				blockScript.SetPosition(x, y);
@@ -120,7 +120,7 @@ public class GameManager : MonoBehaviour
 			int[] xy = GetRandomGrassBlockPosition();
 
 			// Ensure the position isn't in the 3x3
-			if ((xy[0] >= x-1 && xy[0] <= x+1) && (xy[1] >= y-1 && xy[1] <= y+1))
+			if ((xy[0] >= x - 1 && xy[0] <= x + 1) && (xy[1] >= y - 1 && xy[1] <= y + 1))
 			{
 				continue;
 			}

@@ -16,13 +16,13 @@ public class GameplayCamera : MonoBehaviour
 	public static event Action<int> OnCameraRotatedIntoNewSegment;
 
 	[Header("Zooming")]
-	[SerializeField] float initialZoom;		// initial dist cam is from panner
+	[SerializeField] float initialZoom;     // initial dist cam is from panner
 	[SerializeField] float zoomSensitivity;
 	[SerializeField] float zoomSpeed;
-	[SerializeField] float maxZoomIn;		// min dist cam can be from panner
-	[SerializeField] float maxZoomOut;		// max dist cam can be from panner
-	float targetZoom;						// dist cam should be from panner
-	float currentZoom;						// dist cam is from panner
+	[SerializeField] float maxZoomIn;       // min dist cam can be from panner
+	[SerializeField] float maxZoomOut;      // max dist cam can be from panner
+	float targetZoom;                       // dist cam should be from panner
+	float currentZoom;                      // dist cam is from panner
 
 	[Header("Children")]
 	// this double parent setup for the camera is necessary so vertical panning doesn't get messed up by vertical rotating
@@ -73,7 +73,7 @@ public class GameplayCamera : MonoBehaviour
 	void Update()
 	{
 		// Panning
-		if (Input.GetMouseButton(0))	// left click
+		if (Input.GetMouseButton(0))    // left click
 		{
 			relativePanSensitivity = panSensitivity * (currentZoom / initialZoom);
 			panner.Translate(-Input.GetAxis("Mouse X") * relativePanSensitivity, 0, -Input.GetAxis("Mouse Y") * relativePanSensitivity, Space.Self);
