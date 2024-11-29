@@ -5,17 +5,17 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
 	[Header("Level Generation")]
-	[SerializeField] GameObject block;
-	[SerializeField] int width;
-	[SerializeField] int height;
-	[SerializeField] int numMines;
-	Block[,] blocks;
+	public GameObject block;
+	public int width;
+	public int height;
+	public int numMines;
+	protected Block[,] blocks; 
 
 	[Header("HUD")]
-	int grassLeft;
+	protected int grassLeft;
 
 	[Header("Gameplay")]
-	bool playerOnFirstAction = true;
+	protected bool playerOnFirstAction = true;
 	// learned how to do this from https://www.reddit.com/r/gamedev/comments/u3hz2v/how_to_use_events_a_supersimple_unity_example/?rdt=39506
 	// and by asking ChatGPT: "how do i change my GameManager to communicate to my HUDManager via events instead of public functions"
 	public static event Action OnWinGame;
@@ -68,7 +68,7 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
-	void InitializeGameplayVariables()
+	protected virtual void InitializeGameplayVariables()
 	{
 		grassLeft = width * height - numMines;
 		HUDManager.Instance.SetGrassLeftText(grassLeft);
@@ -97,7 +97,7 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
-	void PlaceMines()
+	protected virtual void PlaceMines()
 	{
 		for (int i = 0; i < numMines; i++)
 		{
@@ -152,7 +152,7 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
-	public void OnBlockEaten(int x, int y)
+	public virtual void OnBlockEaten(int x, int y)
 	{
 		// Handle special case for when it's the player's first action
 		if (playerOnFirstAction)
@@ -186,7 +186,7 @@ public class GameManager : MonoBehaviour
 		}
 	}
 	/// <summary> x and y refer to the center position of the 3x3 area. </summary>
-	List<int[]> getMinePositionsIn3x3(int x, int y)
+	protected List<int[]> getMinePositionsIn3x3(int x, int y)
 	{
 		// Create a list to store the positions of the mines we find
 		List<int[]> positions = new List<int[]>();
@@ -220,7 +220,7 @@ public class GameManager : MonoBehaviour
 		return positions;
 	}
 
-	void WinGame()
+	protected void WinGame()
 	{
 		OnWinGame?.Invoke();
 	}
