@@ -152,6 +152,22 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
+	// Used to choose map values for tutorial
+	void PrintMinePos()
+    {
+		// Create blocks
+		for (int y = 0; y < height; y++)    // note: y here corresponds to the z axis of the game world
+		{
+			for (int x = 0; x < width; x++)
+			{
+				if (blocks[y, x].GetBlockType() == Block.Type.MINE)
+                {
+					Debug.Log("y = " + y + " and x = " + x);
+                }
+			}
+		}
+	}
+
 	public virtual void OnBlockEaten(int x, int y)
 	{
 		// Handle special case for when it's the player's first action
@@ -159,6 +175,8 @@ public class GameManager : MonoBehaviour
 		{
 			ReplaceMinesIn3x3(x, y);
 			playerOnFirstAction = false;
+
+			// PrintMinePos();
 		}
 
 		if (blocks[y, x].GetBlockType() == Block.Type.GRASS)
