@@ -7,8 +7,5 @@ using UnityEngine;
 [CreateAssetMenu]
 public class Dialogue : ScriptableObject
 {
-    [TextArea]
-    public string[] dialogueLines;
-    public enum Speaker { SHEEP, CROW, NARRATOR };
-    public Speaker[] speakers;
+    public DialogueLine[] dialogueLines;
 }

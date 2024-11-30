@@ -69,7 +69,7 @@ public class DialogueManager : MonoBehaviour
         }
         else
         {
-            ShowLine(dialogueObj.dialogueLines[currentLine], dialogueObj.speakers[currentLine].ToString());
+            ShowLine(dialogueObj.dialogueLines[currentLine].line, dialogueObj.dialogueLines[currentLine].speaker.ToString());
         }
     }
 }

@@ -13,7 +13,9 @@ MonoBehaviour:
   m_Name: TutorialDialogue
   m_EditorClassIdentifier: 
   dialogueLines:
-  - caw caw caw
-  - mehhhhhhhhhhhhhhhhhhhhhhhhh
-  - caw caw cawwwwwwww
-  speakers: 010000000000000001000000
+  - line: caw caw caw
+    speaker: 1
+  - line: baaaa
+    speaker: 0
+  - line: E
+    speaker: 2
