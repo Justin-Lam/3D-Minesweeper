@@ -517,6 +517,21 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6010477572412537204, guid: 461ffbf2e2e9c684d90118dbe695d578,
         type: 3}
+      propertyPath: width
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6010477572412537204, guid: 461ffbf2e2e9c684d90118dbe695d578,
+        type: 3}
+      propertyPath: height
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6010477572412537204, guid: 461ffbf2e2e9c684d90118dbe695d578,
+        type: 3}
+      propertyPath: numMines
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6010477572412537204, guid: 461ffbf2e2e9c684d90118dbe695d578,
+        type: 3}
       propertyPath: youWinText
       value: 
       objectReference: {fileID: 198770065}

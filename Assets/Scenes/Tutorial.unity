@@ -378,6 +378,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dialogueObj: {fileID: 11400000, guid: c055bcad05094734f8d765284a15441c, type: 2}
+  currentLine: 0
   dialogueText: {fileID: 1189616078}
   nameText: {fileID: 1696291517}
   dialogueDisplay: {fileID: 1929302855}
@@ -1225,7 +1226,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: -586}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1966985550
@@ -1258,9 +1259,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   block: {fileID: 8184562119401177165, guid: 2f92a8be9a7316b439aa79e19800c4a3, type: 3}
-  width: 10
-  height: 10
-  numMines: 10
+  width: 5
+  height: 5
+  numMines: 3
+  dialogueManager: {fileID: 252855095}
 --- !u!4 &1966985552
 Transform:
   m_ObjectHideFlags: 0

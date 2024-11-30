@@ -7,19 +7,18 @@ using TMPro;
 public class DialogueManager : MonoBehaviour
 {
     public Dialogue dialogueObj;
+    public int currentLine;
     [SerializeField] TextMeshProUGUI dialogueText;
     [SerializeField] TextMeshProUGUI nameText;
     [SerializeField] GameObject dialogueDisplay;
 
-    private int currentLine;
+    // private int currentLine;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        currentLine = 0;
-        dialogueDisplay.SetActive(true);
-        ShowLine(dialogueObj.dialogueLines[0], dialogueObj.speakers[0].ToString());
+        currentLine = -1;
     }
 
     // Update is called once per frame
@@ -32,8 +31,24 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
+    public void AddDialoguePause(float pauseLength)
+    {
+        EndDialogue();
+        StartCoroutine(DialoguePause(pauseLength));
+    }
+
+    IEnumerator DialoguePause(float pauseLength)
+    {
+        yield return new WaitForSeconds(pauseLength);
+        NextLine();
+    }
+
     public void ShowLine(string dialogue, string name)
     {
+        if (!dialogueDisplay.activeSelf)
+        {
+            dialogueDisplay.SetActive(true);
+        }
         nameText.text = name;
         dialogueText.text = dialogue;
     }
@@ -45,7 +60,7 @@ public class DialogueManager : MonoBehaviour
         dialogueDisplay.SetActive(false);
     }
 
-    void NextLine()
+    public void NextLine()
     {
         currentLine++;
         if (currentLine > dialogueObj.dialogueLines.Length - 1)

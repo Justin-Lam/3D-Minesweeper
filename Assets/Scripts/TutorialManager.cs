@@ -4,8 +4,17 @@ using UnityEngine;
 
 public class TutorialManager : GameManager
 {
+	public DialogueManager dialogueManager;
 	int[][] minePos;
 	int[] firstBlock;
+
+
+	protected override void Start()
+	{
+		base.Start();
+		dialogueManager.AddDialoguePause(1.0f);
+		// dialogueManager.ShowLine(dialogueManager.dialogueObj.dialogueLines[0], dialogueManager.dialogueObj.speakers[0].ToString());
+	}
 
 	protected override void InitializeGameplayVariables()
 	{
@@ -14,16 +23,19 @@ public class TutorialManager : GameManager
 
 		// Manually set where the mines will be (tutorial level is always the same)
 		minePos = new int[numMines][];
-		minePos[0] = new int[] { 0, 7 };
-		minePos[1] = new int[] { 1, 3 };
-		minePos[2] = new int[] { 2, 2 };
-		minePos[3] = new int[] { 2, 5 };
-		minePos[4] = new int[] { 6, 7 };
+		minePos[0] = new int[] { 0, 1 };
+		minePos[1] = new int[] { 0, 3 };
+		minePos[2] = new int[] { 2, 0 };
+
+		/*
+		minePos[3] = new int[] { 1, 3 };
+		minePos[4] = new int[] { 3, 4 };
 		minePos[5] = new int[] { 7, 3 };
 		minePos[6] = new int[] { 8, 5 };
 		minePos[7] = new int[] { 8, 6 };
 		minePos[8] = new int[] { 8, 9 };
 		minePos[9] = new int[] { 9, 7 };
+		*/
 	}
 
 	protected override void PlaceMines()

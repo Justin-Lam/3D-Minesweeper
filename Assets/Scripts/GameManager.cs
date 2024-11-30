@@ -42,7 +42,7 @@ public class GameManager : MonoBehaviour
 		Singleton_SetInstance();
 	}
 
-	void Start()
+	protected virtual void Start()
 	{
 		ValidateParameters();
 		InitializeGameplayVariables();
@@ -155,7 +155,6 @@ public class GameManager : MonoBehaviour
 	// Used to choose map values for tutorial
 	void PrintMinePos()
     {
-		// Create blocks
 		for (int y = 0; y < height; y++)    // note: y here corresponds to the z axis of the game world
 		{
 			for (int x = 0; x < width; x++)
