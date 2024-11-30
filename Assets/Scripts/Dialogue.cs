@@ -8,5 +8,7 @@ using UnityEngine;
 public class Dialogue : ScriptableObject
 {
     [TextArea]
-    public string[] dialogue;
+    public string[] dialogueLines;
+    public enum Speaker { SHEEP, CROW, NARRATOR };
+    public Speaker[] speakers;
 }

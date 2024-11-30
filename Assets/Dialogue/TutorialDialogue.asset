@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2bef8987ab3573146b56d2a5e036c504, type: 3}
   m_Name: TutorialDialogue
   m_EditorClassIdentifier: 
-  dialogue:
+  dialogueLines:
   - caw caw caw
-  - cah caw cahhhhh
+  - mehhhhhhhhhhhhhhhhhhhhhhhhh
+  speakers: 0100000000000000
