@@ -13,7 +13,6 @@ public class TutorialManager : GameManager
 	{
 		base.Start();
 		dialogueManager.AddDialoguePause(1.0f);
-		// dialogueManager.ShowLine(dialogueManager.dialogueObj.dialogueLines[0], dialogueManager.dialogueObj.speakers[0].ToString());
 	}
 
 	protected override void InitializeGameplayVariables()

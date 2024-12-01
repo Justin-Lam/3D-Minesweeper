@@ -13,9 +13,12 @@ MonoBehaviour:
   m_Name: TutorialDialogue
   m_EditorClassIdentifier: 
   dialogueLines:
-  - line: caw caw caw
-    speaker: 1
-  - line: baaaa
-    speaker: 0
-  - line: E
-    speaker: 2
+  - speaker: 1
+    portrait: {fileID: 21300000, guid: 90e2d95ea72c53345a58367b6e59de53, type: 3}
+    line: caw caw caw
+  - speaker: 0
+    portrait: {fileID: 21300000, guid: 9bb7088518ad2b94cb10cb9f39e38a3b, type: 3}
+    line: baaaa
+  - speaker: 2
+    portrait: {fileID: 0}
+    line: E

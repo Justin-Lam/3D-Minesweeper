@@ -2,17 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 // based on the dialogue system tutorial by https://gamedevbeginner.com/dialogue-systems-in-unity/
 public class DialogueManager : MonoBehaviour
 {
     public Dialogue dialogueObj;
     public int currentLine;
+
     [SerializeField] TextMeshProUGUI dialogueText;
     [SerializeField] TextMeshProUGUI nameText;
+    [SerializeField] Image portraitHolder;
     [SerializeField] GameObject dialogueDisplay;
-
-    // private int currentLine;
 
 
     // Start is called before the first frame update
@@ -43,7 +44,7 @@ public class DialogueManager : MonoBehaviour
         NextLine();
     }
 
-    public void ShowLine(string dialogue, string name)
+    public void ShowLine(string dialogue, string name, Sprite portrait)
     {
         if (!dialogueDisplay.activeSelf)
         {
@@ -51,6 +52,7 @@ public class DialogueManager : MonoBehaviour
         }
         nameText.text = name;
         dialogueText.text = dialogue;
+        portraitHolder.sprite = portrait;
     }
 
     public void EndDialogue()
@@ -69,7 +71,7 @@ public class DialogueManager : MonoBehaviour
         }
         else
         {
-            ShowLine(dialogueObj.dialogueLines[currentLine].line, dialogueObj.dialogueLines[currentLine].speaker.ToString());
+            ShowLine(dialogueObj.dialogueLines[currentLine].line, dialogueObj.dialogueLines[currentLine].speaker.ToString(), dialogueObj.dialogueLines[currentLine].portrait);
         }
     }
 }
