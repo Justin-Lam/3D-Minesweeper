@@ -13,15 +13,58 @@ MonoBehaviour:
   m_Name: TutorialDialogue
   m_EditorClassIdentifier: 
   dialogueLines:
-  - speaker: 1
-    portrait: {fileID: 21300000, guid: 90e2d95ea72c53345a58367b6e59de53, type: 3}
-    line: caw caw caw
   - speaker: 0
     portrait: {fileID: 21300000, guid: 9bb7088518ad2b94cb10cb9f39e38a3b, type: 3}
-    line: baaaa
+    line: (Baa, I'm starving...And most of the field is dried up...Good thing I found
+      this nice patch of grass right here!)
   - speaker: 2
     portrait: {fileID: 0}
-    line: E
+    line: You lean down to indulge in your hard-found meal...
   - speaker: 1
     portrait: {fileID: 21300000, guid: 90e2d95ea72c53345a58367b6e59de53, type: 3}
-    line: Cawow, that was a close caw-ll! You nearly blew this whole place up!
+    line: CAHH! What do you think you're doing, you fluffy fool?!
+  - speaker: 0
+    portrait: {fileID: 21300000, guid: 9bb7088518ad2b94cb10cb9f39e38a3b, type: 3}
+    line: Bleh?
+  - speaker: 1
+    portrait: {fileID: 21300000, guid: 90e2d95ea72c53345a58367b6e59de53, type: 3}
+    line: Turn back! Turn back! This lot is riddled with mines!
+  - speaker: 0
+    portrait: {fileID: 21300000, guid: 9bb7088518ad2b94cb10cb9f39e38a3b, type: 3}
+    line: BAHH, mines??? What do I do?! I'm trapped!
+  - speaker: 1
+    portrait: {fileID: 21300000, guid: 90e2d95ea72c53345a58367b6e59de53, type: 3}
+    line: Cahaha! Lucky for you, these things are old! Harken all the way back to
+      the First Great Mole Wars, if I'm caw-rrect. It should be fine to walk over
+      them.
+  - speaker: 1
+    portrait: {fileID: 21300000, guid: 90e2d95ea72c53345a58367b6e59de53, type: 3}
+    line: Just don't do anything stupid. Like eat one of them. Cahahahaha!
+  - speaker: 0
+    portrait: {fileID: 21300000, guid: 9bb7088518ad2b94cb10cb9f39e38a3b, type: 3}
+    line: ...
+  - speaker: 1
+    portrait: {fileID: 21300000, guid: 90e2d95ea72c53345a58367b6e59de53, type: 3}
+    line: ...
+  - speaker: 1
+    portrait: {fileID: 21300000, guid: 90e2d95ea72c53345a58367b6e59de53, type: 3}
+    line: So what are you waiting for? Get out of here!
+  - speaker: 0
+    portrait: {fileID: 21300000, guid: 9bb7088518ad2b94cb10cb9f39e38a3b, type: 3}
+    line: But I'm hungry...
+  - speaker: 1
+    portrait: {fileID: 21300000, guid: 90e2d95ea72c53345a58367b6e59de53, type: 3}
+    line: ...
+  - speaker: 0
+    portrait: {fileID: 21300000, guid: 9bb7088518ad2b94cb10cb9f39e38a3b, type: 3}
+    line: ...
+  - speaker: 1
+    portrait: {fileID: 21300000, guid: 90e2d95ea72c53345a58367b6e59de53, type: 3}
+    line: ......
+  - speaker: 0
+    portrait: {fileID: 21300000, guid: 9bb7088518ad2b94cb10cb9f39e38a3b, type: 3}
+    line: ......
+  - speaker: 1
+    portrait: {fileID: 21300000, guid: 90e2d95ea72c53345a58367b6e59de53, type: 3}
+    line: CAH! Fine, you stupid sack of wool! I'll keep watch and make sure you don't
+      get blown to mutton chops.
