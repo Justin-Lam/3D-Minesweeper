@@ -140,6 +140,7 @@ MonoBehaviour:
   panSensitivity: 0.4
   panDrag: 10
   rotateSensitivity: 1.5
+  rotateDrag: 10
   initialZoom: 20
   zoomSensitivity: 22.5
   zoomSpeed: 30
