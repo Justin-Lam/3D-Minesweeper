@@ -94,6 +94,7 @@ GameObject:
   - component: {fileID: 5807737207605840869}
   - component: {fileID: 960111926162614516}
   - component: {fileID: 791967842504860643}
+  - component: {fileID: 8068500755763115671}
   m_Layer: 0
   m_Name: Flag
   m_TagString: Flag
@@ -167,6 +168,21 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &8068500755763115671
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4558276649568759549}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4866be5ffcbbf54faed197cd0712ba1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  changeColliderOnExplode: 0
+  newCenter: {x: 0, y: 0, z: 0}
+  newSize: {x: 0, y: 0, z: 0}
 --- !u!1 &6859821470183425040
 GameObject:
   m_ObjectHideFlags: 0

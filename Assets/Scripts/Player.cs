@@ -219,7 +219,7 @@ public class Player : MonoBehaviour
 		return Physics.Raycast(transform.position, Vector3.down, out hit, groundedDistFromGround);
 	}
 
-	public void OnLoseGame()
+	void OnLoseGame()
 	{
 		rb.drag = 0;                                // so player falls as fast as everything else
 		rb.constraints = RigidbodyConstraints.None; // so player rotates like everything else

@@ -8,10 +8,14 @@ public class GameplayCamera : MonoBehaviour
 
 	[Header("Panning")]
 	[SerializeField] float panSensitivity;
+	[SerializeField] float panDrag;
 	float relativePanSensitivity;           // relative to zoom (pan less when zoomed in, pan more when zoomed out)
+	Vector3 panVelocity;
 
 	[Header("Rotating")]
 	[SerializeField] float rotateSensitivity;
+	[SerializeField] float rotateDrag;
+	Vector3 rotateVelocity;
 	float previousRotationSegment = 0;
 	public static event Action<int> OnCameraRotatedIntoNewSegment;
 
@@ -76,15 +80,33 @@ public class GameplayCamera : MonoBehaviour
 		if (Input.GetMouseButton(0))    // left click
 		{
 			relativePanSensitivity = panSensitivity * (currentZoom / initialZoom);
-			panner.Translate(-Input.GetAxis("Mouse X") * relativePanSensitivity, 0, -Input.GetAxis("Mouse Y") * relativePanSensitivity, Space.Self);
+			float dx = -Input.GetAxis("Mouse X") * relativePanSensitivity;
+			float dz = -Input.GetAxis("Mouse Y") * relativePanSensitivity;
+			panVelocity = new Vector3(dx, 0, dz);
 		}
+		else
+		{
+			// got the idea of lerping a velocity vector to 0 from ChatGPT:
+			// "what's the best way to add acceleration and deceleration to my camera panning? rigidbody? or code it myself?"
+			panVelocity = Vector3.Lerp(panVelocity, Vector3.zero, panDrag * Time.deltaTime);
+		}
+		panner.Translate(panVelocity, Space.Self);
+		//panner.position += panVelocity;
 
 		// Rotating the camera
 		if (Input.GetMouseButton(1))    // right click
 		{
-			panner.Rotate(0, Input.GetAxis("Mouse X") * rotateSensitivity, 0, Space.Self);
-			rotater.Rotate(-Input.GetAxis("Mouse Y") * rotateSensitivity, 0, 0, Space.Self);
+			float dx = -Input.GetAxis("Mouse Y") * rotateSensitivity;
+			float dy = Input.GetAxis("Mouse X") * rotateSensitivity;
+			rotateVelocity = new Vector3(dx, dy, 0);
 		}
+		else
+		{
+			rotateVelocity = Vector3.Lerp(rotateVelocity, Vector3.zero, rotateDrag * Time.deltaTime);
+		}
+		panner.Rotate(0, rotateVelocity.y, 0, Space.Self);
+		rotater.Rotate(rotateVelocity.x, 0, 0, Space.Self);
+
 		// Rotating the blocks
 		int currentRotationSegment = GetRotationSegment();
 		if (previousRotationSegment != currentRotationSegment)

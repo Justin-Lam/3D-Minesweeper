@@ -6,7 +6,6 @@ TagManager:
   tags:
   - Block
   - Flag
-  - DecorBlock
   layers:
   - Default
   - TransparentFX

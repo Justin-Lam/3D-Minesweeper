@@ -1,15 +1,17 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
 	[Header("Level Generation")]
-	public GameObject block;
-	public int width;
-	public int height;
-	public int numMines;
-	public int borderSize;
+	[SerializeField] protected GameObject block;
+	[SerializeField] protected GameObject stone;
+	[SerializeField] protected GameObject fence;
+	[SerializeField] protected int width;
+	[SerializeField] protected int height;
+	[SerializeField] protected int numMines;
 	protected Block[,] blocks; 
 
 	[Header("HUD")]
@@ -42,14 +44,24 @@ public class GameManager : MonoBehaviour
 	{
 		Singleton_SetInstance();
 	}
+	void OnEnable()
+	{
+		Block.OnBlockEaten += OnBlockEaten;
+		Block.OnExplode += LoseGame;
+	}
+	void OnDisable()
+	{
+		Block.OnBlockEaten -= OnBlockEaten;
+		Block.OnExplode -= LoseGame;
+	}
 
 	protected virtual void Start()
 	{
 		ValidateParameters();
 		InitializeGameplayVariables();
 		CreateBlocks();
+		CreateBarrier();
 		PlaceMines();
-		CreateDecor();
 	}
 
 	void ValidateParameters()
@@ -98,11 +110,61 @@ public class GameManager : MonoBehaviour
 			}
 		}
 	}
-
-	void CreateDecor()
+	/// <summary>
+	/// Places stones and fences around the grid of blocks
+	/// Places them one by one, going stone-fence-stone-fence etc., going clockwise.
+	/// </summary>
+	void CreateBarrier()
     {
+		Vector3 block_TL = blocks[blocks.GetLength(0) - 1, 0].gameObject.transform.position;
+		Vector3 block_TR = blocks[blocks.GetLength(0) - 1, blocks.GetLength(1) - 1].gameObject.transform.position;
+		Vector3 block_BR = blocks[0, blocks.GetLength(1) - 1].gameObject.transform.position;
+		Vector3 block_BL = blocks[0, 0].gameObject.transform.position;
 
-    }
+		GameObject lastFencePlaced = null;
+
+		for (int x = 0; x < width + 1; x++)
+		{
+			Vector3 stonePosition = new Vector3(block_TL.x + x, 0, block_TL.z + 1);
+			Instantiate(stone, stonePosition, Quaternion.identity, transform);
+			Vector3 fencePosition = stonePosition + new Vector3(0.5f, 1, 0);
+			lastFencePlaced = Instantiate(fence, fencePosition, Quaternion.identity, transform);
+		}
+		lastFencePlaced.transform.Rotate(0, 90, 0);
+		lastFencePlaced.transform.position += new Vector3(-0.5f, 0, -0.5f);
+
+		for (int y = 0; y < height + 1; y++)
+		{
+			Vector3 stonePosition = new Vector3(block_TR.x + 1, 0, block_TR.z - y);
+			Instantiate(stone, stonePosition, Quaternion.identity, transform);
+			Vector3 fencePosition = stonePosition + new Vector3(0, 1, -0.5f);
+			lastFencePlaced = Instantiate(fence, fencePosition, Quaternion.identity, transform);
+			lastFencePlaced.transform.Rotate(0, 90, 0);
+		}
+		lastFencePlaced.transform.Rotate(0, 90, 0);
+		lastFencePlaced.transform.position += new Vector3(-0.5f, 0, 0.5f);
+
+		for (int x = 0; x < width + 1; x++)
+		{
+			Vector3 stonePosition = new Vector3(block_BR.x - x, 0, block_BR.z - 1);
+			Instantiate(stone, stonePosition, Quaternion.identity, transform);
+			Vector3 fencePosition = stonePosition + new Vector3(-0.5f, 1, 0);
+			lastFencePlaced = Instantiate(fence, fencePosition, Quaternion.identity, transform);
+		}
+		lastFencePlaced.transform.Rotate(0, 90, 0);
+		lastFencePlaced.transform.position += new Vector3(0.5f, 0, 0.5f);
+
+		for (int y = 0; y < height + 1; y++)
+		{
+			Vector3 stonePosition = new Vector3(block_BL.x - 1, 0, block_BL.z + y);
+			Instantiate(stone, stonePosition, Quaternion.identity, transform);
+			Vector3 fencePosition = stonePosition + new Vector3(0, 1, 0.5f);
+			lastFencePlaced = Instantiate(fence, fencePosition, Quaternion.identity, transform);
+			lastFencePlaced.transform.Rotate(0, 90, 0);
+		}
+		lastFencePlaced.transform.Rotate(0, 90, 0);
+		lastFencePlaced.transform.position += new Vector3(0.5f, 0, -0.5f);
+	}
 
 	protected virtual void PlaceMines()
 	{
@@ -174,7 +236,7 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
-	public virtual void OnBlockEaten(int x, int y)
+	protected virtual void OnBlockEaten(int x, int y)
 	{
 		// Handle special case for when it's the player's first action
 		if (playerOnFirstAction)
@@ -250,15 +312,6 @@ public class GameManager : MonoBehaviour
 	}
 	public void LoseGame()
 	{
-		// Set every block and flag to no longer be kinematic
-		foreach (GameObject go in FindObjectsOfType<GameObject>())
-		{
-			if (go.CompareTag("Block") || go.CompareTag("Flag") || go.CompareTag("DecorBlock"))
-			{
-				go.GetComponent<Rigidbody>().isKinematic = false;
-			}
-		}
-
 		OnLoseGame?.Invoke();
 	}
 }

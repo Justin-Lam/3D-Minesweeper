@@ -1,4 +1,5 @@
 using TMPro;
+using System;
 using UnityEngine;
 
 public class Block : MonoBehaviour
@@ -15,6 +16,8 @@ public class Block : MonoBehaviour
 	[SerializeField] float radius = 5f;
 	[SerializeField] float upwardsModifier = 3f;
 	[SerializeField] float power = 500f;
+	public static event Action<int, int> OnBlockEaten;
+	public static event Action OnExplode;
 
 	[Header("Text")]
 	[SerializeField] Color[] numberColors = new Color[8];
@@ -69,7 +72,7 @@ public class Block : MonoBehaviour
 		if (!eaten)
 		{
 			eaten = true;
-			GameManager.Instance.OnBlockEaten(x, y);
+			OnBlockEaten?.Invoke(x, y);
 		}
 	}
 	public void HandleOnEat()
@@ -80,7 +83,7 @@ public class Block : MonoBehaviour
 		}
 		else
 		{
-			GameManager.Instance.LoseGame();
+			OnExplode?.Invoke();
 
 			mr.material = mine;
 

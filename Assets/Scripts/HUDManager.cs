@@ -43,13 +43,13 @@ public class HUDManager : MonoBehaviour
 		grassLeftText.text = "Grass left: " + grassLeft;
 	}
 
-	public void OnWinGame()
+	void OnWinGame()
 	{
 		// Show win text
 		winLossText.gameObject.SetActive(true);
 		winLossText.text = "You Win!";
 	}
-	public void OnLoseGame()
+	void OnLoseGame()
 	{
 		// Show lose text
 		winLossText.gameObject.SetActive(true);
