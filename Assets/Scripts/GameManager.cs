@@ -253,7 +253,7 @@ public class GameManager : MonoBehaviour
 		// Set every block and flag to no longer be kinematic
 		foreach (GameObject go in FindObjectsOfType<GameObject>())
 		{
-			if (go.CompareTag("Block") || go.CompareTag("Flag") || go.CompareTag("DecorBlock"))
+			if (go.CompareTag("Flag") || go.CompareTag("DecorBlock"))
 			{
 				go.GetComponent<Rigidbody>().isKinematic = false;
 			}

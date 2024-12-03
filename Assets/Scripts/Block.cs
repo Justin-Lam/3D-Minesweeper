@@ -28,10 +28,12 @@ public class Block : MonoBehaviour
 	void OnEnable()
 	{
 		GameplayCamera.OnCameraRotatedIntoNewSegment += RotateIntoSegment;
+		GameManager.OnLoseGame += OnLoseGame;
 	}
 	void OnDisable()
 	{
 		GameplayCamera.OnCameraRotatedIntoNewSegment -= RotateIntoSegment;
+		GameManager.OnLoseGame -= OnLoseGame;
 	}
 
 	void Start()
@@ -101,5 +103,10 @@ public class Block : MonoBehaviour
 	{
 		// Rotate the block to face the segment the camera is in so the player can read the block's nearby mines
 		transform.rotation = Quaternion.Euler(0, cameraRotationSegment * 90, 0);
+	}
+
+	void OnLoseGame()
+	{
+		GetComponent<Rigidbody>().isKinematic = false;
 	}
 }
