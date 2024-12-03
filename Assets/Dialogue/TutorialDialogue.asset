@@ -22,3 +22,6 @@ MonoBehaviour:
   - speaker: 2
     portrait: {fileID: 0}
     line: E
+  - speaker: 1
+    portrait: {fileID: 21300000, guid: 90e2d95ea72c53345a58367b6e59de53, type: 3}
+    line: Cawow, that was a close caw-ll! You nearly blew this whole place up!
