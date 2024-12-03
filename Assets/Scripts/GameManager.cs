@@ -1,18 +1,23 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-	[Header("Level Generation")]
-	[SerializeField] protected GameObject block;
-	[SerializeField] protected GameObject stone;
-	[SerializeField] protected GameObject fence;
+	[Header("Level")]
 	[SerializeField] protected int width;
 	[SerializeField] protected int height;
 	[SerializeField] protected int numMines;
-	protected Block[,] blocks; 
+	protected Block[,] blocks;
+
+	[Header("Aesthetics")]
+	[SerializeField] float perlinFrequency;
+	[SerializeField] float perlinAmplitude;
+
+	[Header("Prefabs")]
+	[SerializeField] protected GameObject block;
+	[SerializeField] protected GameObject stone;
+	[SerializeField] protected GameObject fence;
 
 	[Header("HUD")]
 	protected int grassLeft;
@@ -97,12 +102,16 @@ public class GameManager : MonoBehaviour
 		float offsetX = (width % 2 == 0) ? 0.5f : 0f;
 		float offsetY = (height % 2 == 0) ? 0.5f : 0f;
 
+		// Randomize perlin noise
+		float randOffset = UnityEngine.Random.Range(0, 1000000);
+
 		// Create blocks
 		for (int y = 0; y < height; y++)    // note: y here corresponds to the z axis of the game world
 		{
 			for (int x = 0; x < width; x++)
 			{
 				Vector3 position = new Vector3(x - width / 2 + offsetX, 0, y - height / 2 + offsetY);
+				position.y += (Mathf.PerlinNoise((x + randOffset) * perlinFrequency, (y + randOffset) * perlinFrequency) - 0.5f) * perlinAmplitude;	// subtract 0.5 to bring range from [0, 1] to [-0.5, 0.5]
 				GameObject blockGO = Instantiate(block, position, Quaternion.identity, transform);
 				Block blockScript = blockGO.GetComponent<Block>();
 				blockScript.SetPosition(x, y);
