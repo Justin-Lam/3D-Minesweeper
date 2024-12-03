@@ -117,29 +117,49 @@ public class GameManager : MonoBehaviour
 		Vector3 br = blocks[0, blocks.GetLength(1) - 1].gameObject.transform.position;
 		Vector3 bl = blocks[0, 0].gameObject.transform.position;
 
+		GameObject lastFencePlaced = null;
+
 		for (int x = 0; x < width + 1; x++)
 		{
 			Vector3 position = new Vector3(tl.x + x, 0, tl.z + 1);
 			Instantiate(stone, position, Quaternion.identity, transform);
+			Vector3 fencePosition = position + new Vector3(0.5f, 1, 0);
+			lastFencePlaced = Instantiate(fence, fencePosition, Quaternion.identity, transform);
 		}
+		lastFencePlaced.transform.Rotate(0, 90, 0);
+		lastFencePlaced.transform.position += new Vector3(-0.5f, 0, -0.5f);
 
 		for (int y = 0; y < height + 1; y++)
 		{
 			Vector3 position = new Vector3(tr.x + 1, 0, tr.z - y);
 			Instantiate(stone, position, Quaternion.identity, transform);
+			Vector3 fencePosition = position + new Vector3(0, 1, -0.5f);
+			lastFencePlaced = Instantiate(fence, fencePosition, Quaternion.identity, transform);
+			lastFencePlaced.transform.Rotate(0, 90, 0);
 		}
+		lastFencePlaced.transform.Rotate(0, 90, 0);
+		lastFencePlaced.transform.position += new Vector3(-0.5f, 0, 0.5f);
 
 		for (int x = 0; x < width + 1; x++)
 		{
 			Vector3 position = new Vector3(br.x - x, 0, br.z - 1);
 			Instantiate(stone, position, Quaternion.identity, transform);
+			Vector3 fencePosition = position + new Vector3(-0.5f, 1, 0);
+			lastFencePlaced = Instantiate(fence, fencePosition, Quaternion.identity, transform);
 		}
+		lastFencePlaced.transform.Rotate(0, 90, 0);
+		lastFencePlaced.transform.position += new Vector3(0.5f, 0, 0.5f);
 
 		for (int y = 0; y < height + 1; y++)
 		{
 			Vector3 position = new Vector3(bl.x - 1, 0, bl.z + y);
 			Instantiate(stone, position, Quaternion.identity, transform);
+			Vector3 fencePosition = position + new Vector3(0, 1, 0.5f);
+			lastFencePlaced = Instantiate(fence, fencePosition, Quaternion.identity, transform);
+			lastFencePlaced.transform.Rotate(0, 90, 0);
 		}
+		lastFencePlaced.transform.Rotate(0, 90, 0);
+		lastFencePlaced.transform.position += new Vector3(0.5f, 0, -0.5f);
 	}
 
 	protected virtual void PlaceMines()
