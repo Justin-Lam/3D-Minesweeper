@@ -8,7 +8,9 @@ public class GameplayCamera : MonoBehaviour
 
 	[Header("Panning")]
 	[SerializeField] float panSensitivity;
+	[SerializeField] float panDrag;
 	float relativePanSensitivity;           // relative to zoom (pan less when zoomed in, pan more when zoomed out)
+	Vector3 panVelocity;
 
 	[Header("Rotating")]
 	[SerializeField] float rotateSensitivity;
@@ -77,6 +79,14 @@ public class GameplayCamera : MonoBehaviour
 		{
 			relativePanSensitivity = panSensitivity * (currentZoom / initialZoom);
 			panner.Translate(-Input.GetAxis("Mouse X") * relativePanSensitivity, 0, -Input.GetAxis("Mouse Y") * relativePanSensitivity, Space.Self);
+			panVelocity = new Vector3(-Input.GetAxis("Mouse X") * relativePanSensitivity, 0, -Input.GetAxis("Mouse Y") * relativePanSensitivity);
+		}
+		else
+		{
+			// Got the idea of lerping a velocity vector to 0 from ChatGPT:
+			// "what's the best way to add acceleration and deceleration to my camera panning? rigidbody? or code it myself?"
+			panner.position += panVelocity;
+			panVelocity = Vector3.Lerp(panVelocity, Vector3.zero, panDrag * Time.deltaTime);
 		}
 
 		// Rotating the camera
