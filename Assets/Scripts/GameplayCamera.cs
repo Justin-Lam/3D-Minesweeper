@@ -86,7 +86,7 @@ public class GameplayCamera : MonoBehaviour
 		}
 		else
 		{
-			// Got the idea of lerping a velocity vector to 0 from ChatGPT:
+			// got the idea of lerping a velocity vector to 0 from ChatGPT:
 			// "what's the best way to add acceleration and deceleration to my camera panning? rigidbody? or code it myself?"
 			panVelocity = Vector3.Lerp(panVelocity, Vector3.zero, panDrag * Time.deltaTime);
 		}
