@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
 	public int width;
 	public int height;
 	public int numMines;
+	public int borderSize;
 	protected Block[,] blocks; 
 
 	[Header("HUD")]
@@ -48,6 +49,7 @@ public class GameManager : MonoBehaviour
 		InitializeGameplayVariables();
 		CreateBlocks();
 		PlaceMines();
+		CreateDecor();
 	}
 
 	void ValidateParameters()
@@ -96,6 +98,11 @@ public class GameManager : MonoBehaviour
 			}
 		}
 	}
+
+	void CreateDecor()
+    {
+
+    }
 
 	protected virtual void PlaceMines()
 	{

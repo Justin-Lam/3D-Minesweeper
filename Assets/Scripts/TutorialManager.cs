@@ -25,16 +25,6 @@ public class TutorialManager : GameManager
 		minePos[0] = new int[] { 0, 1 };
 		minePos[1] = new int[] { 0, 3 };
 		minePos[2] = new int[] { 2, 0 };
-
-		/*
-		minePos[3] = new int[] { 1, 3 };
-		minePos[4] = new int[] { 3, 4 };
-		minePos[5] = new int[] { 7, 3 };
-		minePos[6] = new int[] { 8, 5 };
-		minePos[7] = new int[] { 8, 6 };
-		minePos[8] = new int[] { 8, 9 };
-		minePos[9] = new int[] { 9, 7 };
-		*/
 	}
 
 	protected override void PlaceMines()
