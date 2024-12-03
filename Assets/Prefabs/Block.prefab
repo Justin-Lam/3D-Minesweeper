@@ -250,6 +250,7 @@ GameObject:
   - component: {fileID: 3670620381197145949}
   - component: {fileID: 5363664939552066743}
   - component: {fileID: 731084398164103260}
+  - component: {fileID: 8539460571428951350}
   m_Layer: 0
   m_Name: Block
   m_TagString: Block
@@ -397,3 +398,18 @@ MonoBehaviour:
   - {r: 0.5019608, g: 0.5019608, b: 0.5019608, a: 1}
   dirt: {fileID: 2100000, guid: 0aae302ff9fdd5a40b2893952549f2eb, type: 2}
   mine: {fileID: 2100000, guid: bba8d49971d2f784592ba4da0126da53, type: 2}
+--- !u!114 &8539460571428951350
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8184562119401177165}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d4866be5ffcbbf54faed197cd0712ba1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  changeColliderOnExplode: 0
+  newCenter: {x: 0, y: 0, z: 0}
+  newSize: {x: 0, y: 0, z: 0}

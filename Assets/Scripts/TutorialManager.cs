@@ -40,7 +40,7 @@ public class TutorialManager : GameManager
 		blocks[xy[1], xy[0]].SetType(Block.Type.MINE);
 	}
 
-	public override void OnBlockEaten(int x, int y)
+	protected override void OnBlockEaten(int x, int y)
 	{
 		if (blocks[y, x].GetBlockType() == Block.Type.GRASS)
 		{

@@ -1,4 +1,5 @@
 using TMPro;
+using System;
 using UnityEngine;
 
 public class Block : MonoBehaviour
@@ -15,6 +16,8 @@ public class Block : MonoBehaviour
 	[SerializeField] float radius = 5f;
 	[SerializeField] float upwardsModifier = 3f;
 	[SerializeField] float power = 500f;
+	public static event Action<int, int> OnBlockEaten;
+	public static event Action OnExplode;
 
 	[Header("Text")]
 	[SerializeField] Color[] numberColors = new Color[8];
@@ -28,12 +31,10 @@ public class Block : MonoBehaviour
 	void OnEnable()
 	{
 		GameplayCamera.OnCameraRotatedIntoNewSegment += RotateIntoSegment;
-		GameManager.OnLoseGame += OnLoseGame;
 	}
 	void OnDisable()
 	{
 		GameplayCamera.OnCameraRotatedIntoNewSegment -= RotateIntoSegment;
-		GameManager.OnLoseGame -= OnLoseGame;
 	}
 
 	void Start()
@@ -71,7 +72,7 @@ public class Block : MonoBehaviour
 		if (!eaten)
 		{
 			eaten = true;
-			GameManager.Instance.OnBlockEaten(x, y);
+			OnBlockEaten?.Invoke(x, y);
 		}
 	}
 	public void HandleOnEat()
@@ -82,7 +83,7 @@ public class Block : MonoBehaviour
 		}
 		else
 		{
-			GameManager.Instance.LoseGame();
+			OnExplode?.Invoke();
 
 			mr.material = mine;
 
@@ -103,10 +104,5 @@ public class Block : MonoBehaviour
 	{
 		// Rotate the block to face the segment the camera is in so the player can read the block's nearby mines
 		transform.rotation = Quaternion.Euler(0, cameraRotationSegment * 90, 0);
-	}
-
-	void OnLoseGame()
-	{
-		GetComponent<Rigidbody>().isKinematic = false;
 	}
 }

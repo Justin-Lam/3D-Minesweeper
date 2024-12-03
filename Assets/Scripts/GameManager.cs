@@ -42,6 +42,16 @@ public class GameManager : MonoBehaviour
 	{
 		Singleton_SetInstance();
 	}
+	void OnEnable()
+	{
+		Block.OnBlockEaten += OnBlockEaten;
+		Block.OnExplode += LoseGame;
+	}
+	void OnDisable()
+	{
+		Block.OnBlockEaten -= OnBlockEaten;
+		Block.OnExplode -= LoseGame;
+	}
 
 	protected virtual void Start()
 	{
@@ -174,7 +184,7 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
-	public virtual void OnBlockEaten(int x, int y)
+	protected virtual void OnBlockEaten(int x, int y)
 	{
 		// Handle special case for when it's the player's first action
 		if (playerOnFirstAction)
