@@ -1,15 +1,17 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
 	[Header("Level Generation")]
-	public GameObject block;
-	public int width;
-	public int height;
-	public int numMines;
-	public int borderSize;
+	[SerializeField] protected GameObject block;
+	[SerializeField] protected GameObject stone;
+	[SerializeField] protected GameObject fence;
+	[SerializeField] protected int width;
+	[SerializeField] protected int height;
+	[SerializeField] protected int numMines;
 	protected Block[,] blocks; 
 
 	[Header("HUD")]
@@ -58,8 +60,8 @@ public class GameManager : MonoBehaviour
 		ValidateParameters();
 		InitializeGameplayVariables();
 		CreateBlocks();
+		CreateBarrier();
 		PlaceMines();
-		CreateDecor();
 	}
 
 	void ValidateParameters()
@@ -108,11 +110,37 @@ public class GameManager : MonoBehaviour
 			}
 		}
 	}
-
-	void CreateDecor()
+	void CreateBarrier()
     {
+		Vector3 tl = blocks[blocks.GetLength(0) - 1, 0].gameObject.transform.position;
+		Vector3 tr = blocks[blocks.GetLength(0) - 1, blocks.GetLength(1) - 1].gameObject.transform.position;
+		Vector3 br = blocks[0, blocks.GetLength(1) - 1].gameObject.transform.position;
+		Vector3 bl = blocks[0, 0].gameObject.transform.position;
 
-    }
+		for (int x = 0; x < width + 1; x++)
+		{
+			Vector3 position = new Vector3(tl.x + x, 0, tl.z + 1);
+			Instantiate(stone, position, Quaternion.identity, transform);
+		}
+
+		for (int y = 0; y < height + 1; y++)
+		{
+			Vector3 position = new Vector3(tr.x + 1, 0, tr.z - y);
+			Instantiate(stone, position, Quaternion.identity, transform);
+		}
+
+		for (int x = 0; x < width + 1; x++)
+		{
+			Vector3 position = new Vector3(br.x - x, 0, br.z - 1);
+			Instantiate(stone, position, Quaternion.identity, transform);
+		}
+
+		for (int y = 0; y < height + 1; y++)
+		{
+			Vector3 position = new Vector3(bl.x - 1, 0, bl.z + y);
+			Instantiate(stone, position, Quaternion.identity, transform);
+		}
+	}
 
 	protected virtual void PlaceMines()
 	{

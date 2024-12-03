@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class TutorialManager : GameManager
 {
 	public DialogueManager dialogueManager;
