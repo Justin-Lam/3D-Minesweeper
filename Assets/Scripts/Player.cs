@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 
 public class Player : MonoBehaviour
 {
@@ -21,8 +20,10 @@ public class Player : MonoBehaviour
 	float jumpBufferCounter = 0;
 	bool wasGrounded = true;        // whether IsGrounded() was true last frame or not
 	bool usedFastFall = false;
+	SphereCollider sphereCollider;
 	float groundedDistFromGround;   // the max distance the player can be from the ground in order to be grounded
-	float groundedDistFromGroundPadding = 0.1f; // (10%)
+	float groundedDistFromGroundPadding = 0.1f; // 10%
+	Vector3 raycastOrigin { get { return transform.TransformPoint(sphereCollider.center); } }
 
 	[Header("Flagging")]
 	[SerializeField] GameObject flag;
@@ -54,17 +55,10 @@ public class Player : MonoBehaviour
 
 	void Start()
 	{
-		// Get rb
 		rb = GetComponent<Rigidbody>();
-
-		// Get gameplay camera panner
 		gameplayCameraPanner = GameObject.Find("Panner").transform;
-
-		// Calculate groundedDistFromGround
-		float colliderRadius = GetComponent<CapsuleCollider>().radius;
-		groundedDistFromGround = colliderRadius * (1 + groundedDistFromGroundPadding);
-
-		// Get Animator
+		sphereCollider = GetComponent<SphereCollider>();
+		groundedDistFromGround = sphereCollider.radius/2 * (1 + groundedDistFromGroundPadding);
 		anim = GetComponent<Animator>();
 	}
 
@@ -179,7 +173,7 @@ public class Player : MonoBehaviour
 	bool IsGrounded()
 	{
 		// got this from https://discussions.unity.com/t/using-raycast-to-determine-if-player-is-grounded/85134/2
-		return Physics.Raycast(transform.position, Vector3.down, groundedDistFromGround);
+		return Physics.Raycast(raycastOrigin, Vector3.down, groundedDistFromGround);
 	}
 	bool JustLanded()
 	{
