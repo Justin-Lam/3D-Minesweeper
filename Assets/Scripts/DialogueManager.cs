@@ -10,6 +10,7 @@ public class DialogueManager : MonoBehaviour
 {
     public Dialogue dialogueObj;
     public TutorialManager tutorialManager;
+    public GameObject playerObject;
 
     [Header("Dialogue Lines")]
     [SerializeField] GameObject dialogueDisplay;
@@ -26,11 +27,14 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] Image graphicHolder;
 
     int currentLine;
+    Player playerScript;
 
 
     void Start()
     {
+        playerScript = playerObject.GetComponent<Player>();
         currentLine = -1;
+
         dialogueDisplay.SetActive(false);
         narrationDisplay.SetActive(false);
         graphicalDisplay.SetActive(false);
@@ -72,9 +76,14 @@ public class DialogueManager : MonoBehaviour
     {
         HideNarration();
         HideGraphic();
+
         if (!dialogueDisplay.activeSelf)
         {
             dialogueDisplay.SetActive(true);
+        }
+        if (tutorialManager != null && tutorialManager.blockEaten > 0) // if player actions are enabled
+        {
+            playerScript.enabled = false; // disable player actions when dialogue is playing
         }
 
         nameText.text = name;
@@ -84,6 +93,11 @@ public class DialogueManager : MonoBehaviour
 
     public void HideDialogueLines()
     {
+        if (tutorialManager != null && tutorialManager.blockEaten > 0)
+        {
+            playerScript.enabled = true; // enable player actions when dialogue is done
+        }
+
         nameText.text = null;
         dialogueText.text = null;
         portraitHolder.sprite = null;
@@ -93,24 +107,45 @@ public class DialogueManager : MonoBehaviour
     public void ShowNarration(string dialogue)
     {
         HideDialogueLines();
+
+        if (tutorialManager != null && tutorialManager.blockEaten > 0)
+        {
+            playerScript.enabled = false;
+        }
+
         narrationDisplay.SetActive(true);
         narrationText.text = dialogue;
     }
 
     public void HideNarration()
     {
+        if (tutorialManager != null && tutorialManager.blockEaten > 0)
+        {
+            playerScript.enabled = true;
+        }
+
         narrationText.text = null; ;
         narrationDisplay.SetActive(false);
     }
 
     public void ShowGraphic(Sprite graphic)
     {
+        if (tutorialManager != null && tutorialManager.blockEaten > 0)
+        {
+            playerScript.enabled = false;
+        }
+
         graphicalDisplay.SetActive(true);
         graphicHolder.sprite = graphic;
     }
 
     public void HideGraphic()
     {
+        if (tutorialManager != null && tutorialManager.blockEaten > 0)
+        {
+            playerScript.enabled = true;
+        }
+
         graphicHolder.sprite = null;
         graphicalDisplay.SetActive(false);
     }
@@ -151,6 +186,7 @@ public class DialogueManager : MonoBehaviour
 
     void NextLine()
     {
+        // call function based on type of dialogue (standard line vs narration)
         if (GetCurrentLine().speaker == Speaker.NARRATOR)
         {
             ShowNarration(GetCurrentLine().line);

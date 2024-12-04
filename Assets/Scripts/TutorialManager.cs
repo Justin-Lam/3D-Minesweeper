@@ -18,7 +18,7 @@ public class TutorialManager : GameManager
 	Rigidbody playerRb;
 
 	// dialogue event variables
-	int blockEaten = 0;
+	public int blockEaten = 0;
 
 
 	protected override void Start()

@@ -450,14 +450,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8feddda195e9806488f7240ab87b040e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  block: {fileID: 8184562119401177165, guid: 2f92a8be9a7316b439aa79e19800c4a3, type: 3}
-  stone: {fileID: 6784162463744716727, guid: cb4e52f7319a50c4a9c2c15259f5cf14, type: 3}
-  fence: {fileID: 5274826664918178460, guid: 2e0cddae019cc194bb574ff410e48a8b, type: 3}
   width: 5
   height: 5
   numMines: 3
+  frequency: 0
+  amplitude: 0
+  duration: 0
+  tweenStartingHeight: 0
+  tweenDuration: 0
+  block: {fileID: 8184562119401177165, guid: 2f92a8be9a7316b439aa79e19800c4a3, type: 3}
+  stone: {fileID: 6784162463744716727, guid: cb4e52f7319a50c4a9c2c15259f5cf14, type: 3}
+  fence: {fileID: 5274826664918178460, guid: 2e0cddae019cc194bb574ff410e48a8b, type: 3}
   dialogueManager: {fileID: 252855095}
   playerObject: {fileID: 2033867002}
+  demoBlockX: 0
+  demoBlockY: 0
 --- !u!4 &1966985552
 Transform:
   m_ObjectHideFlags: 0
@@ -547,6 +554,11 @@ PrefabInstance:
       propertyPath: gameManager
       value: 
       objectReference: {fileID: 1966985551}
+    - target: {fileID: 5234158452200836711, guid: 8842dae59df383647b5707428e127e14,
+        type: 3}
+      propertyPath: playerObject
+      value: 
+      objectReference: {fileID: 2033867002}
     - target: {fileID: 5234158452200836711, guid: 8842dae59df383647b5707428e127e14,
         type: 3}
       propertyPath: graphicsDisplay
