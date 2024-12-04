@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 5937949045485393054}
   - component: {fileID: 6888589402379646097}
   - component: {fileID: 6438181811137378383}
+  - component: {fileID: 883033410261632333}
   m_Layer: 0
   m_Name: Stone
   m_TagString: Untagged
@@ -149,3 +150,15 @@ MonoBehaviour:
   changeColliderOnExplode: 0
   newCenter: {x: 0, y: 0, z: 0}
   newSize: {x: 0, y: 0, z: 0}
+--- !u!114 &883033410261632333
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6784162463744716727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4a08b0edf8abb04eb5da1f5c6fa23ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

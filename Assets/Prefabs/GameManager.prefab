@@ -49,6 +49,7 @@ MonoBehaviour:
   numMines: 10
   perlinFrequency: 0.25
   perlinAmplitude: 0.75
+  generationDelay: 0.05
   block: {fileID: 8184562119401177165, guid: 2f92a8be9a7316b439aa79e19800c4a3, type: 3}
   stone: {fileID: 6784162463744716727, guid: cb4e52f7319a50c4a9c2c15259f5cf14, type: 3}
   fence: {fileID: 5274826664918178460, guid: 2e0cddae019cc194bb574ff410e48a8b, type: 3}

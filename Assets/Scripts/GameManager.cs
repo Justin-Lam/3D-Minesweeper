@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ public class GameManager : MonoBehaviour
 	[Header("Aesthetics")]
 	[SerializeField] float perlinFrequency;
 	[SerializeField] float perlinAmplitude;
+	[SerializeField] float generationDelay;
 	float perlinOffset;
 
 	[Header("Prefabs")]
@@ -66,7 +68,7 @@ public class GameManager : MonoBehaviour
 		ValidateParameters();
 		InitializeGameplayVariables();
 		CreateBlocks();
-		CreateBarrier();
+		StartCoroutine(CreateBarrier());
 		PlaceMines();
 	}
 
@@ -123,7 +125,7 @@ public class GameManager : MonoBehaviour
 	/// Places stones and fences around the grid of blocks
 	/// Places them one by one, going stone-fence-stone-fence etc., going clockwise.
 	/// </summary>
-	void CreateBarrier()
+	IEnumerator CreateBarrier()
     {
 		Vector3 block_TL = blocks[blocks.GetLength(0) - 1, 0].gameObject.transform.position;
 		Vector3 block_TR = blocks[blocks.GetLength(0) - 1, blocks.GetLength(1) - 1].gameObject.transform.position;
@@ -139,11 +141,15 @@ public class GameManager : MonoBehaviour
 			float stoneY = LevelGenPerlin(stoneX, stoneZ);
 			Vector3 stonePosition = new Vector3(stoneX, stoneY, stoneZ);
 			Instantiate(stone, new Vector3(stoneX, stoneY, stoneZ), Quaternion.identity, transform);
+			yield return new WaitForSeconds(generationDelay);
+
 			Vector3 fencePosition = stonePosition + new Vector3(0.5f, 1, 0);
 			lastFencePlaced = Instantiate(fence, fencePosition, Quaternion.identity, transform);
+			yield return new WaitForSeconds(generationDelay);
 		}
 		lastFencePlaced.transform.Rotate(0, 90, 0);
 		lastFencePlaced.transform.position += new Vector3(-0.5f, 0, -0.5f);
+		yield return new WaitForSeconds(generationDelay);
 
 		for (int y = 0; y < height + 1; y++)
 		{
@@ -152,12 +158,16 @@ public class GameManager : MonoBehaviour
 			float stoneY = LevelGenPerlin(stoneX, stoneZ);
 			Vector3 stonePosition = new Vector3(stoneX, stoneY, stoneZ);
 			Instantiate(stone, stonePosition, Quaternion.identity, transform);
+			yield return new WaitForSeconds(generationDelay);
+
 			Vector3 fencePosition = stonePosition + new Vector3(0, 1, -0.5f);
 			lastFencePlaced = Instantiate(fence, fencePosition, Quaternion.identity, transform);
 			lastFencePlaced.transform.Rotate(0, 90, 0);
+			yield return new WaitForSeconds(generationDelay);
 		}
 		lastFencePlaced.transform.Rotate(0, 90, 0);
 		lastFencePlaced.transform.position += new Vector3(-0.5f, 0, 0.5f);
+		yield return new WaitForSeconds(generationDelay);
 
 		for (int x = 0; x < width + 1; x++)
 		{
@@ -166,11 +176,15 @@ public class GameManager : MonoBehaviour
 			float stoneY = LevelGenPerlin(stoneX, stoneZ);
 			Vector3 stonePosition = new Vector3(stoneX, stoneY, stoneZ);
 			Instantiate(stone, stonePosition, Quaternion.identity, transform);
+			yield return new WaitForSeconds(generationDelay);
+
 			Vector3 fencePosition = stonePosition + new Vector3(-0.5f, 1, 0);
 			lastFencePlaced = Instantiate(fence, fencePosition, Quaternion.identity, transform);
+			yield return new WaitForSeconds(generationDelay);
 		}
 		lastFencePlaced.transform.Rotate(0, 90, 0);
 		lastFencePlaced.transform.position += new Vector3(0.5f, 0, 0.5f);
+		yield return new WaitForSeconds(generationDelay);
 
 		for (int y = 0; y < height + 1; y++)
 		{
@@ -179,12 +193,16 @@ public class GameManager : MonoBehaviour
 			float stoneY = LevelGenPerlin(stoneX, stoneZ);
 			Vector3 stonePosition = new Vector3(stoneX, stoneY, stoneZ);
 			Instantiate(stone, stonePosition, Quaternion.identity, transform);
+			yield return new WaitForSeconds(generationDelay);
+
 			Vector3 fencePosition = stonePosition + new Vector3(0, 1, 0.5f);
 			lastFencePlaced = Instantiate(fence, fencePosition, Quaternion.identity, transform);
 			lastFencePlaced.transform.Rotate(0, 90, 0);
+			yield return new WaitForSeconds(generationDelay);
 		}
 		lastFencePlaced.transform.Rotate(0, 90, 0);
 		lastFencePlaced.transform.position += new Vector3(0.5f, 0, -0.5f);
+		yield return new WaitForSeconds(generationDelay);
 	}
 	/// <summary> Returns the y position to set a game object to given its x and z. </summary>
 	float LevelGenPerlin(float x, float z)
