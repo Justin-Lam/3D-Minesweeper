@@ -17,7 +17,9 @@ public class GameManager : MonoBehaviour
 	[SerializeField] float generationDelay;
 	[SerializeField] float spawnHeight;
 	[SerializeField] float spawnDuration;
-	float perlinOffset;	// so generation is random each time
+	float perlinOffset; // so generation is random each time
+	List<FallingSpawn> blocks1D = new List<FallingSpawn>();
+	List<FallingSpawn> barrier = new List<FallingSpawn>();	// stones & fences
 
 	[Header("Prefabs")]
 	[SerializeField] protected GameObject block;
@@ -70,9 +72,10 @@ public class GameManager : MonoBehaviour
 		ValidateParameters();
 		InitializeGameplayVariables();
 		CreateBlocks();
-		StartCoroutine(SpawnBlocks());
-		StartCoroutine(CreateBarrier());
 		PlaceMines();
+		CreateBarrier();
+		StartCoroutine(SpawnBlocks());
+		StartCoroutine(SpawnBarrier());
 	}
 
 	void ValidateParameters()
@@ -109,7 +112,7 @@ public class GameManager : MonoBehaviour
 		float offsetX = (width % 2 == 0) ? 0.5f : 0f;
 		float offsetY = (height % 2 == 0) ? 0.5f : 0f;
 
-		// Create blocks
+		// Create blocks and add them to blocks[] and blocks1D[]
 		for (int y = 0; y < height; y++)    // note: y here corresponds to the z axis of the game world
 		{
 			for (int x = 0; x < width; x++)
@@ -117,12 +120,123 @@ public class GameManager : MonoBehaviour
 				float blockX = x - width / 2 + offsetX;
 				float blockZ = y - height / 2 + offsetY;
 				float blockY = LevelGenPerlin(blockX, blockZ);
+
 				GameObject blockGO = Instantiate(block, new Vector3(blockX, blockY, blockZ), Quaternion.identity, transform);
-				Block blockScript = blockGO.GetComponent<Block>();
-				blockScript.SetPosition(x, y);
-				blocks[y, x] = blockScript;
+
+				blocks[y, x] = blockGO.GetComponent<Block>();
+				blocks[y, x].SetPosition(x, y);
+
+				blocks1D.Add(blockGO.GetComponent<FallingSpawn>());
 			}
 		}		
+	}
+	/// <summary>
+	/// Places stones and fences around the grid of blocks
+	/// Places them one by one, going stone-fence-stone-fence etc., going clockwise.
+	/// </summary>
+	void CreateBarrier()
+	{
+		// Get the positions of the grid's corner blocks
+		Vector3 block_TL = blocks[blocks.GetLength(0) - 1, 0].gameObject.transform.position;
+		Vector3 block_TR = blocks[blocks.GetLength(0) - 1, blocks.GetLength(1) - 1].gameObject.transform.position;
+		Vector3 block_BR = blocks[0, blocks.GetLength(1) - 1].gameObject.transform.position;
+		Vector3 block_BL = blocks[0, 0].gameObject.transform.position;
+
+		// Create a variable to reference the stones and fences we're going to create
+		GameObject lastObjPlaced = null;
+
+		/*
+		 * Create stones and fences around the grid one by one, starting from the top left corner and going clockwise
+		 * Example:
+		 *							s				f				f	s					f	f	f	f		f	f	f	f
+		 *			b	b	b		b	b	b		b	b	b		b	b	b				b	b	b			b	b	b	s
+		 *			b	b	b	=>	b	b	b	=>	b	b	b	=>	b	b	b	=>	...	=>	b	b	b		=>	b	b	b
+		 *			b	b	b		b	b	b		b	b	b		b	b	b				b	b	b			b	b	b
+		 *			
+		 * We use four for loops to do this, one for each edge
+		 * Within each loop, we:
+		 *	1. Calculate stone and fence position
+		 *	2. Create stone and add it to barrier[] for SpawnBlocks() to use later
+		 *	3. Create fence and add it to barrier[] for SpawnBlocks() to use later
+		 *	
+		 * When a loop completes, an edge of stones and fences has been created
+		 * Finally, we rotate and reposition the last fence of the edge
+		 */
+
+		// Top Edge
+		for (int x = 0; x < width + 1; x++)
+		{
+			float stoneX = block_TL.x + x;
+			float stoneZ = block_TL.z + 1;
+			float stoneY = LevelGenPerlin(stoneX, stoneZ);
+			Vector3 stonePosition = new Vector3(stoneX, stoneY, stoneZ);
+			Vector3 fencePosition = stonePosition + new Vector3(0.5f, 1, 0);
+			lastObjPlaced = Instantiate(stone, stonePosition, Quaternion.identity, transform);
+			barrier.Add(lastObjPlaced.GetComponent<FallingSpawn>());
+			lastObjPlaced = Instantiate(fence, fencePosition, Quaternion.identity, transform);
+			barrier.Add(lastObjPlaced.GetComponent<FallingSpawn>());
+		}
+		lastObjPlaced.transform.Rotate(0, 90, 0);
+		lastObjPlaced.transform.position += new Vector3(-0.5f, 0, -0.5f);
+
+		// Right Edge
+		for (int y = 0; y < height + 1; y++)
+		{
+			float stoneX = block_TR.x + 1;
+			float stoneZ = block_TR.z - y;
+			float stoneY = LevelGenPerlin(stoneX, stoneZ);
+			Vector3 stonePosition = new Vector3(stoneX, stoneY, stoneZ);
+			Vector3 fencePosition = stonePosition + new Vector3(0, 1, -0.5f);
+			lastObjPlaced = Instantiate(stone, stonePosition, Quaternion.identity, transform);
+			barrier.Add(lastObjPlaced.GetComponent<FallingSpawn>());
+			lastObjPlaced = Instantiate(fence, fencePosition, Quaternion.identity, transform);
+			lastObjPlaced.transform.Rotate(0, 90, 0);	// rotate to align to edge
+			barrier.Add(lastObjPlaced.GetComponent<FallingSpawn>());
+		}
+		lastObjPlaced.transform.Rotate(0, 90, 0);
+		lastObjPlaced.transform.position += new Vector3(-0.5f, 0, 0.5f);
+
+		// Bottom Edge
+		for (int x = 0; x < width + 1; x++)
+		{
+			float stoneX = block_BR.x - x;
+			float stoneZ = block_BR.z - 1;
+			float stoneY = LevelGenPerlin(stoneX, stoneZ);
+			Vector3 stonePosition = new Vector3(stoneX, stoneY, stoneZ);
+			Vector3 fencePosition = stonePosition + new Vector3(-0.5f, 1, 0);
+			lastObjPlaced = Instantiate(stone, stonePosition, Quaternion.identity, transform);
+			barrier.Add(lastObjPlaced.GetComponent<FallingSpawn>());
+			lastObjPlaced = Instantiate(fence, fencePosition, Quaternion.identity, transform);
+			barrier.Add(lastObjPlaced.GetComponent<FallingSpawn>());
+		}
+		lastObjPlaced.transform.Rotate(0, 90, 0);
+		lastObjPlaced.transform.position += new Vector3(0.5f, 0, 0.5f);
+
+		// Left Edge
+		for (int y = 0; y < height + 1; y++)
+		{
+			float stoneX = block_BL.x - 1;
+			float stoneZ = block_BL.z + y;
+			float stoneY = LevelGenPerlin(stoneX, stoneZ);
+			Vector3 stonePosition = new Vector3(stoneX, stoneY, stoneZ);
+			Vector3 fencePosition = stonePosition + new Vector3(0, 1, 0.5f);
+			lastObjPlaced = Instantiate(stone, stonePosition, Quaternion.identity, transform);
+			barrier.Add(lastObjPlaced.GetComponent<FallingSpawn>());
+			lastObjPlaced = Instantiate(fence, fencePosition, Quaternion.identity, transform);
+			lastObjPlaced.transform.Rotate(0, 90, 0);   // rotate to align to edge
+			barrier.Add(lastObjPlaced.GetComponent<FallingSpawn>());
+		}
+		lastObjPlaced.transform.Rotate(0, 90, 0);
+		lastObjPlaced.transform.position += new Vector3(0.5f, 0, -0.5f);
+	}
+	/// <summary> Returns the y position to set a game object to given its x and z. </summary>
+	float LevelGenPerlin(float x, float z)
+	{
+		float result;
+		result = Mathf.PerlinNoise((x + perlinOffset) * perlinFrequency, (z + perlinOffset) * perlinFrequency);
+		result -= 0.5f; // adjust range of values from [0, 1] to [-0.5, 0.5]
+		result *= perlinAmplitude;
+		return result;
 	}
 	IEnumerator SpawnBlocks()
 	{
@@ -133,20 +247,10 @@ public class GameManager : MonoBehaviour
 		 * and it basically said yes
 		 */
 
-		// Flatten blocks from a 2D array to a 1D one
-		FallingSpawn[] blocks1D = new FallingSpawn[height * width];
-		for (int y = 0; y < height; y++)
-		{
-			for (int x = 0; x < width; x++)
-			{
-				blocks1D[y * width + x] = blocks[y, x].gameObject.GetComponent<FallingSpawn>();
-			}
-		}
-
-		// Shuffle using Fisher-Yates
+		// Shuffle blocks1D using Fisher-Yates
 		// from https://www.geeksforgeeks.org/shuffle-a-given-array-using-fisher-yates-shuffle-algorithm/
 		// Start from the last elem and swap one by one. We don't need to run for the 1st elem that's why i > 0
-		for (int i = blocks1D.Length - 1; i > 0; i--)
+		for (int i = blocks1D.Count - 1; i > 0; i--)
 		{
 			int randomIndex = UnityEngine.Random.Range(0, i + 1);                           // pick rand index from 0 to i
 			(blocks1D[i], blocks1D[randomIndex]) = (blocks1D[randomIndex], blocks1D[i]);    // swap
@@ -159,156 +263,15 @@ public class GameManager : MonoBehaviour
 			yield return new WaitForSeconds(generationDelay);
 		}
 	}
-	/// <summary>
-	/// Places stones and fences around the grid of blocks
-	/// Places them one by one, going stone-fence-stone-fence etc., going clockwise.
-	/// </summary>
-	IEnumerator CreateBarrier()
-    {
-		// Get the positions of the grid's corner blocks
-		Vector3 block_TL = blocks[blocks.GetLength(0) - 1, 0].gameObject.transform.position;
-		Vector3 block_TR = blocks[blocks.GetLength(0) - 1, blocks.GetLength(1) - 1].gameObject.transform.position;
-		Vector3 block_BR = blocks[0, blocks.GetLength(1) - 1].gameObject.transform.position;
-		Vector3 block_BL = blocks[0, 0].gameObject.transform.position;
-
-		// Create a variable to reference the stones and fences we're going to create
-		GameObject lastObjPlaced = null;
-
-		/*
-		 * Place stones and fences around the grid one by one, starting from the top left corner and going clockwise
-		 * Example:
-		 *							s				f				f	s					f	f	f	f		f	f	f	f
-		 *			b	b	b		b	b	b		b	b	b		b	b	b				b	b	b			b	b	b	s
-		 *			b	b	b	=>	b	b	b	=>	b	b	b	=>	b	b	b	=>	...	=>	b	b	b		=>	b	b	b
-		 *			b	b	b		b	b	b		b	b	b		b	b	b				b	b	b			b	b	b
-		 *			
-		 * We use four for loops to do this, one for each edge
-		 * Within each loop, we:
-		 *	1. Calculate stone and fence position
-		 *	2. Create stone, play its spawning animation, then wait
-		 *	3. Create fence, play its spawning animation if it's not the last fence, then wait
-		 *	
-		 * When a loop completes, an edge of stones and fences has been created
-		 * Now, we:
-		 *	1. Rotate and reposition the last fence of the edge
-		 *	2. Play its spawning animation
-		 *	3. Wait
-		 * We have to do this because we can only play a stone/fence's spawning animation when its position has been completely finalized
-		 * This is because the script that handles their spawn animation uses their current position as their target position
-		 */
-
-		// Top Edge
-		for (int x = 0; x < width + 1; x++)
-		{
-			float stoneX = block_TL.x + x;
-			float stoneZ = block_TL.z + 1;
-			float stoneY = LevelGenPerlin(stoneX, stoneZ);
-			Vector3 stonePosition = new Vector3(stoneX, stoneY, stoneZ);
-			Vector3 fencePosition = stonePosition + new Vector3(0.5f, 1, 0);
-
-			lastObjPlaced = Instantiate(stone, stonePosition, Quaternion.identity, transform);
-			StartCoroutine(lastObjPlaced.GetComponent<FallingSpawn>().FallIntoPlace(spawnHeight, spawnDuration));
-			yield return new WaitForSeconds(generationDelay);
-
-			lastObjPlaced = Instantiate(fence, fencePosition, Quaternion.identity, transform);
-			if (x < width)
-			{
-				StartCoroutine(lastObjPlaced.GetComponent<FallingSpawn>().FallIntoPlace(spawnHeight, spawnDuration));
-			}
-			yield return new WaitForSeconds(generationDelay);
-		}
-		lastObjPlaced.transform.Rotate(0, 90, 0);
-		lastObjPlaced.transform.position += new Vector3(-0.5f, 0, -0.5f);
-		StartCoroutine(lastObjPlaced.GetComponent<FallingSpawn>().FallIntoPlace(spawnHeight, spawnDuration));
-		yield return new WaitForSeconds(generationDelay);
-
-		// Right Edge
-		for (int y = 0; y < height + 1; y++)
-		{
-			float stoneX = block_TR.x + 1;
-			float stoneZ = block_TR.z - y;
-			float stoneY = LevelGenPerlin(stoneX, stoneZ);
-			Vector3 stonePosition = new Vector3(stoneX, stoneY, stoneZ);
-			Vector3 fencePosition = stonePosition + new Vector3(0, 1, -0.5f);
-
-			lastObjPlaced = Instantiate(stone, stonePosition, Quaternion.identity, transform);
-			StartCoroutine(lastObjPlaced.GetComponent<FallingSpawn>().FallIntoPlace(spawnHeight, spawnDuration));
-			yield return new WaitForSeconds(generationDelay);
-
-			lastObjPlaced = Instantiate(fence, fencePosition, Quaternion.identity, transform);
-			lastObjPlaced.transform.Rotate(0, 90, 0);
-			if (y < height)
-			{
-				StartCoroutine(lastObjPlaced.GetComponent<FallingSpawn>().FallIntoPlace(spawnHeight, spawnDuration));
-			}
-			yield return new WaitForSeconds(generationDelay);
-		}
-		lastObjPlaced.transform.Rotate(0, 90, 0);
-		lastObjPlaced.transform.position += new Vector3(-0.5f, 0, 0.5f);
-		StartCoroutine(lastObjPlaced.GetComponent<FallingSpawn>().FallIntoPlace(spawnHeight, spawnDuration));
-		yield return new WaitForSeconds(generationDelay);
-
-		// Bottom Edge
-		for (int x = 0; x < width + 1; x++)
-		{
-			float stoneX = block_BR.x - x;
-			float stoneZ = block_BR.z - 1;
-			float stoneY = LevelGenPerlin(stoneX, stoneZ);
-			Vector3 stonePosition = new Vector3(stoneX, stoneY, stoneZ);
-			Vector3 fencePosition = stonePosition + new Vector3(-0.5f, 1, 0);
-
-			lastObjPlaced = Instantiate(stone, stonePosition, Quaternion.identity, transform);
-			StartCoroutine(lastObjPlaced.GetComponent<FallingSpawn>().FallIntoPlace(spawnHeight, spawnDuration));
-			yield return new WaitForSeconds(generationDelay);
-
-			lastObjPlaced = Instantiate(fence, fencePosition, Quaternion.identity, transform);
-			if (x < width)
-			{
-				StartCoroutine(lastObjPlaced.GetComponent<FallingSpawn>().FallIntoPlace(spawnHeight, spawnDuration));
-			}
-			yield return new WaitForSeconds(generationDelay);
-		}
-		lastObjPlaced.transform.Rotate(0, 90, 0);
-		lastObjPlaced.transform.position += new Vector3(0.5f, 0, 0.5f);
-		StartCoroutine(lastObjPlaced.GetComponent<FallingSpawn>().FallIntoPlace(spawnHeight, spawnDuration));
-		yield return new WaitForSeconds(generationDelay);
-
-		// Left Edge
-		for (int y = 0; y < height + 1; y++)
-		{
-			float stoneX = block_BL.x - 1;
-			float stoneZ = block_BL.z + y;
-			float stoneY = LevelGenPerlin(stoneX, stoneZ);
-			Vector3 stonePosition = new Vector3(stoneX, stoneY, stoneZ);
-			Vector3 fencePosition = stonePosition + new Vector3(0, 1, 0.5f);
-
-			lastObjPlaced = Instantiate(stone, stonePosition, Quaternion.identity, transform);
-			StartCoroutine(lastObjPlaced.GetComponent<FallingSpawn>().FallIntoPlace(spawnHeight, spawnDuration));
-			yield return new WaitForSeconds(generationDelay);
-
-			lastObjPlaced = Instantiate(fence, fencePosition, Quaternion.identity, transform);
-			lastObjPlaced.transform.Rotate(0, 90, 0);
-			if (y < height)
-			{
-				StartCoroutine(lastObjPlaced.GetComponent<FallingSpawn>().FallIntoPlace(spawnHeight, spawnDuration));
-			}
-			yield return new WaitForSeconds(generationDelay);
-		}
-		lastObjPlaced.transform.Rotate(0, 90, 0);
-		lastObjPlaced.transform.position += new Vector3(0.5f, 0, -0.5f);
-		StartCoroutine(lastObjPlaced.GetComponent<FallingSpawn>().FallIntoPlace(spawnHeight, spawnDuration));
-		yield return new WaitForSeconds(generationDelay);
-	}
-	/// <summary> Returns the y position to set a game object to given its x and z. </summary>
-	float LevelGenPerlin(float x, float z)
+	IEnumerator SpawnBarrier()
 	{
-		float result;
-		result = Mathf.PerlinNoise((x + perlinOffset) * perlinFrequency, (z + perlinOffset) * perlinFrequency);
-		result -= 0.5f; // adjust range of values from [0, 1] to [-0.5, 0.5]
-		result *= perlinAmplitude;
-		return result;
+		foreach (FallingSpawn fallingSpawn in barrier)
+		{
+			StartCoroutine(fallingSpawn.FallIntoPlace(spawnHeight, spawnDuration));
+			yield return new WaitForSeconds(generationDelay);
+		}
 	}
-
+	
 	protected virtual void PlaceMines()
 	{
 		for (int i = 0; i < numMines; i++)
