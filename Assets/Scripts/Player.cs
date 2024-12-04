@@ -23,7 +23,7 @@ public class Player : MonoBehaviour
 	[SerializeField] float letGoOfJumpVelocityDecreaseRatio;
 	[SerializeField] float extraGravityWhenFallingAcceleration;
 	float jumpBufferCounter = 0;
-	bool wasGrounded = true;		// whether IsGrounded() was true last frame or not
+	bool wasGrounded = true;        // whether IsGrounded() was true last frame or not
 	bool usedFastFall = false;
 	float groundedDistFromGround;   // the max distance the player can be from the ground in order to be grounded
 	float groundedDistFromGroundPadding = 0.1f; // (10%)
@@ -50,14 +50,6 @@ public class Player : MonoBehaviour
 	void Awake()
 	{
 		Singleton_SetInstance();
-	}
-	void OnEnable()
-	{
-		GameManager.OnLoseGame += OnLoseGame;
-	}
-	void OnDisable()
-	{
-		GameManager.OnLoseGame -= OnLoseGame;
 	}
 
 	void Start()
@@ -185,7 +177,7 @@ public class Player : MonoBehaviour
 	}
 	bool JustLanded()
 	{
-		return !wasGrounded && IsGrounded();	// wasn't grounded last frame but is now
+		return !wasGrounded && IsGrounded();    // wasn't grounded last frame but is now
 	}
 
 	void Jump()
@@ -204,7 +196,7 @@ public class Player : MonoBehaviour
 	}
 
 	void Eat()
-    {
+	{
 		// Can only eat if grounded
 		RaycastHit hit;
 		if (IsGroundedOnSomething(out hit))
@@ -216,7 +208,7 @@ public class Player : MonoBehaviour
 				hit.collider.gameObject.GetComponent<Block>().OnEat();
 			}
 		}
-    }
+	}
 	void Flag()
 	{
 		// Check that the player is grounded and set hit
@@ -227,7 +219,7 @@ public class Player : MonoBehaviour
 		}
 
 		// Flag
-		if (hit.collider.gameObject.CompareTag("Block"))	// standing on a block
+		if (hit.collider.gameObject.CompareTag("Block"))    // standing on a block
 		{
 			// Jump
 			Jump();
@@ -240,7 +232,7 @@ public class Player : MonoBehaviour
 		}
 
 		// Unflag
-		else if (hit.collider.gameObject.CompareTag("Flag"))	// standing on a flag
+		else if (hit.collider.gameObject.CompareTag("Flag"))    // standing on a flag
 		{
 			// Destroy the flag
 			Destroy(hit.collider.gameObject);
@@ -251,10 +243,10 @@ public class Player : MonoBehaviour
 		return Physics.Raycast(transform.position, Vector3.down, out hit, groundedDistFromGround);
 	}
 
-	public void OnLoseGame()
+	public void OnAffectedByExplosion()
 	{
-		rb.drag = 0;								// so player falls as fast as everything else
-		rb.constraints = RigidbodyConstraints.None;	// so player rotates like everything else
-		enabled = false;							// so player loses control of the player character
+		rb.drag = 0;                                // so player falls as fast as everything else
+		rb.constraints = RigidbodyConstraints.None; // so player rotates like everything else
+		enabled = false;                            // so player loses control of the player character
 	}
 }
