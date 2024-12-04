@@ -633,6 +633,11 @@ PrefabInstance:
       propertyPath: grassLeftText
       value: 
       objectReference: {fileID: 102561725}
+    - target: {fileID: 6010477572412537204, guid: 461ffbf2e2e9c684d90118dbe695d578,
+        type: 3}
+      propertyPath: spawnDuration
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 6381377050777027459, guid: 461ffbf2e2e9c684d90118dbe695d578,
         type: 3}
       propertyPath: m_Name

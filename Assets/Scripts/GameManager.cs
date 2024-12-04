@@ -11,13 +11,15 @@ public class GameManager : MonoBehaviour
 	[SerializeField] protected int numMines;
 	protected Block[,] blocks;
 
-	[Header("Aesthetics")]
-	[SerializeField] float perlinFrequency;
-	[SerializeField] float perlinAmplitude;
-	[SerializeField] float generationDelay;
-	[SerializeField] float spawnHeight;
-	[SerializeField] float spawnDuration;
+	[Header("Perlin Noise For Blocks")]
+	[SerializeField] float frequency;
+	[SerializeField] float amplitude;
 	float perlinOffset; // so generation is random each time
+
+	[Header("Spawning")]
+	[SerializeField] float duration;
+	[SerializeField] float tweenStartingHeight;
+	[SerializeField] float tweenDuration;
 	List<FallingSpawn> blocks1D = new List<FallingSpawn>();
 	List<FallingSpawn> barrier = new List<FallingSpawn>();	// stones & fences
 
@@ -233,9 +235,9 @@ public class GameManager : MonoBehaviour
 	float LevelGenPerlin(float x, float z)
 	{
 		float result;
-		result = Mathf.PerlinNoise((x + perlinOffset) * perlinFrequency, (z + perlinOffset) * perlinFrequency);
+		result = Mathf.PerlinNoise((x + perlinOffset) * frequency, (z + perlinOffset) * frequency);
 		result -= 0.5f; // adjust range of values from [0, 1] to [-0.5, 0.5]
-		result *= perlinAmplitude;
+		result *= amplitude;
 		return result;
 	}
 	IEnumerator SpawnBlocks()
@@ -246,6 +248,9 @@ public class GameManager : MonoBehaviour
 		 * 
 		 * and it basically said yes
 		 */
+
+		// Calculate delay
+		float delay = duration / blocks1D.Count;
 
 		// Shuffle blocks1D using Fisher-Yates
 		// from https://www.geeksforgeeks.org/shuffle-a-given-array-using-fisher-yates-shuffle-algorithm/
@@ -259,16 +264,17 @@ public class GameManager : MonoBehaviour
 		// Spawn the blocks
 		foreach (FallingSpawn fallingSpawn in blocks1D)
 		{
-			StartCoroutine(fallingSpawn.FallIntoPlace(spawnHeight, spawnDuration));
-			yield return new WaitForSeconds(generationDelay);
+			StartCoroutine(fallingSpawn.FallIntoPlace(tweenStartingHeight, tweenDuration));
+			yield return new WaitForSeconds(delay);
 		}
 	}
 	IEnumerator SpawnBarrier()
 	{
+		float delay = duration / barrier.Count;
 		foreach (FallingSpawn fallingSpawn in barrier)
 		{
-			StartCoroutine(fallingSpawn.FallIntoPlace(spawnHeight, spawnDuration));
-			yield return new WaitForSeconds(generationDelay);
+			StartCoroutine(fallingSpawn.FallIntoPlace(tweenStartingHeight, tweenDuration));
+			yield return new WaitForSeconds(delay);
 		}
 	}
 	
