@@ -140,7 +140,7 @@ public class GameManager : MonoBehaviour
 			float stoneZ = block_TL.z + 1;
 			float stoneY = LevelGenPerlin(stoneX, stoneZ);
 			Vector3 stonePosition = new Vector3(stoneX, stoneY, stoneZ);
-			Instantiate(stone, new Vector3(stoneX, stoneY, stoneZ), Quaternion.identity, transform);
+			GameObject go = Instantiate(stone, new Vector3(stoneX, stoneY, stoneZ), Quaternion.identity, transform);
 			yield return new WaitForSeconds(generationDelay);
 
 			Vector3 fencePosition = stonePosition + new Vector3(0.5f, 1, 0);

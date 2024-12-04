@@ -3,11 +3,18 @@ using UnityEngine;
 
 public class JuicySpawn : MonoBehaviour
 {
-	public IEnumerator FallIntoPlace(float startY, float duration)
+	[SerializeField] float startingY;
+	[SerializeField] float duration;
+
+	void Start()
+	{
+		StartCoroutine(FallIntoPlace());
+	}
+	public IEnumerator FallIntoPlace()
 	{
 		// got help from ChatGPT to do this: "how do i use this easing function to make my block fall from above to its starting place?"
 
-		Vector3 startPosition = transform.position + new Vector3(0, startY, 0);
+		Vector3 startPosition = transform.position + new Vector3(0, startingY, 0);
 		Vector3 targetPosition = transform.position;
 
 		float counter = 0;
