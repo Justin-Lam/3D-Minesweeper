@@ -457,6 +457,7 @@ MonoBehaviour:
   height: 5
   numMines: 3
   dialogueManager: {fileID: 252855095}
+  playerObject: {fileID: 2033867002}
 --- !u!4 &1966985552
 Transform:
   m_ObjectHideFlags: 0
@@ -472,6 +473,12 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2033867002 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7352785289242483318, guid: cca7e83298aa41c439a8471e9aa5ae7f,
+    type: 3}
+  m_PrefabInstance: {fileID: 645053837}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1855457422642523436
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -532,9 +539,24 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5234158452200836711, guid: 8842dae59df383647b5707428e127e14,
         type: 3}
+      propertyPath: currentLine
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5234158452200836711, guid: 8842dae59df383647b5707428e127e14,
+        type: 3}
+      propertyPath: gameManager
+      value: 
+      objectReference: {fileID: 1966985551}
+    - target: {fileID: 5234158452200836711, guid: 8842dae59df383647b5707428e127e14,
+        type: 3}
       propertyPath: graphicsDisplay
       value: 
       objectReference: {fileID: 1855457422642523437}
+    - target: {fileID: 5234158452200836711, guid: 8842dae59df383647b5707428e127e14,
+        type: 3}
+      propertyPath: tutorialManager
+      value: 
+      objectReference: {fileID: 1966985551}
     - target: {fileID: 6585963279599478890, guid: 8842dae59df383647b5707428e127e14,
         type: 3}
       propertyPath: m_Name

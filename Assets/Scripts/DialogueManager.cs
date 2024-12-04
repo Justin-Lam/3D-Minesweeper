@@ -4,25 +4,30 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
-// based on the dialogue system tutorial by https://gamedevbeginner.com/dialogue-systems-in-unity/
+// partially referenced from the dialogue system tutorial by https://gamedevbeginner.com/dialogue-systems-in-unity/
+
 public class DialogueManager : MonoBehaviour
 {
     public Dialogue dialogueObj;
-    public int currentLine;
+    public TutorialManager tutorialManager;
 
+    [Header("Dialogue Lines")]
     [SerializeField] GameObject dialogueDisplay;
-    [SerializeField] GameObject narrationDisplay;
-    [SerializeField] GameObject graphicalDisplay;
-
     [SerializeField] TextMeshProUGUI dialogueText;
     [SerializeField] TextMeshProUGUI nameText;
+    [SerializeField] Image portraitHolder;
+
+    [Header("Narration Lines")]
+    [SerializeField] GameObject narrationDisplay;
     [SerializeField] TextMeshProUGUI narrationText;
 
-    [SerializeField] Image portraitHolder;
+    [Header("Displaying Graphics")]
+    [SerializeField] GameObject graphicalDisplay;
     [SerializeField] Image graphicHolder;
 
+    int currentLine;
 
-    // Start is called before the first frame update
+
     void Start()
     {
         currentLine = -1;
@@ -31,19 +36,27 @@ public class DialogueManager : MonoBehaviour
         graphicalDisplay.SetActive(false);
     }
 
-    // Update is called once per frame
     void Update()
     {
-        // Check for next button
+        // Check for next button (X)
         if (Input.GetButtonDown("Next"))
         {
-            CallNextLine();
+            // make sure there's actually dialogue being displayed currently
+            if (dialogueDisplay.activeSelf || narrationDisplay.activeSelf || graphicalDisplay.activeSelf)
+            {
+                CallNextLine();
+            }
         }
+    }
+
+    public DialogueLine GetCurrentLine()
+    {
+        return dialogueObj.dialogueLines[currentLine];
     }
 
     public void AddDialoguePause(float pauseLength)
     {
-        EndDialogue();
+        HideDialogueLines();
         HideNarration();
         HideGraphic();
         StartCoroutine(DialoguePause(pauseLength));
@@ -55,7 +68,7 @@ public class DialogueManager : MonoBehaviour
         NextLine();
     }
 
-    public void ShowLine(string dialogue, string name, Sprite portrait)
+    public void ShowDialogueLine(string dialogue, string name, Sprite portrait)
     {
         HideNarration();
         HideGraphic();
@@ -69,7 +82,7 @@ public class DialogueManager : MonoBehaviour
         portraitHolder.sprite = portrait;
     }
 
-    public void EndDialogue()
+    public void HideDialogueLines()
     {
         nameText.text = null;
         dialogueText.text = null;
@@ -79,7 +92,7 @@ public class DialogueManager : MonoBehaviour
 
     public void ShowNarration(string dialogue)
     {
-        EndDialogue();
+        HideDialogueLines();
         narrationDisplay.SetActive(true);
         narrationText.text = dialogue;
     }
@@ -102,19 +115,32 @@ public class DialogueManager : MonoBehaviour
         graphicalDisplay.SetActive(false);
     }
 
+    // checks if NextLine() can be validly called
     public void CallNextLine()
     {
         currentLine++;
 
+        // checks if there's a tutorial manager (only the tutorial has preconditions) and if precondition is met
+        // if precondition is not met, hide dialogue
+        if (tutorialManager != null && GetCurrentLine().precondition != Precondition.none && tutorialManager.CheckPrecondition(GetCurrentLine().precondition) == false)
+        {
+            HideDialogueLines();
+            HideNarration();
+            HideGraphic();
+            currentLine--; // to prevent currentLine from updating
+
+            return;
+        }
+
         if (currentLine > dialogueObj.dialogueLines.Length - 1)
         {
-            EndDialogue();
+            HideDialogueLines();
         }
         else
         {
-            if (dialogueObj.dialogueLines[currentLine].hasPauseBefore == true)
+            if (GetCurrentLine().pauseLength > 0)
             {
-                AddDialoguePause(dialogueObj.dialogueLines[currentLine].pauseLength);
+                AddDialoguePause(GetCurrentLine().pauseLength);
             }
             else
             {
@@ -125,14 +151,20 @@ public class DialogueManager : MonoBehaviour
 
     void NextLine()
     {
-        if (dialogueObj.dialogueLines[currentLine].speaker.ToString() == "NARRATOR")
+        if (GetCurrentLine().speaker == Speaker.NARRATOR)
         {
-            ShowNarration(dialogueObj.dialogueLines[currentLine].line);
-            ShowGraphic(dialogueObj.dialogueLines[currentLine].graphic);
+            ShowNarration(GetCurrentLine().line);
+            ShowGraphic(GetCurrentLine().graphic);
         }
         else
         {
-            ShowLine(dialogueObj.dialogueLines[currentLine].line, dialogueObj.dialogueLines[currentLine].speaker.ToString(), dialogueObj.dialogueLines[currentLine].portrait);
+            ShowDialogueLine(GetCurrentLine().line, GetCurrentLine().speaker.ToString(), GetCurrentLine().portrait);
+        }
+
+        // check if there's a tutorial manager and if the current line has an event
+        if (tutorialManager != null && GetCurrentLine().dialogueEvent != DialogueEvent.none)
+        {
+            tutorialManager.ToggleEvent(GetCurrentLine().dialogueEvent);
         }
     }
 }

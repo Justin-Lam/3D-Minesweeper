@@ -1,13 +1,36 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
 public class TutorialManager : GameManager
 {
 	public DialogueManager dialogueManager;
+	public GameObject playerObject;
+
+	[Header("Demonstration Block Coords")]
+	[SerializeField] int demoBlockX;
+	[SerializeField] int demoBlockY;
+
 	int[][] minePos;
 	int[] firstBlock;
+	Player playerScript;
+	Rigidbody playerRb;
+
+	// dialogue event variables
+	int blockEaten = 0;
 
 
 	protected override void Start()
 	{
 		base.Start();
+
+		playerScript = playerObject.GetComponent<Player>();
+		playerRb = playerObject.GetComponent<Rigidbody>();
+
+		playerScript.enabled = false;
+
+		// start up the dialogue
 		dialogueManager.CallNextLine();
 	}
 
@@ -38,6 +61,17 @@ public class TutorialManager : GameManager
 
 	protected override void OnBlockEaten(int x, int y)
 	{
+		if (blockEaten == 0)
+        {
+			blockEaten = 1;
+			dialogueManager.CallNextLine();
+		}
+		else if (blockEaten == 1)
+        {
+			blockEaten = 2;
+			dialogueManager.CallNextLine();
+		} // also make it so that only target block can be eaten
+
 		if (blocks[y, x].GetBlockType() == Block.Type.GRASS)
 		{
 			blocks[y, x].SetNearbyMinesText(getMinePositionsIn3x3(x, y).Count);
@@ -51,5 +85,40 @@ public class TutorialManager : GameManager
 		}
 
 		blocks[y, x].HandleOnEat();
+	}
+
+	public bool CheckPrecondition(Precondition precondition)
+    {
+		switch (precondition)
+        {
+			case Precondition.firstBlockEaten:
+				if (blockEaten > 0)
+					return true;
+				return false;
+			case Precondition.secondBlockEaten:
+				if (blockEaten > 1)
+					return true;
+				return false;
+			default:
+				return false;
+        }
+    }
+
+	public void ToggleEvent(DialogueEvent dialogueEvent)
+    {
+		switch (dialogueEvent)
+        {
+			case DialogueEvent.allowEat:
+				playerScript.enabled = true;
+				playerRb.constraints = RigidbodyConstraints.FreezeAll;
+				break;
+			case DialogueEvent.allowMove:
+				playerRb.constraints = RigidbodyConstraints.None;
+				playerRb.constraints = RigidbodyConstraints.FreezeRotation;
+				// also make it so that target block is highlighted
+				break;
+			default:
+				break;
+		}
 	}
 }

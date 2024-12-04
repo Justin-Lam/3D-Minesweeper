@@ -16,125 +16,377 @@ MonoBehaviour:
   - speaker: 0
     portrait: {fileID: 21300000, guid: 9bb7088518ad2b94cb10cb9f39e38a3b, type: 3}
     graphic: {fileID: 0}
-    hasPauseBefore: 1
     pauseLength: 1
-    line: Baa, I'm so hungry...
+    precondition: 0
+    dialogueEvent: 0
+    line: Blaah, I'm so hungry...
   - speaker: 0
     portrait: {fileID: 21300000, guid: 9bb7088518ad2b94cb10cb9f39e38a3b, type: 3}
     graphic: {fileID: 0}
-    hasPauseBefore: 0
     pauseLength: 0
-    line: This patch of grass seems pretty nice! I think I'll have my lunch here...
+    precondition: 0
+    dialogueEvent: 0
+    line: But hey, this patch of grass looks pretty tasty! I think I'll grab a bite
+      here...
   - speaker: 1
     portrait: {fileID: 21300000, guid: 90e2d95ea72c53345a58367b6e59de53, type: 3}
     graphic: {fileID: 0}
-    hasPauseBefore: 0
     pauseLength: 0
+    precondition: 0
+    dialogueEvent: 0
     line: CAHH! What do you think you're doing, you fluffy fool?!
   - speaker: 0
     portrait: {fileID: 21300000, guid: 9bb7088518ad2b94cb10cb9f39e38a3b, type: 3}
     graphic: {fileID: 0}
-    hasPauseBefore: 0
     pauseLength: 0
+    precondition: 0
+    dialogueEvent: 0
     line: Beh?
   - speaker: 1
     portrait: {fileID: 21300000, guid: 90e2d95ea72c53345a58367b6e59de53, type: 3}
     graphic: {fileID: 0}
-    hasPauseBefore: 0
     pauseLength: 0
+    precondition: 0
+    dialogueEvent: 0
     line: Turn back! Turn back! This lot is riddled with mines!
   - speaker: 0
     portrait: {fileID: 21300000, guid: 9bb7088518ad2b94cb10cb9f39e38a3b, type: 3}
     graphic: {fileID: 0}
-    hasPauseBefore: 0
     pauseLength: 0
+    precondition: 0
+    dialogueEvent: 0
     line: Mines??? What do I do?! I'm trapped!
   - speaker: 1
     portrait: {fileID: 21300000, guid: 90e2d95ea72c53345a58367b6e59de53, type: 3}
     graphic: {fileID: 0}
-    hasPauseBefore: 0
     pauseLength: 0
+    precondition: 0
+    dialogueEvent: 0
     line: Cahaha! Lucky for you, these things are practically ancient! They harken
       all the way back to the Great Gopher Wars, if I'm caw-rrect. It should be fine
       to walk over them.
   - speaker: 1
     portrait: {fileID: 21300000, guid: 90e2d95ea72c53345a58367b6e59de53, type: 3}
     graphic: {fileID: 0}
-    hasPauseBefore: 0
     pauseLength: 0
+    precondition: 0
+    dialogueEvent: 0
     line: Just don't do anything too stupid. Like eat one of them. Cahahahaha!
   - speaker: 0
     portrait: {fileID: 21300000, guid: 9bb7088518ad2b94cb10cb9f39e38a3b, type: 3}
     graphic: {fileID: 0}
-    hasPauseBefore: 0
     pauseLength: 0
+    precondition: 0
+    dialogueEvent: 0
     line: ...
   - speaker: 1
     portrait: {fileID: 21300000, guid: 90e2d95ea72c53345a58367b6e59de53, type: 3}
     graphic: {fileID: 0}
-    hasPauseBefore: 0
     pauseLength: 0
+    precondition: 0
+    dialogueEvent: 0
     line: ...
   - speaker: 1
     portrait: {fileID: 21300000, guid: 90e2d95ea72c53345a58367b6e59de53, type: 3}
     graphic: {fileID: 0}
-    hasPauseBefore: 0
     pauseLength: 0
+    precondition: 0
+    dialogueEvent: 0
     line: So what are you waiting for? Away! Shoo shoo!
   - speaker: 0
     portrait: {fileID: 21300000, guid: 9bb7088518ad2b94cb10cb9f39e38a3b, type: 3}
     graphic: {fileID: 0}
-    hasPauseBefore: 0
     pauseLength: 0
+    precondition: 0
+    dialogueEvent: 0
     line: ...I'm hungry.
   - speaker: 1
     portrait: {fileID: 21300000, guid: 90e2d95ea72c53345a58367b6e59de53, type: 3}
     graphic: {fileID: 0}
-    hasPauseBefore: 0
     pauseLength: 0
+    precondition: 0
+    dialogueEvent: 0
     line: ...
   - speaker: 0
     portrait: {fileID: 21300000, guid: 9bb7088518ad2b94cb10cb9f39e38a3b, type: 3}
     graphic: {fileID: 0}
-    hasPauseBefore: 0
     pauseLength: 0
+    precondition: 0
+    dialogueEvent: 0
     line: ...
   - speaker: 1
     portrait: {fileID: 21300000, guid: 90e2d95ea72c53345a58367b6e59de53, type: 3}
     graphic: {fileID: 0}
-    hasPauseBefore: 0
     pauseLength: 0
+    precondition: 0
+    dialogueEvent: 0
     line: CAH! Fine, you helpless sack of wool! I'll keep watch and make sure you
       don't get blown up into mutton chops.
   - speaker: 1
     portrait: {fileID: 21300000, guid: 90e2d95ea72c53345a58367b6e59de53, type: 3}
     graphic: {fileID: 0}
-    hasPauseBefore: 1
-    pauseLength: 1
+    pauseLength: 1.5
+    precondition: 0
+    dialogueEvent: 0
     line: Alright, first order of business. That spot of grass you're standing on
       right now? I have a feeling that it's safe.
   - speaker: 0
     portrait: {fileID: 21300000, guid: 9bb7088518ad2b94cb10cb9f39e38a3b, type: 3}
     graphic: {fileID: 0}
-    hasPauseBefore: 0
     pauseLength: 0
+    precondition: 0
+    dialogueEvent: 0
     line: What makes you think that?
   - speaker: 1
     portrait: {fileID: 21300000, guid: 90e2d95ea72c53345a58367b6e59de53, type: 3}
     graphic: {fileID: 0}
-    hasPauseBefore: 0
     pauseLength: 0
+    precondition: 0
+    dialogueEvent: 0
     line: Beginner's luck. There's no way you'd be so unlucky as to *immediately*
       blow up, cahaha!
   - speaker: 0
     portrait: {fileID: 21300000, guid: 9bb7088518ad2b94cb10cb9f39e38a3b, type: 3}
     graphic: {fileID: 0}
-    hasPauseBefore: 0
     pauseLength: 0
+    precondition: 0
+    dialogueEvent: 0
     line: I dunno, sounds awfully convenient...
   - speaker: 1
     portrait: {fileID: 21300000, guid: 90e2d95ea72c53345a58367b6e59de53, type: 3}
     graphic: {fileID: 0}
-    hasPauseBefore: 0
     pauseLength: 0
+    precondition: 0
+    dialogueEvent: 0
     line: Trust me, I know what I'm cawing about. Now, eat!
+  - speaker: 2
+    portrait: {fileID: 0}
+    graphic: {fileID: 0}
+    pauseLength: 0
+    precondition: 0
+    dialogueEvent: 1
+    line: '[Press E to eat a tile, revealing it]'
+  - speaker: 1
+    portrait: {fileID: 21300000, guid: 90e2d95ea72c53345a58367b6e59de53, type: 3}
+    graphic: {fileID: 0}
+    pauseLength: 1
+    precondition: 1
+    dialogueEvent: 0
+    line: See? All safe.
+  - speaker: 0
+    portrait: {fileID: 21300000, guid: 9bb7088518ad2b94cb10cb9f39e38a3b, type: 3}
+    graphic: {fileID: 0}
+    pauseLength: 0
+    precondition: 0
+    dialogueEvent: 0
+    line: Huh, you were right.
+  - speaker: 1
+    portrait: {fileID: 21300000, guid: 90e2d95ea72c53345a58367b6e59de53, type: 3}
+    graphic: {fileID: 0}
+    pauseLength: 0
+    precondition: 0
+    dialogueEvent: 0
+    line: Of caw-rse I was!
+  - speaker: 1
+    portrait: {fileID: 21300000, guid: 90e2d95ea72c53345a58367b6e59de53, type: 3}
+    graphic: {fileID: 0}
+    pauseLength: 1
+    precondition: 0
+    dialogueEvent: 0
+    line: Now, try the area south of where you just ate.
+  - speaker: 0
+    portrait: {fileID: 21300000, guid: 9bb7088518ad2b94cb10cb9f39e38a3b, type: 3}
+    graphic: {fileID: 0}
+    pauseLength: 0
+    precondition: 0
+    dialogueEvent: 0
+    line: Uh, alright, just a moment...
+  - speaker: 1
+    portrait: {fileID: 21300000, guid: 90e2d95ea72c53345a58367b6e59de53, type: 3}
+    graphic: {fileID: 0}
+    pauseLength: 0
+    precondition: 0
+    dialogueEvent: 0
+    line: What's the matter? Don't tell me you forgot how to move! Cahaha!
+  - speaker: 0
+    portrait: {fileID: 21300000, guid: 9bb7088518ad2b94cb10cb9f39e38a3b, type: 3}
+    graphic: {fileID: 0}
+    pauseLength: 0
+    precondition: 0
+    dialogueEvent: 0
+    line: ...
+  - speaker: 1
+    portrait: {fileID: 21300000, guid: 90e2d95ea72c53345a58367b6e59de53, type: 3}
+    graphic: {fileID: 0}
+    pauseLength: 0
+    precondition: 0
+    dialogueEvent: 0
+    line: Oh, for the love of-
+  - speaker: 2
+    portrait: {fileID: 0}
+    graphic: {fileID: 0}
+    pauseLength: 0
+    precondition: 0
+    dialogueEvent: 2
+    line: '[Use WASD to move, and press SPACE to jump]'
+  - speaker: 2
+    portrait: {fileID: 0}
+    graphic: {fileID: 0}
+    pauseLength: 0
+    precondition: 0
+    dialogueEvent: 0
+    line: '[You can rotate with LEFT CLICK and pan with RIGHT CLICK. Scroll to zoom
+      in/out]'
+  - speaker: 0
+    portrait: {fileID: 21300000, guid: 9bb7088518ad2b94cb10cb9f39e38a3b, type: 3}
+    graphic: {fileID: 0}
+    pauseLength: 1
+    precondition: 2
+    dialogueEvent: 0
+    line: Wow, look! What's that on the ground?
+  - speaker: 1
+    portrait: {fileID: 21300000, guid: 90e2d95ea72c53345a58367b6e59de53, type: 3}
+    graphic: {fileID: 0}
+    pauseLength: 0
+    precondition: 0
+    dialogueEvent: 0
+    line: Caha, I've heard about this! Humans have a special caw-mmunication system
+      to let each other know if there are mines nearby. This innovation played a
+      major part in their victory in the Second Great Gopher War...
+  - speaker: 1
+    portrait: {fileID: 21300000, guid: 90e2d95ea72c53345a58367b6e59de53, type: 3}
+    graphic: {fileID: 0}
+    pauseLength: 0
+    precondition: 0
+    dialogueEvent: 0
+    line: ...But I digress.
+  - speaker: 0
+    portrait: {fileID: 21300000, guid: 9bb7088518ad2b94cb10cb9f39e38a3b, type: 3}
+    graphic: {fileID: 0}
+    pauseLength: 0
+    precondition: 0
+    dialogueEvent: 0
+    line: How does it work?
+  - speaker: 2
+    portrait: {fileID: 0}
+    graphic: {fileID: 0}
+    pauseLength: 0
+    precondition: 0
+    dialogueEvent: 0
+    line: '[The number on a dirt tile displays how many mines are directly adjacent
+      to it]'
+  - speaker: 2
+    portrait: {fileID: 0}
+    graphic: {fileID: 0}
+    pauseLength: 0
+    precondition: 0
+    dialogueEvent: 0
+    line: '[A dirt tile without a number means that it has no adjacent mines]'
+  - speaker: 1
+    portrait: {fileID: 21300000, guid: 90e2d95ea72c53345a58367b6e59de53, type: 3}
+    graphic: {fileID: 0}
+    pauseLength: 0
+    precondition: 0
+    dialogueEvent: 3
+    line: So keep that in mind as you're going around! Now, try clearing some more
+      grass by yourself!
+  - speaker: 1
+    portrait: {fileID: 21300000, guid: 90e2d95ea72c53345a58367b6e59de53, type: 3}
+    graphic: {fileID: 0}
+    pauseLength: 0
+    precondition: 3
+    dialogueEvent: 0
+    line: Cawow, that was a close caw-ll! You nearly blew this whole place up!
+  - speaker: 0
+    portrait: {fileID: 21300000, guid: 9bb7088518ad2b94cb10cb9f39e38a3b, type: 3}
+    graphic: {fileID: 0}
+    pauseLength: 0
+    precondition: 0
+    dialogueEvent: 0
+    line: My baa-d, it's just so difficult to keep track of where all the mines are...
+  - speaker: 1
+    portrait: {fileID: 21300000, guid: 90e2d95ea72c53345a58367b6e59de53, type: 3}
+    graphic: {fileID: 0}
+    pauseLength: 0
+    precondition: 0
+    dialogueEvent: 0
+    line: Hmm...do you have any way of marking an area? That should make things easier.
+  - speaker: 2
+    portrait: {fileID: 0}
+    graphic: {fileID: 0}
+    pauseLength: 0
+    precondition: 0
+    dialogueEvent: 4
+    line: '[Press F to flag/unflag an area and prevent it from being eaten!]'
+  - speaker: 1
+    portrait: {fileID: 21300000, guid: 90e2d95ea72c53345a58367b6e59de53, type: 3}
+    graphic: {fileID: 0}
+    pauseLength: 0
+    precondition: 4
+    dialogueEvent: 0
+    line: CAHH! Disgusting!
+  - speaker: 0
+    portrait: {fileID: 21300000, guid: 9bb7088518ad2b94cb10cb9f39e38a3b, type: 3}
+    graphic: {fileID: 0}
+    pauseLength: 0
+    precondition: 0
+    dialogueEvent: 0
+    line: But it works...
+  - speaker: 1
+    portrait: {fileID: 21300000, guid: 90e2d95ea72c53345a58367b6e59de53, type: 3}
+    graphic: {fileID: 0}
+    pauseLength: 0
+    precondition: 0
+    dialogueEvent: 0
+    line: Hmph. What are you, an animal?! Absolutely ridiculous...
+  - speaker: 1
+    portrait: {fileID: 21300000, guid: 90e2d95ea72c53345a58367b6e59de53, type: 3}
+    graphic: {fileID: 0}
+    pauseLength: 0
+    precondition: 5
+    dialogueEvent: 0
+    line: Careful! Cah, it's like you actually want the two of us to blow up!
+  - speaker: 0
+    portrait: {fileID: 21300000, guid: 9bb7088518ad2b94cb10cb9f39e38a3b, type: 3}
+    graphic: {fileID: 0}
+    pauseLength: 0
+    precondition: 0
+    dialogueEvent: 0
+    line: Sorry!
+  - speaker: 1
+    portrait: {fileID: 21300000, guid: 90e2d95ea72c53345a58367b6e59de53, type: 3}
+    graphic: {fileID: 0}
+    pauseLength: 0
+    precondition: 6
+    dialogueEvent: 0
+    line: Caw-ngrats, nice job! I think you've eaten all the grass there is here!
+      How do you feel now?
+  - speaker: 0
+    portrait: {fileID: 21300000, guid: 9bb7088518ad2b94cb10cb9f39e38a3b, type: 3}
+    graphic: {fileID: 0}
+    pauseLength: 0
+    precondition: 0
+    dialogueEvent: 0
+    line: Pretty great! Thanks for everything!
+  - speaker: 1
+    portrait: {fileID: 21300000, guid: 90e2d95ea72c53345a58367b6e59de53, type: 3}
+    graphic: {fileID: 0}
+    pauseLength: 0
+    precondition: 0
+    dialogueEvent: 0
+    line: Aw, shucks! But yeah, that was some impressive work there. Maybe I was
+      too harsh on you earli-
+  - speaker: 1
+    portrait: {fileID: 21300000, guid: 90e2d95ea72c53345a58367b6e59de53, type: 3}
+    graphic: {fileID: 0}
+    pauseLength: 0
+    precondition: 0
+    dialogueEvent: 0
+    line: '!'
+  - speaker: 2
+    portrait: {fileID: 0}
+    graphic: {fileID: 0}
+    pauseLength: 0
+    precondition: 0
+    dialogueEvent: 5
+    line: '[END OF TUTORIAL]'
