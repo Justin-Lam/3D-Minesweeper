@@ -8,7 +8,7 @@ public class TutorialManager : GameManager
 	protected override void Start()
 	{
 		base.Start();
-		dialogueManager.AddDialoguePause(1.0f);
+		dialogueManager.CallNextLine();
 	}
 
 	protected override void InitializeGameplayVariables()

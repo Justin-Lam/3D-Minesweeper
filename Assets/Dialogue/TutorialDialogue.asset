@@ -15,52 +15,126 @@ MonoBehaviour:
   dialogueLines:
   - speaker: 0
     portrait: {fileID: 21300000, guid: 9bb7088518ad2b94cb10cb9f39e38a3b, type: 3}
-    line: Baa, I'm so hungry...And most of the field is dried up...
+    graphic: {fileID: 0}
+    hasPauseBefore: 1
+    pauseLength: 1
+    line: Baa, I'm so hungry...
   - speaker: 0
     portrait: {fileID: 21300000, guid: 9bb7088518ad2b94cb10cb9f39e38a3b, type: 3}
-    line: But this patch of grass seems pretty nice! I think I'll have my lunch here...
+    graphic: {fileID: 0}
+    hasPauseBefore: 0
+    pauseLength: 0
+    line: This patch of grass seems pretty nice! I think I'll have my lunch here...
   - speaker: 1
     portrait: {fileID: 21300000, guid: 90e2d95ea72c53345a58367b6e59de53, type: 3}
+    graphic: {fileID: 0}
+    hasPauseBefore: 0
+    pauseLength: 0
     line: CAHH! What do you think you're doing, you fluffy fool?!
   - speaker: 0
     portrait: {fileID: 21300000, guid: 9bb7088518ad2b94cb10cb9f39e38a3b, type: 3}
+    graphic: {fileID: 0}
+    hasPauseBefore: 0
+    pauseLength: 0
     line: Beh?
   - speaker: 1
     portrait: {fileID: 21300000, guid: 90e2d95ea72c53345a58367b6e59de53, type: 3}
+    graphic: {fileID: 0}
+    hasPauseBefore: 0
+    pauseLength: 0
     line: Turn back! Turn back! This lot is riddled with mines!
   - speaker: 0
     portrait: {fileID: 21300000, guid: 9bb7088518ad2b94cb10cb9f39e38a3b, type: 3}
+    graphic: {fileID: 0}
+    hasPauseBefore: 0
+    pauseLength: 0
     line: Mines??? What do I do?! I'm trapped!
   - speaker: 1
     portrait: {fileID: 21300000, guid: 90e2d95ea72c53345a58367b6e59de53, type: 3}
-    line: Cahaha! Lucky for you, these things are old! They harken all the way back
-      to the Great Mole Wars, if I'm caw-rrect. It should be fine to walk over them.
+    graphic: {fileID: 0}
+    hasPauseBefore: 0
+    pauseLength: 0
+    line: Cahaha! Lucky for you, these things are practically ancient! They harken
+      all the way back to the Great Gopher Wars, if I'm caw-rrect. It should be fine
+      to walk over them.
   - speaker: 1
     portrait: {fileID: 21300000, guid: 90e2d95ea72c53345a58367b6e59de53, type: 3}
+    graphic: {fileID: 0}
+    hasPauseBefore: 0
+    pauseLength: 0
     line: Just don't do anything too stupid. Like eat one of them. Cahahahaha!
   - speaker: 0
     portrait: {fileID: 21300000, guid: 9bb7088518ad2b94cb10cb9f39e38a3b, type: 3}
+    graphic: {fileID: 0}
+    hasPauseBefore: 0
+    pauseLength: 0
     line: ...
   - speaker: 1
     portrait: {fileID: 21300000, guid: 90e2d95ea72c53345a58367b6e59de53, type: 3}
+    graphic: {fileID: 0}
+    hasPauseBefore: 0
+    pauseLength: 0
     line: ...
   - speaker: 1
     portrait: {fileID: 21300000, guid: 90e2d95ea72c53345a58367b6e59de53, type: 3}
-    line: So what are you waiting for? Get out of here!
+    graphic: {fileID: 0}
+    hasPauseBefore: 0
+    pauseLength: 0
+    line: So what are you waiting for? Away! Shoo shoo!
   - speaker: 0
     portrait: {fileID: 21300000, guid: 9bb7088518ad2b94cb10cb9f39e38a3b, type: 3}
-    line: But I'm hungry...
+    graphic: {fileID: 0}
+    hasPauseBefore: 0
+    pauseLength: 0
+    line: ...I'm hungry.
   - speaker: 1
     portrait: {fileID: 21300000, guid: 90e2d95ea72c53345a58367b6e59de53, type: 3}
+    graphic: {fileID: 0}
+    hasPauseBefore: 0
+    pauseLength: 0
     line: ...
   - speaker: 0
     portrait: {fileID: 21300000, guid: 9bb7088518ad2b94cb10cb9f39e38a3b, type: 3}
+    graphic: {fileID: 0}
+    hasPauseBefore: 0
+    pauseLength: 0
     line: ...
   - speaker: 1
     portrait: {fileID: 21300000, guid: 90e2d95ea72c53345a58367b6e59de53, type: 3}
-    line: CAH! Fine, you stupid sack of wool! I'll keep watch and make sure you don't
-      get blown to mutton chops.
+    graphic: {fileID: 0}
+    hasPauseBefore: 0
+    pauseLength: 0
+    line: CAH! Fine, you helpless sack of wool! I'll keep watch and make sure you
+      don't get blown up into mutton chops.
   - speaker: 1
     portrait: {fileID: 21300000, guid: 90e2d95ea72c53345a58367b6e59de53, type: 3}
-    line: CAH! Fine, you stupid sack of wool! I'll keep watch and make sure you don't
-      get blown to mutton chops.
+    graphic: {fileID: 0}
+    hasPauseBefore: 1
+    pauseLength: 1
+    line: Alright, first order of business. That spot of grass you're standing on
+      right now? I have a feeling that it's safe.
+  - speaker: 0
+    portrait: {fileID: 21300000, guid: 9bb7088518ad2b94cb10cb9f39e38a3b, type: 3}
+    graphic: {fileID: 0}
+    hasPauseBefore: 0
+    pauseLength: 0
+    line: What makes you think that?
+  - speaker: 1
+    portrait: {fileID: 21300000, guid: 90e2d95ea72c53345a58367b6e59de53, type: 3}
+    graphic: {fileID: 0}
+    hasPauseBefore: 0
+    pauseLength: 0
+    line: Beginner's luck. There's no way you'd be so unlucky as to *immediately*
+      blow up, cahaha!
+  - speaker: 0
+    portrait: {fileID: 21300000, guid: 9bb7088518ad2b94cb10cb9f39e38a3b, type: 3}
+    graphic: {fileID: 0}
+    hasPauseBefore: 0
+    pauseLength: 0
+    line: I dunno, sounds awfully convenient...
+  - speaker: 1
+    portrait: {fileID: 21300000, guid: 90e2d95ea72c53345a58367b6e59de53, type: 3}
+    graphic: {fileID: 0}
+    hasPauseBefore: 0
+    pauseLength: 0
+    line: Trust me, I know what I'm cawing about. Now, eat!

@@ -18,6 +18,10 @@ public class DialogueLine
     public Speaker speaker;
 
     public Sprite portrait;
+    public Sprite graphic;
+
+    public bool hasPauseBefore = false;
+    public float pauseLength;
 
     [TextArea]
     public string line;
