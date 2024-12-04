@@ -15,6 +15,8 @@ public class GameManager : MonoBehaviour
 	[SerializeField] float perlinFrequency;
 	[SerializeField] float perlinAmplitude;
 	[SerializeField] float generationDelay;
+	[SerializeField] float spawnHeight;
+	[SerializeField] float spawnDuration;
 	float perlinOffset;
 
 	[Header("Prefabs")]
@@ -132,7 +134,7 @@ public class GameManager : MonoBehaviour
 		Vector3 block_BR = blocks[0, blocks.GetLength(1) - 1].gameObject.transform.position;
 		Vector3 block_BL = blocks[0, 0].gameObject.transform.position;
 
-		GameObject lastFencePlaced = null;
+		GameObject lastObjPlaced = null;
 
 		for (int x = 0; x < width + 1; x++)
 		{
@@ -140,15 +142,22 @@ public class GameManager : MonoBehaviour
 			float stoneZ = block_TL.z + 1;
 			float stoneY = LevelGenPerlin(stoneX, stoneZ);
 			Vector3 stonePosition = new Vector3(stoneX, stoneY, stoneZ);
-			GameObject go = Instantiate(stone, new Vector3(stoneX, stoneY, stoneZ), Quaternion.identity, transform);
+			Vector3 fencePosition = stonePosition + new Vector3(0.5f, 1, 0);
+
+			lastObjPlaced = Instantiate(stone, stonePosition, Quaternion.identity, transform);
+			StartCoroutine(lastObjPlaced.GetComponent<JuicySpawn>().FallIntoPlace(spawnHeight, spawnDuration));
 			yield return new WaitForSeconds(generationDelay);
 
-			Vector3 fencePosition = stonePosition + new Vector3(0.5f, 1, 0);
-			lastFencePlaced = Instantiate(fence, fencePosition, Quaternion.identity, transform);
+			lastObjPlaced = Instantiate(fence, fencePosition, Quaternion.identity, transform);
+			if (x < width)
+			{
+				StartCoroutine(lastObjPlaced.GetComponent<JuicySpawn>().FallIntoPlace(spawnHeight, spawnDuration));
+			}
 			yield return new WaitForSeconds(generationDelay);
 		}
-		lastFencePlaced.transform.Rotate(0, 90, 0);
-		lastFencePlaced.transform.position += new Vector3(-0.5f, 0, -0.5f);
+		lastObjPlaced.transform.Rotate(0, 90, 0);
+		lastObjPlaced.transform.position += new Vector3(-0.5f, 0, -0.5f);
+		StartCoroutine(lastObjPlaced.GetComponent<JuicySpawn>().FallIntoPlace(spawnHeight, spawnDuration));
 		yield return new WaitForSeconds(generationDelay);
 
 		for (int y = 0; y < height + 1; y++)
@@ -157,16 +166,23 @@ public class GameManager : MonoBehaviour
 			float stoneZ = block_TR.z - y;
 			float stoneY = LevelGenPerlin(stoneX, stoneZ);
 			Vector3 stonePosition = new Vector3(stoneX, stoneY, stoneZ);
-			Instantiate(stone, stonePosition, Quaternion.identity, transform);
+			Vector3 fencePosition = stonePosition + new Vector3(0, 1, -0.5f);
+
+			lastObjPlaced = Instantiate(stone, stonePosition, Quaternion.identity, transform);
+			StartCoroutine(lastObjPlaced.GetComponent<JuicySpawn>().FallIntoPlace(spawnHeight, spawnDuration));
 			yield return new WaitForSeconds(generationDelay);
 
-			Vector3 fencePosition = stonePosition + new Vector3(0, 1, -0.5f);
-			lastFencePlaced = Instantiate(fence, fencePosition, Quaternion.identity, transform);
-			lastFencePlaced.transform.Rotate(0, 90, 0);
+			lastObjPlaced = Instantiate(fence, fencePosition, Quaternion.identity, transform);
+			lastObjPlaced.transform.Rotate(0, 90, 0);
+			if (y < height)
+			{
+				StartCoroutine(lastObjPlaced.GetComponent<JuicySpawn>().FallIntoPlace(spawnHeight, spawnDuration));
+			}
 			yield return new WaitForSeconds(generationDelay);
 		}
-		lastFencePlaced.transform.Rotate(0, 90, 0);
-		lastFencePlaced.transform.position += new Vector3(-0.5f, 0, 0.5f);
+		lastObjPlaced.transform.Rotate(0, 90, 0);
+		lastObjPlaced.transform.position += new Vector3(-0.5f, 0, 0.5f);
+		StartCoroutine(lastObjPlaced.GetComponent<JuicySpawn>().FallIntoPlace(spawnHeight, spawnDuration));
 		yield return new WaitForSeconds(generationDelay);
 
 		for (int x = 0; x < width + 1; x++)
@@ -175,15 +191,22 @@ public class GameManager : MonoBehaviour
 			float stoneZ = block_BR.z - 1;
 			float stoneY = LevelGenPerlin(stoneX, stoneZ);
 			Vector3 stonePosition = new Vector3(stoneX, stoneY, stoneZ);
-			Instantiate(stone, stonePosition, Quaternion.identity, transform);
+			Vector3 fencePosition = stonePosition + new Vector3(-0.5f, 1, 0);
+
+			lastObjPlaced = Instantiate(stone, stonePosition, Quaternion.identity, transform);
+			StartCoroutine(lastObjPlaced.GetComponent<JuicySpawn>().FallIntoPlace(spawnHeight, spawnDuration));
 			yield return new WaitForSeconds(generationDelay);
 
-			Vector3 fencePosition = stonePosition + new Vector3(-0.5f, 1, 0);
-			lastFencePlaced = Instantiate(fence, fencePosition, Quaternion.identity, transform);
+			lastObjPlaced = Instantiate(fence, fencePosition, Quaternion.identity, transform);
+			if (x < width)
+			{
+				StartCoroutine(lastObjPlaced.GetComponent<JuicySpawn>().FallIntoPlace(spawnHeight, spawnDuration));
+			}
 			yield return new WaitForSeconds(generationDelay);
 		}
-		lastFencePlaced.transform.Rotate(0, 90, 0);
-		lastFencePlaced.transform.position += new Vector3(0.5f, 0, 0.5f);
+		lastObjPlaced.transform.Rotate(0, 90, 0);
+		lastObjPlaced.transform.position += new Vector3(0.5f, 0, 0.5f);
+		StartCoroutine(lastObjPlaced.GetComponent<JuicySpawn>().FallIntoPlace(spawnHeight, spawnDuration));
 		yield return new WaitForSeconds(generationDelay);
 
 		for (int y = 0; y < height + 1; y++)
@@ -192,16 +215,23 @@ public class GameManager : MonoBehaviour
 			float stoneZ = block_BL.z + y;
 			float stoneY = LevelGenPerlin(stoneX, stoneZ);
 			Vector3 stonePosition = new Vector3(stoneX, stoneY, stoneZ);
-			Instantiate(stone, stonePosition, Quaternion.identity, transform);
+			Vector3 fencePosition = stonePosition + new Vector3(0, 1, 0.5f);
+
+			lastObjPlaced = Instantiate(stone, stonePosition, Quaternion.identity, transform);
+			StartCoroutine(lastObjPlaced.GetComponent<JuicySpawn>().FallIntoPlace(spawnHeight, spawnDuration));
 			yield return new WaitForSeconds(generationDelay);
 
-			Vector3 fencePosition = stonePosition + new Vector3(0, 1, 0.5f);
-			lastFencePlaced = Instantiate(fence, fencePosition, Quaternion.identity, transform);
-			lastFencePlaced.transform.Rotate(0, 90, 0);
+			lastObjPlaced = Instantiate(fence, fencePosition, Quaternion.identity, transform);
+			lastObjPlaced.transform.Rotate(0, 90, 0);
+			if (y < height)
+			{
+				StartCoroutine(lastObjPlaced.GetComponent<JuicySpawn>().FallIntoPlace(spawnHeight, spawnDuration));
+			}
 			yield return new WaitForSeconds(generationDelay);
 		}
-		lastFencePlaced.transform.Rotate(0, 90, 0);
-		lastFencePlaced.transform.position += new Vector3(0.5f, 0, -0.5f);
+		lastObjPlaced.transform.Rotate(0, 90, 0);
+		lastObjPlaced.transform.position += new Vector3(0.5f, 0, -0.5f);
+		StartCoroutine(lastObjPlaced.GetComponent<JuicySpawn>().FallIntoPlace(spawnHeight, spawnDuration));
 		yield return new WaitForSeconds(generationDelay);
 	}
 	/// <summary> Returns the y position to set a game object to given its x and z. </summary>
