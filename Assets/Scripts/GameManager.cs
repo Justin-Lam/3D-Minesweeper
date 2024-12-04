@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
 	[SerializeField] float generationDelay;
 	[SerializeField] float spawnHeight;
 	[SerializeField] float spawnDuration;
-	float perlinOffset;
+	float perlinOffset;	// so generation is random each time
 
 	[Header("Prefabs")]
 	[SerializeField] protected GameObject block;
@@ -129,13 +129,39 @@ public class GameManager : MonoBehaviour
 	/// </summary>
 	IEnumerator CreateBarrier()
     {
+		// Get the positions of the grid's corner blocks
 		Vector3 block_TL = blocks[blocks.GetLength(0) - 1, 0].gameObject.transform.position;
 		Vector3 block_TR = blocks[blocks.GetLength(0) - 1, blocks.GetLength(1) - 1].gameObject.transform.position;
 		Vector3 block_BR = blocks[0, blocks.GetLength(1) - 1].gameObject.transform.position;
 		Vector3 block_BL = blocks[0, 0].gameObject.transform.position;
 
+		// Create a variable to reference the stones and fences we're going to create
 		GameObject lastObjPlaced = null;
 
+		/*
+		 * Place stones and fences around the grid one by one, starting from the top left corner and going clockwise
+		 * Example:
+		 *							s				f				f	s					f	f	f	f		f	f	f	f
+		 *			b	b	b		b	b	b		b	b	b		b	b	b				b	b	b			b	b	b	s
+		 *			b	b	b	=>	b	b	b	=>	b	b	b	=>	b	b	b	=>	...	=>	b	b	b		=>	b	b	b
+		 *			b	b	b		b	b	b		b	b	b		b	b	b				b	b	b			b	b	b
+		 *			
+		 * We use four for loops to do this, one for each edge
+		 * Within each loop, we:
+		 *	1. Calculate stone and fence position
+		 *	2. Create stone, play its spawning animation, then wait
+		 *	3. Create fence, play its spawning animation if it's not the last fence, then wait
+		 *	
+		 * When a loop completes, an edge of stones and fences has been created
+		 * Now, we:
+		 *	1. Rotate and reposition the last fence of the edge
+		 *	2. Play its spawning animation
+		 *	3. Wait
+		 * We have to do this because we can only play a stone/fence's spawning animation when its position has been completely finalized
+		 * This is because the script that handles their spawn animation uses their current position as their target position
+		 */
+
+		// Top Edge
 		for (int x = 0; x < width + 1; x++)
 		{
 			float stoneX = block_TL.x + x;
@@ -160,6 +186,7 @@ public class GameManager : MonoBehaviour
 		StartCoroutine(lastObjPlaced.GetComponent<JuicySpawn>().FallIntoPlace(spawnHeight, spawnDuration));
 		yield return new WaitForSeconds(generationDelay);
 
+		// Right Edge
 		for (int y = 0; y < height + 1; y++)
 		{
 			float stoneX = block_TR.x + 1;
@@ -185,6 +212,7 @@ public class GameManager : MonoBehaviour
 		StartCoroutine(lastObjPlaced.GetComponent<JuicySpawn>().FallIntoPlace(spawnHeight, spawnDuration));
 		yield return new WaitForSeconds(generationDelay);
 
+		// Bottom Edge
 		for (int x = 0; x < width + 1; x++)
 		{
 			float stoneX = block_BR.x - x;
@@ -209,6 +237,7 @@ public class GameManager : MonoBehaviour
 		StartCoroutine(lastObjPlaced.GetComponent<JuicySpawn>().FallIntoPlace(spawnHeight, spawnDuration));
 		yield return new WaitForSeconds(generationDelay);
 
+		// Left Edge
 		for (int y = 0; y < height + 1; y++)
 		{
 			float stoneX = block_BL.x - 1;
