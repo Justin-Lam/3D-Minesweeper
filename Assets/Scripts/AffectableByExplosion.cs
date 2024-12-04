@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Explodable : MonoBehaviour
+public class AffectableByExplosion : MonoBehaviour
 {
 	[SerializeField] bool changeColliderOnExplode = false;
 	[SerializeField] Vector3 newCenter;
@@ -13,15 +13,7 @@ public class Explodable : MonoBehaviour
         boxColllider = GetComponent<BoxCollider>();
 		rb = GetComponent<Rigidbody>();
     }
-	void OnEnable()
-	{
-		GameManager.OnLoseGame += OnLoseGame;
-	}
-	void OnDisable()
-	{
-		GameManager.OnLoseGame -= OnLoseGame;
-	}
-	void OnLoseGame()
+	public void OnAffectedByExplosion()
 	{
         if (changeColliderOnExplode)
         {

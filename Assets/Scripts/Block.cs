@@ -83,6 +83,8 @@ public class Block : MonoBehaviour
 		}
 		else
 		{
+			// Explode
+
 			OnExplode?.Invoke();
 
 			mr.material = mine;
@@ -94,6 +96,13 @@ public class Block : MonoBehaviour
 
 				if (rb)
 				{
+					if (rb.gameObject.CompareTag("Player"))
+					{
+						Player.Instance.OnAffectedByExplosion();
+					}
+
+					rb.gameObject.GetComponent<AffectableByExplosion>()?.OnAffectedByExplosion();
+
 					rb.AddExplosionForce(power, transform.position, radius, upwardsModifier, ForceMode.Impulse);
 				}
 			}
