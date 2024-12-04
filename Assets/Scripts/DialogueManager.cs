@@ -81,7 +81,7 @@ public class DialogueManager : MonoBehaviour
         {
             dialogueDisplay.SetActive(true);
         }
-        if (tutorialManager != null && tutorialManager.blockEaten > 0) // if player actions are enabled
+        if (tutorialManager != null && tutorialManager.CheckPrecondition(Precondition.firstBlockEaten)) // if player actions are enabled
         {
             playerScript.enabled = false; // disable player actions when dialogue is playing
         }
@@ -93,7 +93,7 @@ public class DialogueManager : MonoBehaviour
 
     public void HideDialogueLines()
     {
-        if (tutorialManager != null && tutorialManager.blockEaten > 0)
+        if (tutorialManager != null && tutorialManager.CheckPrecondition(Precondition.firstBlockEaten))
         {
             playerScript.enabled = true; // enable player actions when dialogue is done
         }
@@ -108,7 +108,7 @@ public class DialogueManager : MonoBehaviour
     {
         HideDialogueLines();
 
-        if (tutorialManager != null && tutorialManager.blockEaten > 0)
+        if (tutorialManager != null && tutorialManager.CheckPrecondition(Precondition.firstBlockEaten))
         {
             playerScript.enabled = false;
         }
@@ -119,7 +119,7 @@ public class DialogueManager : MonoBehaviour
 
     public void HideNarration()
     {
-        if (tutorialManager != null && tutorialManager.blockEaten > 0)
+        if (tutorialManager != null && tutorialManager.CheckPrecondition(Precondition.firstBlockEaten))
         {
             playerScript.enabled = true;
         }
@@ -130,7 +130,7 @@ public class DialogueManager : MonoBehaviour
 
     public void ShowGraphic(Sprite graphic)
     {
-        if (tutorialManager != null && tutorialManager.blockEaten > 0)
+        if (tutorialManager != null && tutorialManager.CheckPrecondition(Precondition.firstBlockEaten))
         {
             playerScript.enabled = false;
         }
@@ -141,7 +141,7 @@ public class DialogueManager : MonoBehaviour
 
     public void HideGraphic()
     {
-        if (tutorialManager != null && tutorialManager.blockEaten > 0)
+        if (tutorialManager != null && tutorialManager.CheckPrecondition(Precondition.firstBlockEaten))
         {
             playerScript.enabled = true;
         }

@@ -9,8 +9,12 @@ public class TutorialManager : GameManager
 	public GameObject playerObject;
 
 	[Header("Demonstration Block Coords")]
-	[SerializeField] int demoBlockX;
-	[SerializeField] int demoBlockY;
+	[SerializeField] int demoBlockX = 2;
+	[SerializeField] int demoBlockY = 1;
+
+	[Header("Materials")]
+	[SerializeField] Material highlight;
+	[SerializeField] Material mine;
 
 	int[][] minePos;
 	int[] firstBlock;
@@ -18,7 +22,8 @@ public class TutorialManager : GameManager
 	Rigidbody playerRb;
 
 	// dialogue event variables
-	public int blockEaten = 0;
+	int grassEaten = 0;
+	int minesEaten = 0;
 
 
 	protected override void Start()
@@ -32,12 +37,13 @@ public class TutorialManager : GameManager
 
 		// start up the dialogue
 		dialogueManager.CallNextLine();
+
+		Debug.Log(blocks);
 	}
 
 	protected override void InitializeGameplayVariables()
 	{
-		grassLeft = width * height - numMines;
-		HUDManager.Instance.SetGrassLeftText(grassLeft);
+		base.InitializeGameplayVariables();
 
 		// Manually set where the mines will be (tutorial level is always the same)
 		minePos = new int[numMines][];
@@ -55,25 +61,30 @@ public class TutorialManager : GameManager
 	}
 	void PlaceMine(int[] xy)
 	{
-		// Turn a random grass block into a mine
+		// Turn grass block into a mine
 		blocks[xy[1], xy[0]].SetType(Block.Type.MINE);
 	}
 
 	protected override void OnBlockEaten(int x, int y)
 	{
-		if (blockEaten == 0)
-        {
-			blockEaten = 1;
-			dialogueManager.CallNextLine();
-		}
-		else if (blockEaten == 1)
-        {
-			blockEaten = 2;
-			dialogueManager.CallNextLine();
-		} // also make it so that only target block can be eaten
-
+		Debug.Log("x: " + x + ", y: " + y);
 		if (blocks[y, x].GetBlockType() == Block.Type.GRASS)
 		{
+			if (grassEaten == 0) // for the eating tutorial
+			{
+				grassEaten = 1;
+				dialogueManager.CallNextLine();
+			}
+			else if (grassEaten == 1) // for the numbering tutorial
+			{
+				if (x != demoBlockX && y != demoBlockY)
+                {
+					return; // if it's not the highlighted block then nothing happens on eat
+                }
+				grassEaten = 2;
+				dialogueManager.CallNextLine();
+			}
+
 			blocks[y, x].SetNearbyMinesText(getMinePositionsIn3x3(x, y).Count);
 
 			grassLeft--;
@@ -82,9 +93,30 @@ public class TutorialManager : GameManager
 			{
 				WinGame();
 			}
-		}
 
-		blocks[y, x].HandleOnEat();
+			blocks[y, x].HandleOnEat();
+		}
+		else if (blocks[y, x].GetBlockType() == Block.Type.MINE)
+        {
+			if (grassEaten < 2) // mines are only interactable after the second block has been eaten (triggers free roam)
+            {
+				return;
+            }
+
+			if (minesEaten == 0) // for the flagging tutorial
+			{
+				minesEaten = 1;
+				dialogueManager.CallNextLine();
+			}
+			else if (minesEaten == 1) // for the rest of the mines
+			{
+				minesEaten = 2;
+				dialogueManager.CallNextLine();
+			}
+
+			MeshRenderer mr = blocks[y, x].GetComponent<MeshRenderer>();
+			mr.material = mine;
+		}
 	}
 
 	public bool CheckPrecondition(Precondition precondition)
@@ -92,11 +124,19 @@ public class TutorialManager : GameManager
 		switch (precondition)
         {
 			case Precondition.firstBlockEaten:
-				if (blockEaten > 0)
+				if (grassEaten > 0)
 					return true;
 				return false;
 			case Precondition.secondBlockEaten:
-				if (blockEaten > 1)
+				if (grassEaten > 1)
+					return true;
+				return false;
+			case Precondition.firstMineEaten:
+				if (minesEaten > 0)
+					return true;
+				return false;
+			case Precondition.mineEaten:
+				if (minesEaten > 1)
 					return true;
 				return false;
 			default:
@@ -115,7 +155,10 @@ public class TutorialManager : GameManager
 			case DialogueEvent.allowMove:
 				playerRb.constraints = RigidbodyConstraints.None;
 				playerRb.constraints = RigidbodyConstraints.FreezeRotation;
+
 				// also make it so that target block is highlighted
+				MeshRenderer mr = blocks[demoBlockY, demoBlockX].GetComponent<MeshRenderer>();
+				mr.material = highlight;
 				break;
 			default:
 				break;
