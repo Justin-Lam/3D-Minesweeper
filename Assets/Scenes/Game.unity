@@ -371,7 +371,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &1595026457
+--- !u!1001 &1852509968
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -379,21 +379,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1596230089939077429, guid: 6b7f80a813c1423498c46290adfceaa9,
-        type: 3}
-      propertyPath: m_Radius
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1596230089939077429, guid: 6b7f80a813c1423498c46290adfceaa9,
-        type: 3}
-      propertyPath: m_Material
-      value: 
-      objectReference: {fileID: 13400000, guid: a6b0b93f108805c4c84088dcb92928f9,
-        type: 2}
     - target: {fileID: 5768704753100953015, guid: 6b7f80a813c1423498c46290adfceaa9,
         type: 3}
       propertyPath: m_Name
-      value: sheep
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 6576767027489328909, guid: 6b7f80a813c1423498c46290adfceaa9,
         type: 3}
@@ -717,6 +706,6 @@ SceneRoots:
   - {fileID: 6631469797189981763}
   - {fileID: 890358721}
   - {fileID: 101124530}
-  - {fileID: 1595026457}
+  - {fileID: 1852509968}
   - {fileID: 3962246440862177534}
   - {fileID: 1291539800}

@@ -3,10 +3,6 @@ using System.Collections;
 
 public class Player : MonoBehaviour
 {
-	[Header("Animations")]
-	public Animator anim;
-	float time = 0.0f;
-
 	[Header("Horizontal Movement")]
 	[SerializeField] float acceleration;
 	[SerializeField] float maxVelocity;
@@ -30,6 +26,10 @@ public class Player : MonoBehaviour
 
 	[Header("Flagging")]
 	[SerializeField] GameObject flag;
+
+	[Header("Animations")]
+	public Animator anim;
+	float time = 0.0f;
 
 	[Header("Singleton Pattern")]
 	private static Player instance;
@@ -61,7 +61,7 @@ public class Player : MonoBehaviour
 		gameplayCameraPanner = GameObject.Find("Panner").transform;
 
 		// Calculate groundedDistFromGround
-		float colliderRadius = GetComponent<SphereCollider>().radius;
+		float colliderRadius = GetComponent<CapsuleCollider>().radius;
 		groundedDistFromGround = colliderRadius * (1 + groundedDistFromGroundPadding);
 
 		// Get Animator
