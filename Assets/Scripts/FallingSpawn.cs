@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class JuicySpawn : MonoBehaviour
+public class FallingSpawn : MonoBehaviour
 {
 	public IEnumerator FallIntoPlace(float startingHeight, float duration)
 	{

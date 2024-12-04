@@ -251,13 +251,14 @@ GameObject:
   - component: {fileID: 5363664939552066743}
   - component: {fileID: 731084398164103260}
   - component: {fileID: 8539460571428951350}
+  - component: {fileID: 9123444575946047207}
   m_Layer: 0
   m_Name: Block
   m_TagString: Block
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5942826052048852536
 Transform:
   m_ObjectHideFlags: 0
@@ -413,3 +414,15 @@ MonoBehaviour:
   changeColliderOnExplode: 0
   newCenter: {x: 0, y: 0, z: 0}
   newSize: {x: 0, y: 0, z: 0}
+--- !u!114 &9123444575946047207
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8184562119401177165}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4a08b0edf8abb04eb5da1f5c6fa23ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

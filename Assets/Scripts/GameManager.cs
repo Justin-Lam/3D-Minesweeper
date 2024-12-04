@@ -70,6 +70,7 @@ public class GameManager : MonoBehaviour
 		ValidateParameters();
 		InitializeGameplayVariables();
 		CreateBlocks();
+		StartCoroutine(SpawnBlocks());
 		StartCoroutine(CreateBarrier());
 		PlaceMines();
 	}
@@ -121,6 +122,41 @@ public class GameManager : MonoBehaviour
 				blockScript.SetPosition(x, y);
 				blocks[y, x] = blockScript;
 			}
+		}		
+	}
+	IEnumerator SpawnBlocks()
+	{
+		/* asked ChatGPT:
+		 *	"	if I have a 2D array of gameobjects, what's the best way to do an action on each element but in a random order?
+		 *		would it be shuffling the 2D array into a 1D array and then iterating through the 1D array?		"
+		 * 
+		 * and it basically said yes
+		 */
+
+		// Flatten blocks from a 2D array to a 1D one
+		FallingSpawn[] blocks1D = new FallingSpawn[height * width];
+		for (int y = 0; y < height; y++)
+		{
+			for (int x = 0; x < width; x++)
+			{
+				blocks1D[y * width + x] = blocks[y, x].gameObject.GetComponent<FallingSpawn>();
+			}
+		}
+
+		// Shuffle using Fisher-Yates
+		// from https://www.geeksforgeeks.org/shuffle-a-given-array-using-fisher-yates-shuffle-algorithm/
+		// Start from the last elem and swap one by one. We don't need to run for the 1st elem that's why i > 0
+		for (int i = blocks1D.Length - 1; i > 0; i--)
+		{
+			int randomIndex = UnityEngine.Random.Range(0, i + 1);                           // pick rand index from 0 to i
+			(blocks1D[i], blocks1D[randomIndex]) = (blocks1D[randomIndex], blocks1D[i]);    // swap
+		}
+
+		// Spawn the blocks
+		foreach (FallingSpawn fallingSpawn in blocks1D)
+		{
+			StartCoroutine(fallingSpawn.FallIntoPlace(spawnHeight, spawnDuration));
+			yield return new WaitForSeconds(generationDelay);
 		}
 	}
 	/// <summary>
@@ -171,19 +207,19 @@ public class GameManager : MonoBehaviour
 			Vector3 fencePosition = stonePosition + new Vector3(0.5f, 1, 0);
 
 			lastObjPlaced = Instantiate(stone, stonePosition, Quaternion.identity, transform);
-			StartCoroutine(lastObjPlaced.GetComponent<JuicySpawn>().FallIntoPlace(spawnHeight, spawnDuration));
+			StartCoroutine(lastObjPlaced.GetComponent<FallingSpawn>().FallIntoPlace(spawnHeight, spawnDuration));
 			yield return new WaitForSeconds(generationDelay);
 
 			lastObjPlaced = Instantiate(fence, fencePosition, Quaternion.identity, transform);
 			if (x < width)
 			{
-				StartCoroutine(lastObjPlaced.GetComponent<JuicySpawn>().FallIntoPlace(spawnHeight, spawnDuration));
+				StartCoroutine(lastObjPlaced.GetComponent<FallingSpawn>().FallIntoPlace(spawnHeight, spawnDuration));
 			}
 			yield return new WaitForSeconds(generationDelay);
 		}
 		lastObjPlaced.transform.Rotate(0, 90, 0);
 		lastObjPlaced.transform.position += new Vector3(-0.5f, 0, -0.5f);
-		StartCoroutine(lastObjPlaced.GetComponent<JuicySpawn>().FallIntoPlace(spawnHeight, spawnDuration));
+		StartCoroutine(lastObjPlaced.GetComponent<FallingSpawn>().FallIntoPlace(spawnHeight, spawnDuration));
 		yield return new WaitForSeconds(generationDelay);
 
 		// Right Edge
@@ -196,20 +232,20 @@ public class GameManager : MonoBehaviour
 			Vector3 fencePosition = stonePosition + new Vector3(0, 1, -0.5f);
 
 			lastObjPlaced = Instantiate(stone, stonePosition, Quaternion.identity, transform);
-			StartCoroutine(lastObjPlaced.GetComponent<JuicySpawn>().FallIntoPlace(spawnHeight, spawnDuration));
+			StartCoroutine(lastObjPlaced.GetComponent<FallingSpawn>().FallIntoPlace(spawnHeight, spawnDuration));
 			yield return new WaitForSeconds(generationDelay);
 
 			lastObjPlaced = Instantiate(fence, fencePosition, Quaternion.identity, transform);
 			lastObjPlaced.transform.Rotate(0, 90, 0);
 			if (y < height)
 			{
-				StartCoroutine(lastObjPlaced.GetComponent<JuicySpawn>().FallIntoPlace(spawnHeight, spawnDuration));
+				StartCoroutine(lastObjPlaced.GetComponent<FallingSpawn>().FallIntoPlace(spawnHeight, spawnDuration));
 			}
 			yield return new WaitForSeconds(generationDelay);
 		}
 		lastObjPlaced.transform.Rotate(0, 90, 0);
 		lastObjPlaced.transform.position += new Vector3(-0.5f, 0, 0.5f);
-		StartCoroutine(lastObjPlaced.GetComponent<JuicySpawn>().FallIntoPlace(spawnHeight, spawnDuration));
+		StartCoroutine(lastObjPlaced.GetComponent<FallingSpawn>().FallIntoPlace(spawnHeight, spawnDuration));
 		yield return new WaitForSeconds(generationDelay);
 
 		// Bottom Edge
@@ -222,19 +258,19 @@ public class GameManager : MonoBehaviour
 			Vector3 fencePosition = stonePosition + new Vector3(-0.5f, 1, 0);
 
 			lastObjPlaced = Instantiate(stone, stonePosition, Quaternion.identity, transform);
-			StartCoroutine(lastObjPlaced.GetComponent<JuicySpawn>().FallIntoPlace(spawnHeight, spawnDuration));
+			StartCoroutine(lastObjPlaced.GetComponent<FallingSpawn>().FallIntoPlace(spawnHeight, spawnDuration));
 			yield return new WaitForSeconds(generationDelay);
 
 			lastObjPlaced = Instantiate(fence, fencePosition, Quaternion.identity, transform);
 			if (x < width)
 			{
-				StartCoroutine(lastObjPlaced.GetComponent<JuicySpawn>().FallIntoPlace(spawnHeight, spawnDuration));
+				StartCoroutine(lastObjPlaced.GetComponent<FallingSpawn>().FallIntoPlace(spawnHeight, spawnDuration));
 			}
 			yield return new WaitForSeconds(generationDelay);
 		}
 		lastObjPlaced.transform.Rotate(0, 90, 0);
 		lastObjPlaced.transform.position += new Vector3(0.5f, 0, 0.5f);
-		StartCoroutine(lastObjPlaced.GetComponent<JuicySpawn>().FallIntoPlace(spawnHeight, spawnDuration));
+		StartCoroutine(lastObjPlaced.GetComponent<FallingSpawn>().FallIntoPlace(spawnHeight, spawnDuration));
 		yield return new WaitForSeconds(generationDelay);
 
 		// Left Edge
@@ -247,20 +283,20 @@ public class GameManager : MonoBehaviour
 			Vector3 fencePosition = stonePosition + new Vector3(0, 1, 0.5f);
 
 			lastObjPlaced = Instantiate(stone, stonePosition, Quaternion.identity, transform);
-			StartCoroutine(lastObjPlaced.GetComponent<JuicySpawn>().FallIntoPlace(spawnHeight, spawnDuration));
+			StartCoroutine(lastObjPlaced.GetComponent<FallingSpawn>().FallIntoPlace(spawnHeight, spawnDuration));
 			yield return new WaitForSeconds(generationDelay);
 
 			lastObjPlaced = Instantiate(fence, fencePosition, Quaternion.identity, transform);
 			lastObjPlaced.transform.Rotate(0, 90, 0);
 			if (y < height)
 			{
-				StartCoroutine(lastObjPlaced.GetComponent<JuicySpawn>().FallIntoPlace(spawnHeight, spawnDuration));
+				StartCoroutine(lastObjPlaced.GetComponent<FallingSpawn>().FallIntoPlace(spawnHeight, spawnDuration));
 			}
 			yield return new WaitForSeconds(generationDelay);
 		}
 		lastObjPlaced.transform.Rotate(0, 90, 0);
 		lastObjPlaced.transform.position += new Vector3(0.5f, 0, -0.5f);
-		StartCoroutine(lastObjPlaced.GetComponent<JuicySpawn>().FallIntoPlace(spawnHeight, spawnDuration));
+		StartCoroutine(lastObjPlaced.GetComponent<FallingSpawn>().FallIntoPlace(spawnHeight, spawnDuration));
 		yield return new WaitForSeconds(generationDelay);
 	}
 	/// <summary> Returns the y position to set a game object to given its x and z. </summary>
