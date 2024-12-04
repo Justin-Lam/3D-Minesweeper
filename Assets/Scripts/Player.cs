@@ -46,14 +46,6 @@ public class Player : MonoBehaviour
 	{
 		Singleton_SetInstance();
 	}
-	void OnEnable()
-	{
-		GameManager.OnLoseGame += OnLoseGame;
-	}
-	void OnDisable()
-	{
-		GameManager.OnLoseGame -= OnLoseGame;
-	}
 
 	void Start()
 	{
@@ -219,7 +211,7 @@ public class Player : MonoBehaviour
 		return Physics.Raycast(transform.position, Vector3.down, out hit, groundedDistFromGround);
 	}
 
-	void OnLoseGame()
+	public void OnAffectedByExplosion()
 	{
 		rb.drag = 0;                                // so player falls as fast as everything else
 		rb.constraints = RigidbodyConstraints.None; // so player rotates like everything else

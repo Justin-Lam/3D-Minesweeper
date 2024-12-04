@@ -94,6 +94,17 @@ public class Block : MonoBehaviour
 
 				if (rb)
 				{
+					if (rb.gameObject.CompareTag("Player"))
+					{
+						Player.Instance.OnAffectedByExplosion();
+					}
+
+					AffectableByExplosion abe =  rb.gameObject.GetComponent<AffectableByExplosion>();
+					if (abe)
+					{
+						abe.OnAffectedByExplosion();
+					}
+
 					rb.AddExplosionForce(power, transform.position, radius, upwardsModifier, ForceMode.Impulse);
 				}
 			}
