@@ -138,9 +138,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   panSensitivity: 0.4
-  panDrag: 10
+  panDrag: 7.5
   rotateSensitivity: 1.5
-  rotateDrag: 10
+  rotateDrag: 7.5
   initialZoom: 20
   zoomSensitivity: 22.5
   zoomSpeed: 30

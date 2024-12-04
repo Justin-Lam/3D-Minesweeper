@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
 	[Header("Aesthetics")]
 	[SerializeField] float perlinFrequency;
 	[SerializeField] float perlinAmplitude;
+	float perlinOffset;
 
 	[Header("Prefabs")]
 	[SerializeField] protected GameObject block;
@@ -89,6 +90,7 @@ public class GameManager : MonoBehaviour
 
 	protected virtual void InitializeGameplayVariables()
 	{
+		perlinOffset = UnityEngine.Random.Range(0, 1000000);	// arbitrary one million
 		grassLeft = width * height - numMines;
 		HUDManager.Instance.SetGrassLeftText(grassLeft);
 	}
@@ -102,17 +104,15 @@ public class GameManager : MonoBehaviour
 		float offsetX = (width % 2 == 0) ? 0.5f : 0f;
 		float offsetY = (height % 2 == 0) ? 0.5f : 0f;
 
-		// Randomize perlin noise
-		float randOffset = UnityEngine.Random.Range(0, 1000000);
-
 		// Create blocks
 		for (int y = 0; y < height; y++)    // note: y here corresponds to the z axis of the game world
 		{
 			for (int x = 0; x < width; x++)
 			{
-				Vector3 position = new Vector3(x - width / 2 + offsetX, 0, y - height / 2 + offsetY);
-				position.y += (Mathf.PerlinNoise((x + randOffset) * perlinFrequency, (y + randOffset) * perlinFrequency) - 0.5f) * perlinAmplitude;	// subtract 0.5 to bring range from [0, 1] to [-0.5, 0.5]
-				GameObject blockGO = Instantiate(block, position, Quaternion.identity, transform);
+				float blockX = x - width / 2 + offsetX;
+				float blockZ = y - height / 2 + offsetY;
+				float blockY = LevelGenPerlin(blockX, blockZ);
+				GameObject blockGO = Instantiate(block, new Vector3(blockX, blockY, blockZ), Quaternion.identity, transform);
 				Block blockScript = blockGO.GetComponent<Block>();
 				blockScript.SetPosition(x, y);
 				blocks[y, x] = blockScript;
@@ -134,8 +134,11 @@ public class GameManager : MonoBehaviour
 
 		for (int x = 0; x < width + 1; x++)
 		{
-			Vector3 stonePosition = new Vector3(block_TL.x + x, 0, block_TL.z + 1);
-			Instantiate(stone, stonePosition, Quaternion.identity, transform);
+			float stoneX = block_TL.x + x;
+			float stoneZ = block_TL.z + 1;
+			float stoneY = LevelGenPerlin(stoneX, stoneZ);
+			Vector3 stonePosition = new Vector3(stoneX, stoneY, stoneZ);
+			Instantiate(stone, new Vector3(stoneX, stoneY, stoneZ), Quaternion.identity, transform);
 			Vector3 fencePosition = stonePosition + new Vector3(0.5f, 1, 0);
 			lastFencePlaced = Instantiate(fence, fencePosition, Quaternion.identity, transform);
 		}
@@ -144,7 +147,10 @@ public class GameManager : MonoBehaviour
 
 		for (int y = 0; y < height + 1; y++)
 		{
-			Vector3 stonePosition = new Vector3(block_TR.x + 1, 0, block_TR.z - y);
+			float stoneX = block_TR.x + 1;
+			float stoneZ = block_TR.z - y;
+			float stoneY = LevelGenPerlin(stoneX, stoneZ);
+			Vector3 stonePosition = new Vector3(stoneX, stoneY, stoneZ);
 			Instantiate(stone, stonePosition, Quaternion.identity, transform);
 			Vector3 fencePosition = stonePosition + new Vector3(0, 1, -0.5f);
 			lastFencePlaced = Instantiate(fence, fencePosition, Quaternion.identity, transform);
@@ -155,7 +161,10 @@ public class GameManager : MonoBehaviour
 
 		for (int x = 0; x < width + 1; x++)
 		{
-			Vector3 stonePosition = new Vector3(block_BR.x - x, 0, block_BR.z - 1);
+			float stoneX = block_BR.x - x;
+			float stoneZ = block_BR.z - 1;
+			float stoneY = LevelGenPerlin(stoneX, stoneZ);
+			Vector3 stonePosition = new Vector3(stoneX, stoneY, stoneZ);
 			Instantiate(stone, stonePosition, Quaternion.identity, transform);
 			Vector3 fencePosition = stonePosition + new Vector3(-0.5f, 1, 0);
 			lastFencePlaced = Instantiate(fence, fencePosition, Quaternion.identity, transform);
@@ -165,7 +174,10 @@ public class GameManager : MonoBehaviour
 
 		for (int y = 0; y < height + 1; y++)
 		{
-			Vector3 stonePosition = new Vector3(block_BL.x - 1, 0, block_BL.z + y);
+			float stoneX = block_BL.x - 1;
+			float stoneZ = block_BL.z + y;
+			float stoneY = LevelGenPerlin(stoneX, stoneZ);
+			Vector3 stonePosition = new Vector3(stoneX, stoneY, stoneZ);
 			Instantiate(stone, stonePosition, Quaternion.identity, transform);
 			Vector3 fencePosition = stonePosition + new Vector3(0, 1, 0.5f);
 			lastFencePlaced = Instantiate(fence, fencePosition, Quaternion.identity, transform);
@@ -173,6 +185,15 @@ public class GameManager : MonoBehaviour
 		}
 		lastFencePlaced.transform.Rotate(0, 90, 0);
 		lastFencePlaced.transform.position += new Vector3(0.5f, 0, -0.5f);
+	}
+	/// <summary> Returns the y position to set a game object to given its x and z. </summary>
+	float LevelGenPerlin(float x, float z)
+	{
+		float result;
+		result = Mathf.PerlinNoise((x + perlinOffset) * perlinFrequency, (z + perlinOffset) * perlinFrequency);
+		result -= 0.5f; // adjust range of values from [0, 1] to [-0.5, 0.5]
+		result *= perlinAmplitude;
+		return result;
 	}
 
 	protected virtual void PlaceMines()
