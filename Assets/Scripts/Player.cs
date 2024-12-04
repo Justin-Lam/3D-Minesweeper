@@ -71,7 +71,6 @@ public class Player : MonoBehaviour
 	void Update()
 	{
 		// Idle look around animation
-		print(time);
 		if (time > 10) 
 		{
 			anim.SetBool("isLooking", true);
@@ -106,6 +105,13 @@ public class Player : MonoBehaviour
 		else if (Input.GetButton("Jump") && JustLanded())
 		{
 			Jump();
+		}
+		// Check for jump end
+		if (JustLanded())
+		{
+			//print("jump done");
+			anim.SetBool("isJumping", false);
+			anim.SetBool("isIdle", true);
 		}
 
 		// Handle fast falling
@@ -182,6 +188,10 @@ public class Player : MonoBehaviour
 
 	void Jump()
 	{
+		// Animations
+		anim.SetBool("isJumping", true);
+		anim.SetBool("isIdle", false);
+
 		// Terminate jump buffer counter
 		jumpBufferCounter = 0;
 
