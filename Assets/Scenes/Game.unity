@@ -616,7 +616,7 @@ PrefabInstance:
     - target: {fileID: 6010477572412537204, guid: 461ffbf2e2e9c684d90118dbe695d578,
         type: 3}
       propertyPath: numMines
-      value: 10
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 6010477572412537204, guid: 461ffbf2e2e9c684d90118dbe695d578,
         type: 3}
