@@ -1,7 +1,12 @@
 using UnityEngine;
+using System.Collections;
 
 public class Player : MonoBehaviour
 {
+	[Header("Animations")]
+	public Animator anim;
+	float time = 0.0f;
+
 	[Header("Horizontal Movement")]
 	[SerializeField] float acceleration;
 	[SerializeField] float maxVelocity;
@@ -58,10 +63,22 @@ public class Player : MonoBehaviour
 		// Calculate groundedDistFromGround
 		float colliderRadius = GetComponent<SphereCollider>().radius;
 		groundedDistFromGround = colliderRadius * (1 + groundedDistFromGroundPadding);
+
+		// Get Animator
+		anim = GetComponent<Animator>();
 	}
 
 	void Update()
 	{
+		// Idle look around animation
+		print(time);
+		if (time > 10) 
+		{
+			anim.SetBool("isLooking", true);
+			time = 0;
+		}
+		time += Time.deltaTime;
+
 		// Get move direction
 		moveDirection = (gameplayCameraPanner.forward * Input.GetAxis("Vertical") + gameplayCameraPanner.right * Input.GetAxis("Horizontal")).normalized;
 
@@ -115,6 +132,21 @@ public class Player : MonoBehaviour
 
 	void FixedUpdate()
 	{
+		// Walking animations
+		if (Input.GetButtonDown("Horizontal") || Input.GetButtonDown("Vertical"))
+		{
+			anim.CrossFade("Walking", 0.2f);
+		}
+		if (Input.GetButton("Horizontal") || Input.GetButton("Vertical"))
+		{
+			anim.SetBool("isWalking", true);
+			anim.SetBool("isIdle", false);
+		}
+		else
+		{
+			anim.SetBool("isWalking", false);
+			anim.SetBool("isIdle", true);
+		}
 		// Apply movement force
 		rb.AddForce(moveDirection * acceleration, ForceMode.Acceleration);
 
