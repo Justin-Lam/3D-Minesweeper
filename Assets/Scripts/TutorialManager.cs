@@ -21,7 +21,6 @@ public class TutorialManager : GameManager
 	[SerializeField] float radius = 5f;
 	[SerializeField] float upwardsModifier = 3f;
 	[SerializeField] float power = 500f;
-	public static event Action OnExplode;
 
 	int[][] minePos;
 	int[] firstBlock;
@@ -152,8 +151,6 @@ public class TutorialManager : GameManager
     {
 		if (lastBlock != null)
         {
-			OnExplode?.Invoke();
-
 			Collider[] colliders = Physics.OverlapSphere(lastBlock.transform.position, radius);
 			foreach (Collider hit in colliders)
 			{
@@ -168,7 +165,7 @@ public class TutorialManager : GameManager
 
 					rb.gameObject.GetComponent<AffectableByExplosion>()?.OnAffectedByExplosion();
 
-					rb.AddExplosionForce(power, transform.position, radius, upwardsModifier, ForceMode.Impulse);
+					rb.AddExplosionForce(power, lastBlock.transform.position, radius, upwardsModifier, ForceMode.Impulse);
 				}
 			}
 		}
