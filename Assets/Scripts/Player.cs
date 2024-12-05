@@ -182,8 +182,6 @@ public class Player : MonoBehaviour
 		{
 			rb.AddForce(Vector3.down * extraGravityWhenFallingAcceleration, ForceMode.Acceleration);
 		}
-
-		Debug.Log(new Vector3(rb.velocity.x, 0, rb.velocity.z).magnitude);
 	}
 
 	bool IsGrounded()

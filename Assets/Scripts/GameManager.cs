@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
 	[SerializeField] float duration;
 	[SerializeField] float tweenStartingHeight;
 	[SerializeField] float tweenDuration;
+	[SerializeField] float spawnPlayerDelay;
 	List<FallingSpawn> blocks1D = new List<FallingSpawn>();
 	List<FallingSpawn> barrier = new List<FallingSpawn>();	// stones & fences
 
@@ -78,6 +79,8 @@ public class GameManager : MonoBehaviour
 		CreateBarrier();
 		StartCoroutine(SpawnBlocks());
 		StartCoroutine(SpawnBarrier());
+		Player.Instance.gameObject.SetActive(false);
+		StartCoroutine(SpawnPlayer());
 	}
 
 	void ValidateParameters()
@@ -285,6 +288,11 @@ public class GameManager : MonoBehaviour
 			StartCoroutine(fallingSpawn.FallIntoPlace(tweenStartingHeight, tweenDuration));
 			yield return new WaitForSeconds(delay);
 		}
+	}
+	IEnumerator SpawnPlayer()
+	{
+		yield return new WaitForSeconds(spawnPlayerDelay);
+		Player.Instance.gameObject.SetActive(true);
 	}
 	
 	protected virtual void PlaceMines()
