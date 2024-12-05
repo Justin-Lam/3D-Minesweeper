@@ -143,7 +143,7 @@ public class TutorialManager : GameManager
 			}
 
 			MeshRenderer mr = blocks[y, x].GetComponent<MeshRenderer>();
-			mr.material = mine;
+			mr.materials = new Material[] { mine };
 		}
 	}
 
@@ -217,7 +217,7 @@ public class TutorialManager : GameManager
 
 				// also make it so that target block is highlighted
 				MeshRenderer mr = blocks[demoBlockY, demoBlockX].GetComponent<MeshRenderer>();
-				mr.material = highlight;
+				mr.materials = new Material[] { highlight };
 				break;
 			case DialogueEvent.allowFlag:
 				canPlaceFlags = true;
