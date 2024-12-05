@@ -258,7 +258,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &5942826052048852536
 Transform:
   m_ObjectHideFlags: 0
@@ -303,8 +303,8 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 3245760618840369677, guid: fea30e99c2a2e3547adc1ef770ba4ded, type: 3}
-  - {fileID: -8471271644684493766, guid: fea30e99c2a2e3547adc1ef770ba4ded, type: 3}
+  - {fileID: 3245760618840369677, guid: 915137c6a19a6f747a295df065a0f6ac, type: 3}
+  - {fileID: -8471271644684493766, guid: 915137c6a19a6f747a295df065a0f6ac, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -333,7 +333,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8184562119401177165}
-  m_Material: {fileID: 13400000, guid: a6b0b93f108805c4c84088dcb92928f9, type: 2}
+  m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -398,7 +398,7 @@ MonoBehaviour:
   - {r: 0, g: 0.5019608, b: 0.5019608, a: 1}
   - {r: 0, g: 0, b: 0, a: 1}
   - {r: 0.5019608, g: 0.5019608, b: 0.5019608, a: 1}
-  dirt: {fileID: 2100000, guid: 0aae302ff9fdd5a40b2893952549f2eb, type: 2}
+  dirt: {fileID: 3245760618840369677, guid: 915137c6a19a6f747a295df065a0f6ac, type: 3}
   mine: {fileID: 2100000, guid: bba8d49971d2f784592ba4da0126da53, type: 2}
 --- !u!114 &8539460571428951350
 MonoBehaviour:

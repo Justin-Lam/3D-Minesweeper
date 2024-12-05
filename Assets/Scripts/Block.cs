@@ -79,7 +79,7 @@ public class Block : MonoBehaviour
 	{
 		if (type == Type.GRASS)
 		{
-			mr.material = dirt;
+			mr.materials = new Material[] { dirt };
 		}
 		else
 		{
@@ -87,7 +87,7 @@ public class Block : MonoBehaviour
 
 			OnExplode?.Invoke();
 
-			mr.material = mine;
+			mr.materials = new Material[] { mine };
 
 			Collider[] colliders = Physics.OverlapSphere(transform.position, radius);
 			foreach (Collider hit in colliders)

@@ -141,11 +141,11 @@ MonoBehaviour:
   panDrag: 7.5
   rotateSensitivity: 1.5
   rotateDrag: 7.5
-  initialZoom: 20
+  initialZoom: 15
   zoomSensitivity: 22.5
   zoomSpeed: 30
   maxZoomIn: 3
-  maxZoomOut: 30
+  maxZoomOut: 20
 --- !u!1 &3991291381558543900
 GameObject:
   m_ObjectHideFlags: 0
