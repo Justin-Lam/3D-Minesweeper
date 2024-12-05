@@ -33,6 +33,14 @@ public class GameManager : MonoBehaviour
 	[Header("HUD")]
 	protected int grassLeft;
 
+	[Header("Sound")]
+	public GameObject soundManager;
+	private AudioSource poopSound;
+	private AudioSource eatSound;
+	private AudioSource explodeSound;
+    private AudioSource sheepSound;
+	private AudioSource winSound;
+
 	[Header("Gameplay")]
 	protected bool playerOnFirstAction = true;
 	// learned how to do this from https://www.reddit.com/r/gamedev/comments/u3hz2v/how_to_use_events_a_supersimple_unity_example/?rdt=39506
@@ -77,6 +85,7 @@ public class GameManager : MonoBehaviour
 	{
 		ValidateParameters();
 		InitializeGameplayVariables();
+		InitializeSound();
 		CreateBlocks();
 		PlaceMines();
 		CreateBarrier();
@@ -109,6 +118,33 @@ public class GameManager : MonoBehaviour
 		perlinOffset = UnityEngine.Random.Range(0, 1000000);	// arbitrary one million
 		grassLeft = width * height - numMines;
 		HUDManager.Instance.SetGrassLeftText(grassLeft);
+	}
+
+	protected virtual void InitializeSound()
+	{
+		// element zero is the bg music
+		poopSound = soundManager.GetComponents<AudioSource>()[1];
+        eatSound = soundManager.GetComponents<AudioSource>()[2];
+        explodeSound = soundManager.GetComponents<AudioSource>()[3];
+		sheepSound = soundManager.GetComponents<AudioSource>()[4];
+		winSound = soundManager.GetComponents<AudioSource>()[5];
+
+        if (PlayerPrefs.HasKey("Volume"))
+        {
+            soundManager.GetComponents<AudioSource>()[0].volume = PlayerPrefs.GetFloat("Volume") / 2;
+            for (int i = 1; i < soundManager.GetComponents<AudioSource>().Length; i++)
+            {
+                soundManager.GetComponents<AudioSource>()[i].volume = PlayerPrefs.GetFloat("Volume");
+            }
+        }
+        else
+        {
+            soundManager.GetComponents<AudioSource>()[0].volume = 0.5f;
+            for (int i = 1; i < soundManager.GetComponents<AudioSource>().Length; i++)
+            {
+                soundManager.GetComponents<AudioSource>()[i].volume = 1.0f;
+            }
+        }
 	}
 
 	void CreateBlocks()
@@ -371,6 +407,7 @@ public class GameManager : MonoBehaviour
 
 	protected virtual void OnFlagPlaced()
     {
+		poopSound.Play();
 		player.HandleOnFlag();
     }
 
