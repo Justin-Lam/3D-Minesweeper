@@ -113,14 +113,14 @@ public class Player : MonoBehaviour
 			Eat();
 			// Animations
 			stopAnimations();
-			anim.SetBool("isEating", true);
+			anim.SetTrigger("isEating");
 		}
 		if (Input.GetButtonDown("Flag"))
 		{
 			Flag();
 			// Animations
 			stopAnimations();
-			anim.SetBool("isFlagging", true);
+			anim.SetTrigger("isFlagging");
 		}
 
 		// Handle walking animations
@@ -135,17 +135,14 @@ public class Player : MonoBehaviour
 		}
 		else
 		{
-			anim.SetBool("isEating", false);
-			anim.SetBool("isFlagging", false);
 			anim.SetBool("isWalking", false);
-			anim.SetBool("isLooking", false);
 			anim.SetBool("isIdle", true);
 		}
 
 		// Handle idle animation
 		if (time > 10)
 		{
-			anim.SetBool("isLooking", true);
+			anim.SetTrigger("isLooking");
 			time = 0;
 		}
 		time += Time.deltaTime;
@@ -280,7 +277,6 @@ public class Player : MonoBehaviour
 	void stopAnimations()
 	{
 		anim.SetBool("isIdle", false);
-		anim.SetBool("isLooking", false);
 		anim.SetBool("isWalking", false);
 	}
 }
