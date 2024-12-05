@@ -241,8 +241,7 @@ public class Player : MonoBehaviour
 		// Flag
 		if (hit.collider.gameObject.CompareTag("Block"))    // standing on a block
 		{
-			// Jump
-			Jump();
+			Jump();	// to communicate that the action was successful
 
 			// Get the block's transform
 			Transform block = hit.collider.transform;
