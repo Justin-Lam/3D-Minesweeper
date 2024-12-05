@@ -5,6 +5,7 @@ public class Player : MonoBehaviour
 	[Header("Horizontal Movement")]
 	[SerializeField] float acceleration;
 	[SerializeField] float maxVelocity;
+	[SerializeField] float airDrag;
 	Rigidbody rb;
 	Vector3 moveDirection;
 
@@ -22,7 +23,7 @@ public class Player : MonoBehaviour
 	bool usedFastFall = false;
 	SphereCollider sphereCollider;
 	float groundedDistFromGround;   // the max distance the player can be from the ground in order to be grounded
-	float groundedDistFromGroundPadding = 0.1f; // 10%
+	float groundedDistFromGroundPadding = 0.3f; // 30%
 	Vector3 raycastOrigin { get { return transform.TransformPoint(sphereCollider.center); } }
 
 	[Header("Flagging")]
@@ -67,10 +68,10 @@ public class Player : MonoBehaviour
 		// Get move direction
 		moveDirection = (gameplayCameraPanner.forward * Input.GetAxis("Vertical") + gameplayCameraPanner.right * Input.GetAxis("Horizontal")).normalized;
 
-		// Rotate towards move direction
+		// Handle rotational movement
 		if (moveDirection != Vector3.zero)
 		{
-			transform.forward = Vector3.Slerp(transform.forward, moveDirection, rotateSpeed * Time.deltaTime);
+			transform.forward = Vector3.Slerp(transform.forward, moveDirection, rotateSpeed * Time.deltaTime);	// rotate towards move direction
 		}
 
 		// Handle jump buffer
@@ -117,22 +118,8 @@ public class Player : MonoBehaviour
 		{
 			Flag();
 		}
-		
-		// Idle look around animation
-		if (time > 10)
-		{
-			anim.SetBool("isLooking", true);
-			time = 0;
-		}
-		time += Time.deltaTime;
 
-		// Set wasGrounded (this must come at the end of Update() so the next Update() call can use it)
-		wasGrounded = IsGrounded();
-	}
-
-	void FixedUpdate()
-	{
-		// Walking animations
+		// Handle walking animations
 		if (Input.GetButtonDown("Horizontal") || Input.GetButtonDown("Vertical"))
 		{
 			anim.CrossFade("Walking", 0.2f);
@@ -147,20 +134,47 @@ public class Player : MonoBehaviour
 			anim.SetBool("isWalking", false);
 			anim.SetBool("isIdle", true);
 		}
-		// Apply movement force
+
+		// Handle idle animation
+		if (time > 10)
+		{
+			anim.SetBool("isLooking", true);
+			time = 0;
+		}
+		time += Time.deltaTime;
+
+		// Set wasGrounded (this must come at the end of Update() so the next Update() call can use it)
+		wasGrounded = IsGrounded();
+	}
+
+	void FixedUpdate()
+	{
+		// Apply acceleration
 		rb.AddForce(moveDirection * acceleration, ForceMode.Acceleration);
 
-		// Limit movement velocity
-		// asked ChatGPT for help on how to do this: "how can i apply a vector in the opposite direction the player is moving in to ensure they don't go past max velocity"
+		// Limit velocity
+		// asked ChatGPT for help on how to do set the rigidbody's horizontal velocity to have a magnitude of maxVelocity
 		Vector3 horizontalVelocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
 		if (horizontalVelocity.magnitude > maxVelocity)
 		{
-			// Calculate the counter-force needed to maintain max velocity
-			float amountOverMaxVelocity = horizontalVelocity.magnitude - maxVelocity;
-			Vector3 counterForce = -horizontalVelocity.normalized * amountOverMaxVelocity;
+			horizontalVelocity = horizontalVelocity.normalized * maxVelocity;
+			rb.velocity = new Vector3(horizontalVelocity.x, rb.velocity.y, horizontalVelocity.z);
+		}
 
-			// Apply counter-force
-			rb.AddForce(counterForce, ForceMode.VelocityChange);
+		// Apply air drag
+		// asked ChatGPT for help on how to do this: "how can i apply drag to my player until they're no longer moving when they stop giving movement inputs?"
+		if (moveDirection == Vector3.zero && horizontalVelocity.magnitude > 0 && !IsGrounded())
+		{
+			Vector3 direction = -horizontalVelocity.normalized;
+			// Ensure we don't reverse direction due to drag
+			if (airDrag < horizontalVelocity.magnitude)
+			{
+				rb.AddForce(direction * airDrag, ForceMode.Acceleration);
+			}
+			else
+			{
+				rb.velocity = new Vector3(0, rb.velocity.y, 0);
+			}
 		}
 
 		// Apply extra gravity when falling
@@ -168,6 +182,8 @@ public class Player : MonoBehaviour
 		{
 			rb.AddForce(Vector3.down * extraGravityWhenFallingAcceleration, ForceMode.Acceleration);
 		}
+
+		Debug.Log(new Vector3(rb.velocity.x, 0, rb.velocity.z).magnitude);
 	}
 
 	bool IsGrounded()
@@ -182,10 +198,6 @@ public class Player : MonoBehaviour
 
 	void Jump()
 	{
-		// Animations
-		anim.SetBool("isJumping", true);
-		anim.SetBool("isIdle", false);
-
 		// Terminate jump buffer counter
 		jumpBufferCounter = 0;
 
@@ -197,6 +209,10 @@ public class Player : MonoBehaviour
 
 		// Set usedFastFall
 		usedFastFall = false;
+
+		// Animations
+		anim.SetBool("isJumping", true);
+		anim.SetBool("isIdle", false);
 	}
 
 	void Eat()

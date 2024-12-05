@@ -614,15 +614,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e0f63832f1cf614ea3190ef902e83c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  acceleration: 15
+  acceleration: 50
   maxVelocity: 2.25
+  airDrag: 1.75
   rotateSpeed: 20
-  jumpStrength: 10
+  jumpStrength: 4
   jumpBufferDuration: 0.2
   letGoOfJumpVelocityDecreaseRatio: 0.25
   extraGravityWhenFallingAcceleration: 60
   flag: {fileID: 4558276649568759549, guid: d6a3027ed4698fa41a3a7dcecbbacf93, type: 3}
-  idleAnimationDelay: 10
 --- !u!95 &983317509538911607
 Animator:
   serializedVersion: 5
