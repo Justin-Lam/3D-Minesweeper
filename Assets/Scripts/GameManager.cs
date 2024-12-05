@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
 	[SerializeField] float duration;
 	[SerializeField] float tweenStartingHeight;
 	[SerializeField] float tweenDuration;
+	[SerializeField] float spawnPlayerDelay;
 	List<FallingSpawn> blocks1D = new List<FallingSpawn>();
 	List<FallingSpawn> barrier = new List<FallingSpawn>();	// stones & fences
 
@@ -81,6 +82,8 @@ public class GameManager : MonoBehaviour
 		CreateBarrier();
 		StartCoroutine(SpawnBlocks());
 		StartCoroutine(SpawnBarrier());
+		Player.Instance.gameObject.SetActive(false);
+		StartCoroutine(SpawnPlayer());
 	}
 
 	void ValidateParameters()
@@ -127,6 +130,7 @@ public class GameManager : MonoBehaviour
 				float blockY = LevelGenPerlin(blockX, blockZ);
 
 				GameObject blockGO = Instantiate(block, new Vector3(blockX, blockY, blockZ), Quaternion.identity, transform);
+				blockGO.SetActive(false);
 
 				blocks[y, x] = blockGO.GetComponent<Block>();
 				blocks[y, x].SetPosition(x, y);
@@ -177,8 +181,10 @@ public class GameManager : MonoBehaviour
 			Vector3 stonePosition = new Vector3(stoneX, stoneY, stoneZ);
 			Vector3 fencePosition = stonePosition + new Vector3(0.5f, 1, 0);
 			lastObjPlaced = Instantiate(stone, stonePosition, Quaternion.identity, transform);
+			lastObjPlaced.SetActive(false);
 			barrier.Add(lastObjPlaced.GetComponent<FallingSpawn>());
 			lastObjPlaced = Instantiate(fence, fencePosition, Quaternion.identity, transform);
+			lastObjPlaced.SetActive(false);
 			barrier.Add(lastObjPlaced.GetComponent<FallingSpawn>());
 		}
 		lastObjPlaced.transform.Rotate(0, 90, 0);
@@ -193,8 +199,10 @@ public class GameManager : MonoBehaviour
 			Vector3 stonePosition = new Vector3(stoneX, stoneY, stoneZ);
 			Vector3 fencePosition = stonePosition + new Vector3(0, 1, -0.5f);
 			lastObjPlaced = Instantiate(stone, stonePosition, Quaternion.identity, transform);
+			lastObjPlaced.SetActive(false);
 			barrier.Add(lastObjPlaced.GetComponent<FallingSpawn>());
 			lastObjPlaced = Instantiate(fence, fencePosition, Quaternion.identity, transform);
+			lastObjPlaced.SetActive(false);
 			lastObjPlaced.transform.Rotate(0, 90, 0);	// rotate to align to edge
 			barrier.Add(lastObjPlaced.GetComponent<FallingSpawn>());
 		}
@@ -210,8 +218,10 @@ public class GameManager : MonoBehaviour
 			Vector3 stonePosition = new Vector3(stoneX, stoneY, stoneZ);
 			Vector3 fencePosition = stonePosition + new Vector3(-0.5f, 1, 0);
 			lastObjPlaced = Instantiate(stone, stonePosition, Quaternion.identity, transform);
+			lastObjPlaced.SetActive(false);
 			barrier.Add(lastObjPlaced.GetComponent<FallingSpawn>());
 			lastObjPlaced = Instantiate(fence, fencePosition, Quaternion.identity, transform);
+			lastObjPlaced.SetActive(false);
 			barrier.Add(lastObjPlaced.GetComponent<FallingSpawn>());
 		}
 		lastObjPlaced.transform.Rotate(0, 90, 0);
@@ -226,8 +236,10 @@ public class GameManager : MonoBehaviour
 			Vector3 stonePosition = new Vector3(stoneX, stoneY, stoneZ);
 			Vector3 fencePosition = stonePosition + new Vector3(0, 1, 0.5f);
 			lastObjPlaced = Instantiate(stone, stonePosition, Quaternion.identity, transform);
+			lastObjPlaced.SetActive(false);
 			barrier.Add(lastObjPlaced.GetComponent<FallingSpawn>());
 			lastObjPlaced = Instantiate(fence, fencePosition, Quaternion.identity, transform);
+			lastObjPlaced.SetActive(false);
 			lastObjPlaced.transform.Rotate(0, 90, 0);   // rotate to align to edge
 			barrier.Add(lastObjPlaced.GetComponent<FallingSpawn>());
 		}
@@ -279,6 +291,11 @@ public class GameManager : MonoBehaviour
 			StartCoroutine(fallingSpawn.FallIntoPlace(tweenStartingHeight, tweenDuration));
 			yield return new WaitForSeconds(delay);
 		}
+	}
+	IEnumerator SpawnPlayer()
+	{
+		yield return new WaitForSeconds(spawnPlayerDelay);
+		Player.Instance.gameObject.SetActive(true);
 	}
 	
 	protected virtual void PlaceMines()
