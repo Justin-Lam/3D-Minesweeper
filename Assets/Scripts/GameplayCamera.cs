@@ -79,7 +79,7 @@ public class GameplayCamera : MonoBehaviour
 		// Panning
 		if (Input.GetMouseButton(0))    // left click
 		{
-			relativePanSensitivity = panSensitivity * (currentZoom / initialZoom);
+			relativePanSensitivity = panSensitivity * (currentZoom / maxZoomOut);
 			float dx = -Input.GetAxis("Mouse X") * relativePanSensitivity;
 			float dz = -Input.GetAxis("Mouse Y") * relativePanSensitivity;
 			panVelocity = new Vector3(dx, 0, dz);
