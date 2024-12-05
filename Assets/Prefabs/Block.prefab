@@ -386,6 +386,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d07ba7682ac92c4192193e1056920be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  eaten: 0
   radius: 5
   upwardsModifier: 3
   power: 25
@@ -400,6 +401,7 @@ MonoBehaviour:
   - {r: 0.5019608, g: 0.5019608, b: 0.5019608, a: 1}
   dirt: {fileID: 3245760618840369677, guid: 915137c6a19a6f747a295df065a0f6ac, type: 3}
   mine: {fileID: 2100000, guid: bba8d49971d2f784592ba4da0126da53, type: 2}
+  explosionEffect: {fileID: 0}
 --- !u!114 &8539460571428951350
 MonoBehaviour:
   m_ObjectHideFlags: 0

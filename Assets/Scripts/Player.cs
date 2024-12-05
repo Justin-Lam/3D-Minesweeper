@@ -240,8 +240,6 @@ public class Player : MonoBehaviour
 				// Get the block and call its OnEat()
 				hit.collider.gameObject.GetComponent<Block>().OnEat();
 				// Particles
-				/*Transform block = hit.collider.transform;
-				Instantiate(eatEffect, new Vector3(block.position.x, block.position.y + block.localScale.y / 2, block.position.z), Quaternion.identity);*/
 				eatEffect.Play();
 			}
 		}
