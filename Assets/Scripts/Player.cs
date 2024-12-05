@@ -31,6 +31,7 @@ public class Player : MonoBehaviour
 	[SerializeField] GameObject flag;
 	[SerializeField] Transform eatRaycastOrigin;
 	[SerializeField] Transform flagRaycastOrigin;
+	public static event Action OnFlagPlaced;
 
 	[Header("Animations")]
 	Animator anim;
@@ -120,7 +121,7 @@ public class Player : MonoBehaviour
 		}
 		if (Input.GetButtonDown("Flag"))
 		{
-			Flag();
+			OnFlag();
 			// Animations
 			stopAnimations();
 			anim.SetTrigger("isFlagging");

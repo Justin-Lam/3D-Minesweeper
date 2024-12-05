@@ -22,6 +22,9 @@ public class TutorialManager : GameManager
 	[SerializeField] float upwardsModifier = 3f;
 	[SerializeField] float power = 500f;
 
+	[Header("Crow")]
+	[SerializeField] GameObject crow;
+
 	int[][] minePos;
 	int[] firstBlock;
 	Player playerScript;
@@ -38,6 +41,7 @@ public class TutorialManager : GameManager
 	protected override void Start()
 	{
 		base.Start();
+		StartCoroutine(SpawnCrow());
 
 		playerScript = playerObject.GetComponent<Player>();
 		playerRb = playerObject.GetComponent<Rigidbody>();
@@ -46,6 +50,11 @@ public class TutorialManager : GameManager
 
 		// start up the dialogue
 		dialogueManager.CallNextLine();
+	}
+	IEnumerator SpawnCrow()
+	{
+		yield return new WaitForSeconds(2.5f);
+		Instantiate(crow, new Vector3(-3, 20, 3), Quaternion.identity).transform.Rotate(0, -45, 0);
 	}
 
 	protected override void InitializeGameplayVariables()
