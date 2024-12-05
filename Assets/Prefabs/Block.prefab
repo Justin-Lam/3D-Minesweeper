@@ -398,7 +398,7 @@ MonoBehaviour:
   - {r: 0, g: 0.5019608, b: 0.5019608, a: 1}
   - {r: 0, g: 0, b: 0, a: 1}
   - {r: 0.5019608, g: 0.5019608, b: 0.5019608, a: 1}
-  dirt: {fileID: 2100000, guid: 0aae302ff9fdd5a40b2893952549f2eb, type: 2}
+  dirt: {fileID: 3245760618840369677, guid: 915137c6a19a6f747a295df065a0f6ac, type: 3}
   mine: {fileID: 2100000, guid: bba8d49971d2f784592ba4da0126da53, type: 2}
 --- !u!114 &8539460571428951350
 MonoBehaviour:

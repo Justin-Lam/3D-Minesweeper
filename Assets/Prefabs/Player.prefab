@@ -622,7 +622,7 @@ MonoBehaviour:
   letGoOfJumpVelocityDecreaseRatio: 0.25
   extraGravityWhenFallingAcceleration: 60
   flag: {fileID: 4558276649568759549, guid: d6a3027ed4698fa41a3a7dcecbbacf93, type: 3}
-  anim: {fileID: 983317509538911607}
+  idleAnimationDelay: 10
 --- !u!95 &983317509538911607
 Animator:
   serializedVersion: 5

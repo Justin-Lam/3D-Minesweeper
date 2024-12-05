@@ -29,7 +29,7 @@ public class Player : MonoBehaviour
 	[SerializeField] GameObject flag;
 
 	[Header("Animations")]
-	public Animator anim;
+	Animator anim;
 	float time = 0.0f;
 
 	[Header("Singleton Pattern")]
@@ -64,14 +64,6 @@ public class Player : MonoBehaviour
 
 	void Update()
 	{
-		// Idle look around animation
-		if (time > 10) 
-		{
-			anim.SetBool("isLooking", true);
-			time = 0;
-		}
-		time += Time.deltaTime;
-
 		// Get move direction
 		moveDirection = (gameplayCameraPanner.forward * Input.GetAxis("Vertical") + gameplayCameraPanner.right * Input.GetAxis("Horizontal")).normalized;
 
@@ -125,6 +117,14 @@ public class Player : MonoBehaviour
 		{
 			Flag();
 		}
+		
+		// Idle look around animation
+		if (time > 10)
+		{
+			anim.SetBool("isLooking", true);
+			time = 0;
+		}
+		time += Time.deltaTime;
 
 		// Set wasGrounded (this must come at the end of Update() so the next Update() call can use it)
 		wasGrounded = IsGrounded();
@@ -244,7 +244,7 @@ public class Player : MonoBehaviour
 	}
 	bool IsGroundedOnSomething(out RaycastHit hit)
 	{
-		return Physics.Raycast(transform.position, Vector3.down, out hit, groundedDistFromGround);
+		return Physics.Raycast(raycastOrigin, Vector3.down, out hit, groundedDistFromGround);
 	}
 
 	public void OnAffectedByExplosion()
