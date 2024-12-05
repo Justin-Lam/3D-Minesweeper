@@ -8,7 +8,8 @@ public class HUDManager : MonoBehaviour
 	[Header("HUD Elements")]
 	[SerializeField] TMP_Text grassLeftText;
 	[SerializeField] TMP_Text winLossText;
-	[SerializeField] Button toMainMenu;
+	[SerializeField] Button restartButton;
+	[SerializeField] Button toMainMenuButton;
 
 	[Header("Singleton Pattern")]
 	private static HUDManager instance;
@@ -51,7 +52,8 @@ public class HUDManager : MonoBehaviour
 		// Show win text
 		winLossText.gameObject.SetActive(true);
 		winLossText.text = "You Win!";
-		toMainMenu.gameObject.SetActive(true);
+		toMainMenuButton.gameObject.SetActive(true);
+		restartButton.gameObject.SetActive(true);
 		Cursor.lockState = CursorLockMode.None;
 	}
 	void OnLoseGame()
@@ -59,12 +61,18 @@ public class HUDManager : MonoBehaviour
 		// Show lose text
 		winLossText.gameObject.SetActive(true);
 		winLossText.text = "You Lose...";
-		toMainMenu.gameObject.SetActive(true);
+		toMainMenuButton.gameObject.SetActive(true);
+		restartButton.gameObject.SetActive(true);
 		Cursor.lockState = CursorLockMode.None;
 	}
 
 	public void ToMainMenu()
 	{
 		SceneManager.LoadScene("TitleScreen", LoadSceneMode.Single);
+	}
+
+	public void RestartLevel()
+	{
+		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 	}
 }
