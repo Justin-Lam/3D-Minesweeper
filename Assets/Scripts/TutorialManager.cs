@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class TutorialManager : GameManager
 {
@@ -16,6 +17,12 @@ public class TutorialManager : GameManager
 	[SerializeField] Material highlight;
 	[SerializeField] Material mine;
 
+	[Header("Explosion")]
+	[SerializeField] float radius = 5f;
+	[SerializeField] float upwardsModifier = 3f;
+	[SerializeField] float power = 500f;
+	public static event Action OnExplode;
+
 	int[][] minePos;
 	int[] firstBlock;
 	Player playerScript;
@@ -24,7 +31,10 @@ public class TutorialManager : GameManager
 	// dialogue event variables
 	int grassEaten = 0;
 	int minesEaten = 0;
-
+	bool canPlaceFlags = false;
+	bool flagPlaced = false;
+	bool gameWon = false;
+	Block lastBlock;
 
 	protected override void Start()
 	{
@@ -37,8 +47,6 @@ public class TutorialManager : GameManager
 
 		// start up the dialogue
 		dialogueManager.CallNextLine();
-
-		Debug.Log(blocks);
 	}
 
 	protected override void InitializeGameplayVariables()
@@ -65,9 +73,24 @@ public class TutorialManager : GameManager
 		blocks[xy[1], xy[0]].SetType(Block.Type.MINE);
 	}
 
+	protected override void OnFlagPlaced()
+    {
+		if (canPlaceFlags)
+        {
+			player.HandleOnFlag();
+
+			if (!flagPlaced)
+            {
+				flagPlaced = true;
+				dialogueManager.SetCurrentLine(41); // line right before the flagging line
+				dialogueManager.CallNextLine();
+			}
+		}
+	}
+
 	protected override void OnBlockEaten(int x, int y)
 	{
-		Debug.Log("x: " + x + ", y: " + y);
+		// Debug.Log("x: " + x + ", y: " + y);
 		if (blocks[y, x].GetBlockType() == Block.Type.GRASS)
 		{
 			if (grassEaten == 0) // for the eating tutorial
@@ -77,9 +100,10 @@ public class TutorialManager : GameManager
 			}
 			else if (grassEaten == 1) // for the numbering tutorial
 			{
-				if (x != demoBlockX && y != demoBlockY)
+				if (x != demoBlockX || y != demoBlockY)
                 {
-					return; // if it's not the highlighted block then nothing happens on eat
+					blocks[y, x].eaten = false;
+					return; // if it's not the highlighted block then nothing happens on eat and set back to uneaten
                 }
 				grassEaten = 2;
 				dialogueManager.CallNextLine();
@@ -89,9 +113,12 @@ public class TutorialManager : GameManager
 
 			grassLeft--;
 			HUDManager.Instance.SetGrassLeftText(grassLeft);
-			if (grassLeft <= 0)
+			if (grassLeft <= 0) // WIN CONDITION
 			{
-				WinGame();
+				gameWon = true;
+				dialogueManager.SetCurrentLine(47); // line right before the victory line
+				dialogueManager.CallNextLine();
+				lastBlock = blocks[y, x];
 			}
 
 			blocks[y, x].HandleOnEat();
@@ -100,6 +127,7 @@ public class TutorialManager : GameManager
         {
 			if (grassEaten < 2) // mines are only interactable after the second block has been eaten (triggers free roam)
             {
+				blocks[y, x].eaten = false;
 				return;
             }
 
@@ -111,11 +139,38 @@ public class TutorialManager : GameManager
 			else if (minesEaten == 1) // for the rest of the mines
 			{
 				minesEaten = 2;
+				dialogueManager.SetCurrentLine(45); // line before the one that talks about the mine
 				dialogueManager.CallNextLine();
 			}
 
 			MeshRenderer mr = blocks[y, x].GetComponent<MeshRenderer>();
 			mr.material = mine;
+		}
+	}
+
+	void ExplodeEnd()
+    {
+		if (lastBlock != null)
+        {
+			OnExplode?.Invoke();
+
+			Collider[] colliders = Physics.OverlapSphere(lastBlock.transform.position, radius);
+			foreach (Collider hit in colliders)
+			{
+				Rigidbody rb = hit.GetComponent<Rigidbody>();
+
+				if (rb)
+				{
+					if (rb.gameObject.CompareTag("Player"))
+					{
+						Player.Instance.OnAffectedByExplosion();
+					}
+
+					rb.gameObject.GetComponent<AffectableByExplosion>()?.OnAffectedByExplosion();
+
+					rb.AddExplosionForce(power, transform.position, radius, upwardsModifier, ForceMode.Impulse);
+				}
+			}
 		}
 	}
 
@@ -137,8 +192,15 @@ public class TutorialManager : GameManager
 				return false;
 			case Precondition.mineEaten:
 				if (minesEaten > 1)
+                {
+					minesEaten--;
 					return true;
+				}
 				return false;
+			case Precondition.firstFlag:
+				return flagPlaced;
+			case Precondition.win:
+				return gameWon;
 			default:
 				return false;
         }
@@ -159,6 +221,15 @@ public class TutorialManager : GameManager
 				// also make it so that target block is highlighted
 				MeshRenderer mr = blocks[demoBlockY, demoBlockX].GetComponent<MeshRenderer>();
 				mr.material = highlight;
+				break;
+			case DialogueEvent.allowFlag:
+				canPlaceFlags = true;
+				break;
+			case DialogueEvent.explode:
+				ExplodeEnd();
+				break;
+			case DialogueEvent.endTutorial:
+				SceneManager.LoadScene("TitleScreen");
 				break;
 			default:
 				break;

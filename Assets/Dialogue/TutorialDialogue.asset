@@ -165,7 +165,7 @@ MonoBehaviour:
     pauseLength: 0
     precondition: 0
     dialogueEvent: 1
-    line: '[Press E to eat a tile, revealing it]'
+    line: '[Press E to eat a tile, revealing it.]'
   - speaker: 1
     portrait: {fileID: 21300000, guid: 90e2d95ea72c53345a58367b6e59de53, type: 3}
     graphic: {fileID: 0}
@@ -207,7 +207,7 @@ MonoBehaviour:
     pauseLength: 0
     precondition: 0
     dialogueEvent: 0
-    line: What's the matter? Don't tell me you forgot how to move! Cahaha!
+    line: What's the matter? Don't tell me you forgot how to walk! Cahaha!
   - speaker: 0
     portrait: {fileID: 21300000, guid: 9bb7088518ad2b94cb10cb9f39e38a3b, type: 3}
     graphic: {fileID: 0}
@@ -228,7 +228,7 @@ MonoBehaviour:
     pauseLength: 0
     precondition: 0
     dialogueEvent: 2
-    line: '[Use WASD to move, and press SPACE to jump]'
+    line: '[Use WASD to move, and press SPACE to jump.]'
   - speaker: 2
     portrait: {fileID: 0}
     graphic: {fileID: 0}
@@ -236,7 +236,7 @@ MonoBehaviour:
     precondition: 0
     dialogueEvent: 0
     line: '[You can rotate with LEFT CLICK and pan with RIGHT CLICK. Scroll to zoom
-      in/out]'
+      in/out.]'
   - speaker: 0
     portrait: {fileID: 21300000, guid: 9bb7088518ad2b94cb10cb9f39e38a3b, type: 3}
     graphic: {fileID: 0}
@@ -250,9 +250,9 @@ MonoBehaviour:
     pauseLength: 0
     precondition: 0
     dialogueEvent: 0
-    line: Caha, I've heard about this! Humans have a special caw-mmunication system
-      to let each other know if there are mines nearby. This innovation played a
-      major part in their victory in the Second Great Gopher War...
+    line: Caha! Humans have a special caw-mmunication system to let each other know
+      if there are mines nearby. This innovation played a major part in their victory
+      in the Second Great Gopher War...
   - speaker: 1
     portrait: {fileID: 21300000, guid: 90e2d95ea72c53345a58367b6e59de53, type: 3}
     graphic: {fileID: 0}
@@ -274,14 +274,14 @@ MonoBehaviour:
     precondition: 0
     dialogueEvent: 0
     line: '[The number on a dirt tile displays how many mines are directly adjacent
-      to it]'
+      to it.]'
   - speaker: 2
     portrait: {fileID: 0}
     graphic: {fileID: 0}
     pauseLength: 0
     precondition: 0
     dialogueEvent: 0
-    line: '[A dirt tile without a number means that it has no adjacent mines]'
+    line: '[A dirt tile without a number means that it has no adjacent mines.]'
   - speaker: 1
     portrait: {fileID: 21300000, guid: 90e2d95ea72c53345a58367b6e59de53, type: 3}
     graphic: {fileID: 0}
@@ -317,7 +317,7 @@ MonoBehaviour:
     pauseLength: 0
     precondition: 0
     dialogueEvent: 4
-    line: '[Press F to flag/unflag an area and prevent it from being eaten!]'
+    line: '[Press F to flag/unflag an area and prevent it from being eaten.]'
   - speaker: 1
     portrait: {fileID: 21300000, guid: 90e2d95ea72c53345a58367b6e59de53, type: 3}
     graphic: {fileID: 0}
@@ -339,6 +339,13 @@ MonoBehaviour:
     precondition: 0
     dialogueEvent: 0
     line: Hmph. What are you, an animal?! Absolutely ridiculous...
+  - speaker: 0
+    portrait: {fileID: 21300000, guid: 9bb7088518ad2b94cb10cb9f39e38a3b, type: 3}
+    graphic: {fileID: 0}
+    pauseLength: 0
+    precondition: 0
+    dialogueEvent: 0
+    line: ???
   - speaker: 1
     portrait: {fileID: 21300000, guid: 90e2d95ea72c53345a58367b6e59de53, type: 3}
     graphic: {fileID: 0}
@@ -367,22 +374,29 @@ MonoBehaviour:
     pauseLength: 0
     precondition: 0
     dialogueEvent: 0
-    line: Pretty great! Thanks for everything!
+    line: Pretty great! Thanks for all your help!
   - speaker: 1
     portrait: {fileID: 21300000, guid: 90e2d95ea72c53345a58367b6e59de53, type: 3}
     graphic: {fileID: 0}
     pauseLength: 0
     precondition: 0
     dialogueEvent: 0
-    line: Aw, shucks! But yeah, that was some impressive work there. Maybe I was
-      too harsh on you earli-
+    line: Yes, yes, of course. But truly, that was some impressive work there. Maybe
+      I was wrong about you-
   - speaker: 1
     portrait: {fileID: 21300000, guid: 90e2d95ea72c53345a58367b6e59de53, type: 3}
     graphic: {fileID: 0}
-    pauseLength: 0
+    pauseLength: 1
     precondition: 0
-    dialogueEvent: 0
+    dialogueEvent: 4
     line: '!'
+  - speaker: 2
+    portrait: {fileID: 0}
+    graphic: {fileID: 0}
+    pauseLength: 2
+    precondition: 0
+    dialogueEvent: 0
+    line: '[END OF TUTORIAL]'
   - speaker: 2
     portrait: {fileID: 0}
     graphic: {fileID: 0}

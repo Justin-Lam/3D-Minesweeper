@@ -1027,6 +1027,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialogueObj: {fileID: 11400000, guid: c055bcad05094734f8d765284a15441c, type: 2}
   tutorialManager: {fileID: 0}
+  playerObject: {fileID: 0}
   dialogueDisplay: {fileID: 1336375696062592528}
   dialogueText: {fileID: 3583584739446900959}
   nameText: {fileID: 5586529850404730390}

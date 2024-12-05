@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -25,6 +26,7 @@ public class Player : MonoBehaviour
 
 	[Header("Flagging")]
 	[SerializeField] GameObject flag;
+	public static event Action OnFlagPlaced;
 
 	[Header("Singleton Pattern")]
 	private static Player instance;
@@ -106,7 +108,7 @@ public class Player : MonoBehaviour
 		}
 		if (Input.GetButtonDown("Flag"))
 		{
-			Flag();
+			OnFlag();
 		}
 
 		// Set wasGrounded (this must come at the end of Update() so the next Update() call can use it)
@@ -177,7 +179,12 @@ public class Player : MonoBehaviour
 			}
 		}
 	}
-	void Flag()
+
+	public void OnFlag()
+    {
+		OnFlagPlaced?.Invoke();
+	}
+	public void HandleOnFlag()
 	{
 		// Check that the player is grounded and set hit
 		RaycastHit hit;

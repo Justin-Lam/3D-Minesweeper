@@ -12,7 +12,7 @@ public class Dialogue : ScriptableObject
 
 public enum Speaker { SHEEP, CROW, NARRATOR };
 public enum Precondition { none, firstBlockEaten, secondBlockEaten, firstMineEaten, firstFlag, mineEaten, win }; // what is needed for the line to trigger
-public enum DialogueEvent { none, allowEat, allowMove, unlockMap, allowFlag, explode }; // what triggers after the line
+public enum DialogueEvent { none, allowEat, allowMove, allowFlag, explode, endTutorial }; // what triggers after the line
 
 [System.Serializable]
 public class DialogueLine

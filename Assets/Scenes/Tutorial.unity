@@ -453,6 +453,7 @@ MonoBehaviour:
   width: 5
   height: 5
   numMines: 3
+  player: {fileID: 2033867003}
   frequency: 0.25
   amplitude: 0.75
   duration: 1
@@ -467,6 +468,9 @@ MonoBehaviour:
   demoBlockY: 1
   highlight: {fileID: 2100000, guid: 5c9adcbb3a77fba4f9c7c498ea68b033, type: 2}
   mine: {fileID: 2100000, guid: bba8d49971d2f784592ba4da0126da53, type: 2}
+  radius: 5
+  upwardsModifier: 3
+  power: 1000
 --- !u!4 &1966985552
 Transform:
   m_ObjectHideFlags: 0
@@ -488,6 +492,18 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 645053837}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2033867003 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 80321804904651375, guid: cca7e83298aa41c439a8471e9aa5ae7f,
+    type: 3}
+  m_PrefabInstance: {fileID: 645053837}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2033867002}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e0f63832f1cf614ea3190ef902e83c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1855457422642523436
 PrefabInstance:
   m_ObjectHideFlags: 0

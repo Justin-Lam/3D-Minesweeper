@@ -58,6 +58,11 @@ public class DialogueManager : MonoBehaviour
         return dialogueObj.dialogueLines[currentLine];
     }
 
+    public void SetCurrentLine(int lineNum)
+    {
+        currentLine = lineNum;
+    }
+
     public void AddDialoguePause(float pauseLength)
     {
         HideDialogueLines();
@@ -107,6 +112,7 @@ public class DialogueManager : MonoBehaviour
     public void ShowNarration(string dialogue)
     {
         HideDialogueLines();
+        HideGraphic();
 
         if (tutorialManager != null && tutorialManager.CheckPrecondition(Precondition.firstBlockEaten))
         {
@@ -155,6 +161,12 @@ public class DialogueManager : MonoBehaviour
     {
         currentLine++;
 
+        if (currentLine > dialogueObj.dialogueLines.Length - 1)
+        {
+            HideDialogueLines();
+            return;
+        }
+
         // checks if there's a tutorial manager (only the tutorial has preconditions) and if precondition is met
         // if precondition is not met, hide dialogue
         if (tutorialManager != null && GetCurrentLine().precondition != Precondition.none && tutorialManager.CheckPrecondition(GetCurrentLine().precondition) == false)
@@ -167,20 +179,13 @@ public class DialogueManager : MonoBehaviour
             return;
         }
 
-        if (currentLine > dialogueObj.dialogueLines.Length - 1)
+        if (GetCurrentLine().pauseLength > 0)
         {
-            HideDialogueLines();
+            AddDialoguePause(GetCurrentLine().pauseLength);
         }
         else
         {
-            if (GetCurrentLine().pauseLength > 0)
-            {
-                AddDialoguePause(GetCurrentLine().pauseLength);
-            }
-            else
-            {
-                NextLine();
-            }
+            NextLine();
         }
     }
 
@@ -190,11 +195,15 @@ public class DialogueManager : MonoBehaviour
         if (GetCurrentLine().speaker == Speaker.NARRATOR)
         {
             ShowNarration(GetCurrentLine().line);
-            ShowGraphic(GetCurrentLine().graphic);
         }
         else
         {
             ShowDialogueLine(GetCurrentLine().line, GetCurrentLine().speaker.ToString(), GetCurrentLine().portrait);
+        }
+
+        if (GetCurrentLine().graphic != null)
+        {
+            ShowGraphic(GetCurrentLine().graphic);
         }
 
         // check if there's a tutorial manager and if the current line has an event
