@@ -109,9 +109,7 @@ public class Player : MonoBehaviour
 		// Check for jump end
 		if (JustLanded())
 		{
-			//print("jump done");
 			anim.SetBool("isJumping", false);
-			anim.SetBool("isIdle", true);
 		}
 
 		// Handle fast falling
@@ -126,10 +124,16 @@ public class Player : MonoBehaviour
 		if (Input.GetButtonDown("Eat"))
 		{
 			Eat();
+			// Animations
+			stopAnimations();
+			anim.SetBool("isEating", true);
 		}
 		if (Input.GetButtonDown("Flag"))
 		{
 			Flag();
+			// Animations
+			stopAnimations();
+			anim.SetBool("isFlagging", true);
 		}
 
 		// Set wasGrounded (this must come at the end of Update() so the next Update() call can use it)
@@ -145,12 +149,15 @@ public class Player : MonoBehaviour
 		}
 		if (Input.GetButton("Horizontal") || Input.GetButton("Vertical"))
 		{
+			stopAnimations();
 			anim.SetBool("isWalking", true);
-			anim.SetBool("isIdle", false);
 		}
 		else
 		{
+			anim.SetBool("isEating", false);
+			anim.SetBool("isFlagging", false);
 			anim.SetBool("isWalking", false);
+			anim.SetBool("isLooking", false);
 			anim.SetBool("isIdle", true);
 		}
 		// Apply movement force
@@ -189,8 +196,8 @@ public class Player : MonoBehaviour
 	void Jump()
 	{
 		// Animations
+		stopAnimations();
 		anim.SetBool("isJumping", true);
-		anim.SetBool("isIdle", false);
 
 		// Terminate jump buffer counter
 		jumpBufferCounter = 0;
@@ -231,8 +238,6 @@ public class Player : MonoBehaviour
 		// Flag
 		if (hit.collider.gameObject.CompareTag("Block"))    // standing on a block
 		{
-			// Jump
-			Jump();
 
 			// Get the block's transform
 			Transform block = hit.collider.transform;
@@ -258,5 +263,12 @@ public class Player : MonoBehaviour
 		rb.drag = 0;                                // so player falls as fast as everything else
 		rb.constraints = RigidbodyConstraints.None; // so player rotates like everything else
 		enabled = false;                            // so player loses control of the player character
+	}
+
+	void stopAnimations()
+	{
+		anim.SetBool("isIdle", false);
+		anim.SetBool("isLooking", false);
+		anim.SetBool("isWalking", false);
 	}
 }
