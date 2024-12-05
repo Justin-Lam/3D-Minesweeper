@@ -124,6 +124,8 @@ public class TutorialManager : GameManager
 			blocks[y, x].SetNearbyMinesText(getMinePositionsIn3x3(x, y).Count);
 
 			grassLeft--;
+			eatSound.Play();
+
 			HUDManager.Instance.SetGrassLeftText(grassLeft);
 			if (grassLeft <= 0) // WIN CONDITION
 			{
@@ -156,6 +158,7 @@ public class TutorialManager : GameManager
 				dialogueManager.CallNextLine();
 			}
 
+			eatSound.Play();
 			MeshRenderer mr = blocks[y, x].GetComponent<MeshRenderer>();
 			mr.materials = new Material[] { mine };
 		}

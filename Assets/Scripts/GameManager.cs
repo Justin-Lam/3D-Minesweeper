@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour
 	[Header("Sound")]
 	public GameObject soundManager;
 	private AudioSource poopSound;
-	private AudioSource eatSound;
+	protected AudioSource eatSound;
 	protected AudioSource explodeSound;
     private AudioSource sheepSound;
 	protected AudioSource winSound;
@@ -416,6 +416,7 @@ public class GameManager : MonoBehaviour
 
 	protected virtual void OnBlockEaten(int x, int y)
 	{
+		eatSound.Play();
 		// Handle special case for when it's the player's first action
 		if (playerOnFirstAction)
 		{
