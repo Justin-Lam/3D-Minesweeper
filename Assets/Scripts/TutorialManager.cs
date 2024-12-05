@@ -186,6 +186,8 @@ public class TutorialManager : GameManager
 					rb.AddExplosionForce(power, lastBlock.transform.position, radius, upwardsModifier, ForceMode.Impulse);
 				}
 			}
+
+			Cursor.lockState = CursorLockMode.None;
 		}
 	}
 
