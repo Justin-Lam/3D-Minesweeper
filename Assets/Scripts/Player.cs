@@ -25,11 +25,12 @@ public class Player : MonoBehaviour
 	SphereCollider sphereCollider;
 	float groundedDistFromGround;   // the max distance the player can be from the ground in order to be grounded
 	float groundedDistFromGroundPadding = 0.3f; // 30%
-	Vector3 raycastOrigin { get { return transform.TransformPoint(sphereCollider.center); } }
+	Vector3 jumpRaycastOrigin { get { return transform.TransformPoint(sphereCollider.center); } }
 
 	[Header("Flagging")]
 	[SerializeField] GameObject flag;
-	public static event Action OnFlagPlaced;
+	[SerializeField] Transform eatRaycastOrigin;
+	[SerializeField] Transform flagRaycastOrigin;
 
 	[Header("Animations")]
 	Animator anim;
@@ -98,9 +99,7 @@ public class Player : MonoBehaviour
 		// Check for jump end
 		if (JustLanded())
 		{
-			//print("jump done");
 			anim.SetBool("isJumping", false);
-			anim.SetBool("isIdle", true);
 		}
 
 		// Handle fast falling
@@ -115,10 +114,16 @@ public class Player : MonoBehaviour
 		if (Input.GetButtonDown("Eat"))
 		{
 			Eat();
+			// Animations
+			stopAnimations();
+			anim.SetTrigger("isEating");
 		}
 		if (Input.GetButtonDown("Flag"))
 		{
-			OnFlag();
+			Flag();
+			// Animations
+			stopAnimations();
+			anim.SetTrigger("isFlagging");
 		}
 
 		// Handle walking animations
@@ -128,8 +133,8 @@ public class Player : MonoBehaviour
 		}
 		if (Input.GetButton("Horizontal") || Input.GetButton("Vertical"))
 		{
+			stopAnimations();
 			anim.SetBool("isWalking", true);
-			anim.SetBool("isIdle", false);
 		}
 		else
 		{
@@ -140,7 +145,7 @@ public class Player : MonoBehaviour
 		// Handle idle animation
 		if (time > 10)
 		{
-			anim.SetBool("isLooking", true);
+			anim.SetTrigger("isLooking");
 			time = 0;
 		}
 		time += Time.deltaTime;
@@ -189,7 +194,7 @@ public class Player : MonoBehaviour
 	bool IsGrounded()
 	{
 		// got this from https://discussions.unity.com/t/using-raycast-to-determine-if-player-is-grounded/85134/2
-		return Physics.Raycast(raycastOrigin, Vector3.down, groundedDistFromGround);
+		return Physics.Raycast(jumpRaycastOrigin, Vector3.down, groundedDistFromGround);
 	}
 	bool JustLanded()
 	{
@@ -198,6 +203,10 @@ public class Player : MonoBehaviour
 
 	void Jump()
 	{
+		// Animations
+		stopAnimations();
+		anim.SetBool("isJumping", true);
+
 		// Terminate jump buffer counter
 		jumpBufferCounter = 0;
 
@@ -219,7 +228,7 @@ public class Player : MonoBehaviour
 	{
 		// Can only eat if grounded
 		RaycastHit hit;
-		if (IsGroundedOnSomething(out hit))
+		if (IsGroundedOnSomething(eatRaycastOrigin.position, out hit))
 		{
 			// Can only eat if also grounded on a block
 			if (hit.collider.gameObject.CompareTag("Block"))
@@ -238,7 +247,7 @@ public class Player : MonoBehaviour
 	{
 		// Check that the player is grounded and set hit
 		RaycastHit hit;
-		if (!IsGroundedOnSomething(out hit))
+		if (!IsGroundedOnSomething(flagRaycastOrigin.position, out hit))
 		{
 			return;
 		}
@@ -246,23 +255,19 @@ public class Player : MonoBehaviour
 		// Flag
 		if (hit.collider.gameObject.CompareTag("Block"))    // standing on a block
 		{
-			Jump();	// to communicate that the action was successful
 
 			// Get the block's transform
 			Transform block = hit.collider.transform;
-
-			// Spawn flag centered on top of the block
 			Instantiate(flag, new Vector3(block.position.x, block.position.y + block.localScale.y / 2, block.position.z), Quaternion.identity);
 		}
 
 		// Unflag
 		else if (hit.collider.gameObject.CompareTag("Flag"))    // standing on a flag
 		{
-			// Destroy the flag
 			Destroy(hit.collider.gameObject);
 		}
 	}
-	bool IsGroundedOnSomething(out RaycastHit hit)
+	bool IsGroundedOnSomething(Vector3 raycastOrigin, out RaycastHit hit)
 	{
 		return Physics.Raycast(raycastOrigin, Vector3.down, out hit, groundedDistFromGround);
 	}
@@ -272,5 +277,11 @@ public class Player : MonoBehaviour
 		rb.drag = 0;                                // so player falls as fast as everything else
 		rb.constraints = RigidbodyConstraints.None; // so player rotates like everything else
 		enabled = false;                            // so player loses control of the player character
+	}
+
+	void stopAnimations()
+	{
+		anim.SetBool("isIdle", false);
+		anim.SetBool("isWalking", false);
 	}
 }
