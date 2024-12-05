@@ -295,6 +295,7 @@ public class GameManager : MonoBehaviour
 	IEnumerator SpawnPlayer()
 	{
 		yield return new WaitForSeconds(spawnPlayerDelay);
+		Player.Instance.gameObject.transform.Translate(0, tweenStartingHeight, 0);
 		Player.Instance.gameObject.SetActive(true);
 	}
 	
