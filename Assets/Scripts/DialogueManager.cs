@@ -4,37 +4,70 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
-// based on the dialogue system tutorial by https://gamedevbeginner.com/dialogue-systems-in-unity/
+// partially referenced from the dialogue system tutorial by https://gamedevbeginner.com/dialogue-systems-in-unity/
+
 public class DialogueManager : MonoBehaviour
 {
     public Dialogue dialogueObj;
-    public int currentLine;
+    public TutorialManager tutorialManager;
+    public GameObject playerObject;
 
+    [Header("Dialogue Lines")]
+    [SerializeField] GameObject dialogueDisplay;
     [SerializeField] TextMeshProUGUI dialogueText;
     [SerializeField] TextMeshProUGUI nameText;
     [SerializeField] Image portraitHolder;
-    [SerializeField] GameObject dialogueDisplay;
+
+    [Header("Narration Lines")]
+    [SerializeField] GameObject narrationDisplay;
+    [SerializeField] TextMeshProUGUI narrationText;
+
+    [Header("Displaying Graphics")]
+    [SerializeField] GameObject graphicalDisplay;
+    [SerializeField] Image graphicHolder;
+
+    int currentLine;
+    Player playerScript;
 
 
-    // Start is called before the first frame update
     void Start()
     {
+        playerScript = playerObject.GetComponent<Player>();
         currentLine = -1;
+
+        dialogueDisplay.SetActive(false);
+        narrationDisplay.SetActive(false);
+        graphicalDisplay.SetActive(false);
     }
 
-    // Update is called once per frame
     void Update()
     {
-        // Check for next button
+        // Check for next button (X)
         if (Input.GetButtonDown("Next"))
         {
-            NextLine();
+            // make sure there's actually dialogue being displayed currently
+            if (dialogueDisplay.activeSelf || narrationDisplay.activeSelf || graphicalDisplay.activeSelf)
+            {
+                CallNextLine();
+            }
         }
+    }
+
+    public DialogueLine GetCurrentLine()
+    {
+        return dialogueObj.dialogueLines[currentLine];
+    }
+
+    public void SetCurrentLine(int lineNum)
+    {
+        currentLine = lineNum;
     }
 
     public void AddDialoguePause(float pauseLength)
     {
-        EndDialogue();
+        HideDialogueLines();
+        HideNarration();
+        HideGraphic();
         StartCoroutine(DialoguePause(pauseLength));
     }
 
@@ -44,34 +77,139 @@ public class DialogueManager : MonoBehaviour
         NextLine();
     }
 
-    public void ShowLine(string dialogue, string name, Sprite portrait)
+    public void ShowDialogueLine(string dialogue, string name, Sprite portrait)
     {
+        HideNarration();
+        HideGraphic();
+
         if (!dialogueDisplay.activeSelf)
         {
             dialogueDisplay.SetActive(true);
         }
+        if (tutorialManager != null && tutorialManager.CheckPrecondition(Precondition.firstBlockEaten)) // if player actions are enabled
+        {
+            playerScript.enabled = false; // disable player actions when dialogue is playing
+        }
+
         nameText.text = name;
         dialogueText.text = dialogue;
         portraitHolder.sprite = portrait;
     }
 
-    public void EndDialogue()
+    public void HideDialogueLines()
     {
+        if (tutorialManager != null && tutorialManager.CheckPrecondition(Precondition.firstBlockEaten))
+        {
+            playerScript.enabled = true; // enable player actions when dialogue is done
+        }
+
         nameText.text = null;
-        dialogueText.text = null; ;
+        dialogueText.text = null;
+        portraitHolder.sprite = null;
         dialogueDisplay.SetActive(false);
     }
 
-    public void NextLine()
+    public void ShowNarration(string dialogue)
+    {
+        HideDialogueLines();
+        HideGraphic();
+
+        if (tutorialManager != null && tutorialManager.CheckPrecondition(Precondition.firstBlockEaten))
+        {
+            playerScript.enabled = false;
+        }
+
+        narrationDisplay.SetActive(true);
+        narrationText.text = dialogue;
+    }
+
+    public void HideNarration()
+    {
+        if (tutorialManager != null && tutorialManager.CheckPrecondition(Precondition.firstBlockEaten))
+        {
+            playerScript.enabled = true;
+        }
+
+        narrationText.text = null; ;
+        narrationDisplay.SetActive(false);
+    }
+
+    public void ShowGraphic(Sprite graphic)
+    {
+        if (tutorialManager != null && tutorialManager.CheckPrecondition(Precondition.firstBlockEaten))
+        {
+            playerScript.enabled = false;
+        }
+
+        graphicalDisplay.SetActive(true);
+        graphicHolder.sprite = graphic;
+    }
+
+    public void HideGraphic()
+    {
+        if (tutorialManager != null && tutorialManager.CheckPrecondition(Precondition.firstBlockEaten))
+        {
+            playerScript.enabled = true;
+        }
+
+        graphicHolder.sprite = null;
+        graphicalDisplay.SetActive(false);
+    }
+
+    // checks if NextLine() can be validly called
+    public void CallNextLine()
     {
         currentLine++;
+
         if (currentLine > dialogueObj.dialogueLines.Length - 1)
         {
-            EndDialogue();
+            HideDialogueLines();
+            return;
+        }
+
+        // checks if there's a tutorial manager (only the tutorial has preconditions) and if precondition is met
+        // if precondition is not met, hide dialogue
+        if (tutorialManager != null && GetCurrentLine().precondition != Precondition.none && tutorialManager.CheckPrecondition(GetCurrentLine().precondition) == false)
+        {
+            HideDialogueLines();
+            HideNarration();
+            HideGraphic();
+            currentLine--; // to prevent currentLine from updating
+
+            return;
+        }
+
+        if (GetCurrentLine().pauseLength > 0)
+        {
+            AddDialoguePause(GetCurrentLine().pauseLength);
         }
         else
         {
-            ShowLine(dialogueObj.dialogueLines[currentLine].line, dialogueObj.dialogueLines[currentLine].speaker.ToString(), dialogueObj.dialogueLines[currentLine].portrait);
+            NextLine();
+        }
+    }
+
+    void NextLine()
+    {
+        // call function based on type of dialogue (standard line vs narration)
+        if (GetCurrentLine().speaker == Speaker.NARRATOR)
+        {
+            ShowNarration(GetCurrentLine().line);
+        }
+        else
+        {
+            ShowDialogueLine(GetCurrentLine().line, GetCurrentLine().speaker.ToString(), GetCurrentLine().portrait);
+        }
+
+        if (GetCurrentLine().graphic != null)
+        {
+            ShowGraphic(GetCurrentLine().graphic);
+        }
+
+        // check if there's a tutorial manager and if the current line has an event
+        if (tutorialManager != null && GetCurrentLine().dialogueEvent != DialogueEvent.none)
+        {
+            tutorialManager.ToggleEvent(GetCurrentLine().dialogueEvent);
         }
     }
 }

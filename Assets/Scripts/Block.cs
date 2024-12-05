@@ -10,7 +10,7 @@ public class Block : MonoBehaviour
 	Type type = Type.GRASS; public Type GetBlockType() { return type; }
 	int x;
 	int y;
-	bool eaten = false;
+	public bool eaten = false;
 
 	[Header("Explosion")]
 	[SerializeField] float radius = 5f;

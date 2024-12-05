@@ -1,6 +1,11 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/Sprout Lands - UI Pack - Basic pack/Sprout Lands - UI Pack - Basic pack/read_me.txt.meta
+guid: 3c4e574c2b0ec7140ab23a1474d5d320
+TextScriptImporter:
+========
 guid: cca7e83298aa41c439a8471e9aa5ae7f
 PrefabImporter:
+>>>>>>>> main:Assets/Old Stuff/Player.prefab.meta
   externalObjects: {}
   userData: 
   assetBundleName: 

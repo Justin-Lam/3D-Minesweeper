@@ -25,9 +25,22 @@ public class MenuController : MonoBehaviour
     {
 
     }
-    public void StartGame()
+
+    public void StartTutorial()
     {
-        SceneManager.LoadScene("Game", LoadSceneMode.Single);
+        SceneManager.LoadScene("Tutorial", LoadSceneMode.Single);
+    }
+    public void StartEasy()
+    {
+        SceneManager.LoadScene("Game_Easy", LoadSceneMode.Single);
+    }
+    public void StartNormal()
+    {
+        SceneManager.LoadScene("Game_Normal", LoadSceneMode.Single);
+    }
+    public void StartHard()
+    {
+        SceneManager.LoadScene("Game_Hard", LoadSceneMode.Single);
     }
 
     public void QuitGame()

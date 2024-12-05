@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
 	[SerializeField] protected int width;
 	[SerializeField] protected int height;
 	[SerializeField] protected int numMines;
+	[SerializeField] protected Player player;
 	protected Block[,] blocks;
 
 	[Header("Perlin Noise For Blocks")]
@@ -63,11 +64,13 @@ public class GameManager : MonoBehaviour
 	{
 		Block.OnBlockEaten += OnBlockEaten;
 		Block.OnExplode += LoseGame;
+		Player.OnFlagPlaced += OnFlagPlaced;
 	}
 	void OnDisable()
 	{
 		Block.OnBlockEaten -= OnBlockEaten;
 		Block.OnExplode -= LoseGame;
+		Player.OnFlagPlaced -= OnFlagPlaced;
 	}
 
 	protected virtual void Start()
@@ -365,6 +368,11 @@ public class GameManager : MonoBehaviour
 			}
 		}
 	}
+
+	protected virtual void OnFlagPlaced()
+    {
+		player.HandleOnFlag();
+    }
 
 	protected virtual void OnBlockEaten(int x, int y)
 	{

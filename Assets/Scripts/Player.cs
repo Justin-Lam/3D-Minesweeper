@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -30,6 +31,7 @@ public class Player : MonoBehaviour
 	[SerializeField] GameObject flag;
 	[SerializeField] Transform eatRaycastOrigin;
 	[SerializeField] Transform flagRaycastOrigin;
+	public static event Action OnFlagPlaced;
 
 	[Header("Animations")]
 	Animator anim;
@@ -119,7 +121,7 @@ public class Player : MonoBehaviour
 		}
 		if (Input.GetButtonDown("Flag"))
 		{
-			Flag();
+			OnFlag();
 			// Animations
 			stopAnimations();
 			anim.SetTrigger("isFlagging");
@@ -237,7 +239,12 @@ public class Player : MonoBehaviour
 			}
 		}
 	}
-	void Flag()
+
+	public void OnFlag()
+    {
+		OnFlagPlaced?.Invoke();
+	}
+	public void HandleOnFlag()
 	{
 		// Check that the player is grounded and set hit
 		RaycastHit hit;
