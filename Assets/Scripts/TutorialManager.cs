@@ -29,6 +29,7 @@ public class TutorialManager : GameManager
 	int[] firstBlock;
 	Player playerScript;
 	Rigidbody playerRb;
+	private AudioSource crowSound;
 
 	// dialogue event variables
 	int grassEaten = 0;
@@ -55,6 +56,9 @@ public class TutorialManager : GameManager
 	{
 		yield return new WaitForSeconds(2.5f);
 		Instantiate(crow, new Vector3(-3, 20, 3), Quaternion.identity).transform.Rotate(0, -45, 0);
+		yield return new WaitForSeconds(1.75f);
+		crowSound = soundManager.GetComponents<AudioSource>()[7];
+		crowSound.Play();
 	}
 
 	protected override void InitializeGameplayVariables()
@@ -124,6 +128,7 @@ public class TutorialManager : GameManager
 			if (grassLeft <= 0) // WIN CONDITION
 			{
 				gameWon = true;
+				winSound.Play();
 				dialogueManager.SetCurrentLine(47); // line right before the victory line
 				dialogueManager.CallNextLine();
 				lastBlock = blocks[y, x];
@@ -160,6 +165,7 @@ public class TutorialManager : GameManager
     {
 		if (lastBlock != null)
         {
+			explodeSound.Play();
 			Collider[] colliders = Physics.OverlapSphere(lastBlock.transform.position, radius);
 			foreach (Collider hit in colliders)
 			{

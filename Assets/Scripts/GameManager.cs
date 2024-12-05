@@ -37,9 +37,10 @@ public class GameManager : MonoBehaviour
 	public GameObject soundManager;
 	private AudioSource poopSound;
 	private AudioSource eatSound;
-	private AudioSource explodeSound;
+	protected AudioSource explodeSound;
     private AudioSource sheepSound;
-	private AudioSource winSound;
+	protected AudioSource winSound;
+	private AudioSource blockSound;
 
 	[Header("Gameplay")]
 	protected bool playerOnFirstAction = true;
@@ -128,13 +129,14 @@ public class GameManager : MonoBehaviour
         explodeSound = soundManager.GetComponents<AudioSource>()[3];
 		sheepSound = soundManager.GetComponents<AudioSource>()[4];
 		winSound = soundManager.GetComponents<AudioSource>()[5];
+		blockSound = soundManager.GetComponents<AudioSource>()[6];
 
         if (PlayerPrefs.HasKey("Volume"))
         {
             soundManager.GetComponents<AudioSource>()[0].volume = PlayerPrefs.GetFloat("Volume") / 2;
             for (int i = 1; i < soundManager.GetComponents<AudioSource>().Length; i++)
             {
-                soundManager.GetComponents<AudioSource>()[i].volume = PlayerPrefs.GetFloat("Volume");
+                soundManager.GetComponents<AudioSource>()[i].volume = PlayerPrefs.GetFloat("Volume") / 2;
             }
         }
         else
@@ -142,7 +144,7 @@ public class GameManager : MonoBehaviour
             soundManager.GetComponents<AudioSource>()[0].volume = 0.5f;
             for (int i = 1; i < soundManager.GetComponents<AudioSource>().Length; i++)
             {
-                soundManager.GetComponents<AudioSource>()[i].volume = 1.0f;
+                soundManager.GetComponents<AudioSource>()[i].volume = 0.5f;
             }
         }
 	}
@@ -326,6 +328,7 @@ public class GameManager : MonoBehaviour
 		{
 			StartCoroutine(fallingSpawn.FallIntoPlace(tweenStartingHeight, tweenDuration));
 			yield return new WaitForSeconds(delay);
+			//blockSound.Play();
 		}
 	}
 	IEnumerator SpawnPlayer()
@@ -483,10 +486,12 @@ public class GameManager : MonoBehaviour
 
 	protected void WinGame()
 	{
+		winSound.Play();
 		OnWinGame?.Invoke();
 	}
 	public void LoseGame()
 	{
+		explodeSound.Play();
 		OnLoseGame?.Invoke();
 	}
 }
