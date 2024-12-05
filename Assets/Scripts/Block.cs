@@ -102,7 +102,6 @@ public class Block : MonoBehaviour
 					}
 
 					rb.gameObject.GetComponent<AffectableByExplosion>()?.OnAffectedByExplosion();
-
 					rb.AddExplosionForce(power, transform.position, radius, upwardsModifier, ForceMode.Impulse);
 				}
 			}

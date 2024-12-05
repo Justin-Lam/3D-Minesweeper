@@ -37,6 +37,9 @@ public class Player : MonoBehaviour
 	Animator anim;
 	float time = 0.0f;
 
+	[Header("Particles")]
+	public ParticleSystem eatEffect;
+
 	[Header("Singleton Pattern")]
 	private static Player instance;
 	public static Player Instance { get { return instance; } }
@@ -236,6 +239,8 @@ public class Player : MonoBehaviour
 			{
 				// Get the block and call its OnEat()
 				hit.collider.gameObject.GetComponent<Block>().OnEat();
+				// Particles
+				eatEffect.Play();
 			}
 		}
 	}
@@ -283,6 +288,7 @@ public class Player : MonoBehaviour
 	void stopAnimations()
 	{
 		anim.SetBool("isIdle", false);
+		anim.ResetTrigger("isLooking");
 		anim.SetBool("isWalking", false);
 	}
 }
