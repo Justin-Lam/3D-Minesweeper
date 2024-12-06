@@ -5400,8 +5400,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 231.50214, y: -157.59003}
-  m_SizeDelta: {x: -1550.095, y: -754.99}
+  m_AnchoredPosition: {x: 375.01514, y: -157.59003}
+  m_SizeDelta: {x: -1406.582, y: -754.99}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1898222645
 MonoBehaviour:
@@ -5425,7 +5425,9 @@ MonoBehaviour:
       m_Calls: []
   m_text: "Skybox: Farland Skies - Borodar\n\nGUI: Sprout Lands - Cup Noobles \n\nFonts:
     Vanilla Extract - Shara Weber, Frisky Puppy - Tokokoo\n\nSounds: FREE Casual
-    Game SFX Pack - Dustyroom"
+    Game SFX Pack - Dustyroom, freesound_comunity, Crow Sound Effect - Samad4 You,
+    Sheep Sound - Sounds of Nature, Pop sound effect - Ellena Demetrios\n\nMusic:
+    Super Cute Cats - Harumachi Music, Cute YT Intro - Cookiecatmusic"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9a76ee7bba99ed24c9052f409e7a6d99, type: 2}
   m_sharedMaterial: {fileID: -6577786179161494480, guid: 9a76ee7bba99ed24c9052f409e7a6d99,
@@ -5453,8 +5455,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 20
-  m_fontSizeBase: 20
+  m_fontSize: 15
+  m_fontSizeBase: 15
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
