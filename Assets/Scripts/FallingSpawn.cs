@@ -20,6 +20,7 @@ public class FallingSpawn : MonoBehaviour
 			transform.rotation = startRotation;
 		}
 		transform.localScale = startScale;
+		gameObject.GetComponent<BoxCollider>().enabled = false;
 		gameObject.SetActive(true);
 
 		float counter = 0;
@@ -40,6 +41,7 @@ public class FallingSpawn : MonoBehaviour
 		transform.position = targetPosition;    
 		transform.rotation = targetRotation;
 		transform.localScale = targetScale;
+		gameObject.GetComponent<BoxCollider>().enabled = true;
 
 		enabled = false;	// done spawning, so disable script
 	}
