@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour
 
 	[Header("Sound")]
 	public GameObject soundManager;
-	private AudioSource poopSound;
+	protected AudioSource poopSound;
 	protected AudioSource eatSound;
 	protected AudioSource explodeSound;
     private AudioSource sheepSound;
@@ -126,17 +126,18 @@ public class GameManager : MonoBehaviour
 	protected virtual void InitializeSound()
 	{
 		// element zero is the bg music
-		poopSound = soundManager.GetComponents<AudioSource>()[1];
-        eatSound = soundManager.GetComponents<AudioSource>()[2];
-        explodeSound = soundManager.GetComponents<AudioSource>()[3];
-		sheepSound = soundManager.GetComponents<AudioSource>()[4];
-		winSound = soundManager.GetComponents<AudioSource>()[5];
-		blockSound = soundManager.GetComponents<AudioSource>()[6];
+		poopSound = soundManager.GetComponents<AudioSource>()[2];
+        eatSound = soundManager.GetComponents<AudioSource>()[3];
+        explodeSound = soundManager.GetComponents<AudioSource>()[4];
+		sheepSound = soundManager.GetComponents<AudioSource>()[5];
+		winSound = soundManager.GetComponents<AudioSource>()[6];
+		blockSound = soundManager.GetComponents<AudioSource>()[7];
 
         if (PlayerPrefs.HasKey("Volume"))
         {
             soundManager.GetComponents<AudioSource>()[0].volume = PlayerPrefs.GetFloat("Volume") / 2;
-            for (int i = 1; i < soundManager.GetComponents<AudioSource>().Length; i++)
+			soundManager.GetComponents<AudioSource>()[1].volume = PlayerPrefs.GetFloat("Volume");
+            for (int i = 2; i < soundManager.GetComponents<AudioSource>().Length; i++)
             {
                 soundManager.GetComponents<AudioSource>()[i].volume = PlayerPrefs.GetFloat("Volume") / 2;
             }
@@ -144,7 +145,8 @@ public class GameManager : MonoBehaviour
         else
         {
             soundManager.GetComponents<AudioSource>()[0].volume = 0.5f;
-            for (int i = 1; i < soundManager.GetComponents<AudioSource>().Length; i++)
+			soundManager.GetComponents<AudioSource>()[1].volume = 1.0f;
+            for (int i = 2; i < soundManager.GetComponents<AudioSource>().Length; i++)
             {
                 soundManager.GetComponents<AudioSource>()[i].volume = 0.5f;
             }
