@@ -5,7 +5,7 @@ public class SheepIdle : MonoBehaviour
 {
 	[Header("Animations")]
 	Animator anim;
-	float time = 0.0f;
+	//float time = 0.0f;
 	int randInt;
 
 	[Header("Particles")]
