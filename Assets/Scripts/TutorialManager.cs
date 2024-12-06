@@ -49,8 +49,11 @@ public class TutorialManager : GameManager
 
 		playerScript.enabled = false;
 
+		Debug.Log("before line test");
 		// start up the dialogue
 		dialogueManager.CallNextLine();
+
+		Debug.Log("next line called test");
 	}
 	IEnumerator SpawnCrow()
 	{

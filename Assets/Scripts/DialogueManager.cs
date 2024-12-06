@@ -26,14 +26,15 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] GameObject graphicalDisplay;
     [SerializeField] Image graphicHolder;
 
-    int currentLine;
+    int currentLine = -1;
     Player playerScript;
 
 
     void Start()
     {
+        Debug.Log("current line test 1: " + currentLine);
         playerScript = playerObject.GetComponent<Player>();
-        currentLine = -1;
+        Debug.Log("current line test 2: " + currentLine);
 
         dialogueDisplay.SetActive(false);
         narrationDisplay.SetActive(false);
@@ -48,6 +49,7 @@ public class DialogueManager : MonoBehaviour
             // make sure there's actually dialogue being displayed currently
             if (dialogueDisplay.activeSelf || narrationDisplay.activeSelf || graphicalDisplay.activeSelf)
             {
+                Debug.Log("Graphic is being displayed, next line...");
                 CallNextLine();
             }
         }
@@ -55,6 +57,7 @@ public class DialogueManager : MonoBehaviour
 
     public DialogueLine GetCurrentLine()
     {
+        Debug.Log("current line: " + currentLine);
         return dialogueObj.dialogueLines[currentLine];
     }
 
@@ -79,11 +82,17 @@ public class DialogueManager : MonoBehaviour
 
     public void ShowDialogueLine(string dialogue, string name, Sprite portrait)
     {
-        HideNarration();
-        HideGraphic();
+        Debug.Log("test test");
 
-        if (!dialogueDisplay.activeSelf)
+        if (narrationDisplay.activeSelf)
         {
+            HideNarration();
+            HideGraphic();
+        }
+
+        if (dialogueDisplay.activeSelf == false)
+        {
+            Debug.Log("display set active!!!");
             dialogueDisplay.SetActive(true);
         }
         if (tutorialManager != null && tutorialManager.CheckPrecondition(Precondition.firstBlockEaten)) // if player actions are enabled
@@ -159,10 +168,12 @@ public class DialogueManager : MonoBehaviour
     // checks if NextLine() can be validly called
     public void CallNextLine()
     {
+        Debug.Log("called for next line");
         currentLine++;
 
         if (currentLine > dialogueObj.dialogueLines.Length - 1)
         {
+            Debug.Log("case 1");
             HideDialogueLines();
             return;
         }
@@ -171,6 +182,7 @@ public class DialogueManager : MonoBehaviour
         // if precondition is not met, hide dialogue
         if (tutorialManager != null && GetCurrentLine().precondition != Precondition.none && tutorialManager.CheckPrecondition(GetCurrentLine().precondition) == false)
         {
+            Debug.Log("case 2");
             HideDialogueLines();
             HideNarration();
             HideGraphic();
@@ -181,10 +193,12 @@ public class DialogueManager : MonoBehaviour
 
         if (GetCurrentLine().pauseLength > 0)
         {
+            Debug.Log("case 3");
             AddDialoguePause(GetCurrentLine().pauseLength);
         }
         else
         {
+            Debug.Log("case 4");
             NextLine();
         }
     }
@@ -194,21 +208,25 @@ public class DialogueManager : MonoBehaviour
         // call function based on type of dialogue (standard line vs narration)
         if (GetCurrentLine().speaker == Speaker.NARRATOR)
         {
+            Debug.Log("next line case1");
             ShowNarration(GetCurrentLine().line);
         }
         else
         {
+            Debug.Log("next line case2");
             ShowDialogueLine(GetCurrentLine().line, GetCurrentLine().speaker.ToString(), GetCurrentLine().portrait);
         }
 
         if (GetCurrentLine().graphic != null)
         {
+            Debug.Log("next line case3");
             ShowGraphic(GetCurrentLine().graphic);
         }
 
         // check if there's a tutorial manager and if the current line has an event
         if (tutorialManager != null && GetCurrentLine().dialogueEvent != DialogueEvent.none)
         {
+            Debug.Log("next line case4");
             tutorialManager.ToggleEvent(GetCurrentLine().dialogueEvent);
         }
     }
