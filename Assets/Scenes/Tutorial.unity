@@ -135,6 +135,26 @@ PrefabInstance:
       propertyPath: initialZoom
       value: 10
       objectReference: {fileID: 0}
+    - target: {fileID: 881671493555516320, guid: 565b99c1a0ce8ee4f866c1b7db892241,
+        type: 3}
+      propertyPath: m_BackGroundColor.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 881671493555516320, guid: 565b99c1a0ce8ee4f866c1b7db892241,
+        type: 3}
+      propertyPath: m_BackGroundColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 881671493555516320, guid: 565b99c1a0ce8ee4f866c1b7db892241,
+        type: 3}
+      propertyPath: m_BackGroundColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 881671493555516320, guid: 565b99c1a0ce8ee4f866c1b7db892241,
+        type: 3}
+      propertyPath: m_BackGroundColor.r
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1126221237071354341, guid: 565b99c1a0ce8ee4f866c1b7db892241,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -738,6 +758,8 @@ MonoBehaviour:
   amplitude: 0.75
   duration: 1
   tweenStartingHeight: 20
+  tweenRotation: 1
+  tweenStartingScale: 0.75
   tweenDuration: 0.75
   spawnPlayerDelay: 0
   block: {fileID: 8184562119401177165, guid: 2f92a8be9a7316b439aa79e19800c4a3, type: 3}
