@@ -20,6 +20,8 @@ public class GameManager : MonoBehaviour
 	[Header("Spawning")]
 	[SerializeField] float duration;
 	[SerializeField] float tweenStartingHeight;
+	[SerializeField] bool tweenRotation;
+	[SerializeField] float tweenStartingScale;
 	[SerializeField] float tweenDuration;
 	[SerializeField] float spawnPlayerDelay;
 	List<FallingSpawn> blocks1D = new List<FallingSpawn>();
@@ -317,7 +319,7 @@ public class GameManager : MonoBehaviour
 		// Spawn the blocks
 		foreach (FallingSpawn fallingSpawn in blocks1D)
 		{
-			StartCoroutine(fallingSpawn.FallIntoPlace(tweenStartingHeight, tweenDuration));
+			StartCoroutine(fallingSpawn.FallIntoPlace(tweenStartingHeight, tweenStartingScale, tweenRotation, tweenDuration));
 			yield return new WaitForSeconds(delay);
 		}
 	}
@@ -326,7 +328,7 @@ public class GameManager : MonoBehaviour
 		float delay = duration / barrier.Count;
 		foreach (FallingSpawn fallingSpawn in barrier)
 		{
-			StartCoroutine(fallingSpawn.FallIntoPlace(tweenStartingHeight, tweenDuration));
+			StartCoroutine(fallingSpawn.FallIntoPlace(tweenStartingHeight, tweenStartingScale, tweenRotation, tweenDuration));
 			yield return new WaitForSeconds(delay);
 			//blockSound.Play();
 		}

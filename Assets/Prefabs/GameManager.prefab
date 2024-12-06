@@ -52,6 +52,8 @@ MonoBehaviour:
   amplitude: 0.75
   duration: 1
   tweenStartingHeight: 20
+  tweenRotation: 1
+  tweenStartingScale: 0.75
   tweenDuration: 0.75
   spawnPlayerDelay: 1.5
   block: {fileID: 8184562119401177165, guid: 2f92a8be9a7316b439aa79e19800c4a3, type: 3}
