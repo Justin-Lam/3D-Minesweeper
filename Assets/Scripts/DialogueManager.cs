@@ -26,14 +26,13 @@ public class DialogueManager : MonoBehaviour
     [SerializeField] GameObject graphicalDisplay;
     [SerializeField] Image graphicHolder;
 
-    int currentLine;
+    int currentLine = -1;
     Player playerScript;
 
 
     void Start()
     {
         playerScript = playerObject.GetComponent<Player>();
-        currentLine = -1;
 
         dialogueDisplay.SetActive(false);
         narrationDisplay.SetActive(false);
