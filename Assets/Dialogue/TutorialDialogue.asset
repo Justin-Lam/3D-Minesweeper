@@ -273,8 +273,8 @@ MonoBehaviour:
     pauseLength: 0
     precondition: 0
     dialogueEvent: 0
-    line: '[The number on a dirt tile displays how many mines are directly adjacent
-      to it.]'
+    line: '[The number on a dirt tile displays how many mines are in the 8 blocks
+      adjacent to it.]'
   - speaker: 2
     portrait: {fileID: 0}
     graphic: {fileID: 0}

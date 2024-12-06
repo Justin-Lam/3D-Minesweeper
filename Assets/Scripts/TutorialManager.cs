@@ -57,7 +57,7 @@ public class TutorialManager : GameManager
 		yield return new WaitForSeconds(2.5f);
 		Instantiate(crow, new Vector3(-3, 20, 3), Quaternion.identity).transform.Rotate(0, -45, 0);
 		yield return new WaitForSeconds(1.75f);
-		crowSound = soundManager.GetComponents<AudioSource>()[7];
+		crowSound = soundManager.GetComponents<AudioSource>()[8];
 		crowSound.Play();
 	}
 
@@ -89,6 +89,7 @@ public class TutorialManager : GameManager
     {
 		if (canPlaceFlags)
         {
+			poopSound.Play();
 			player.HandleOnFlag();
 
 			if (!flagPlaced)
