@@ -54,7 +54,7 @@ public class TutorialManager : GameManager
 	}
 	IEnumerator SpawnCrow()
 	{
-		yield return new WaitForSeconds(2.5f);
+		yield return new WaitForSeconds(4f);
 		Instantiate(crow, new Vector3(-3, 20, 3), Quaternion.identity).transform.Rotate(0, -45, 0);
 		yield return new WaitForSeconds(1.75f);
 		crowSound = soundManager.GetComponents<AudioSource>()[8];

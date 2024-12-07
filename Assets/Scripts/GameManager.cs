@@ -25,7 +25,9 @@ public class GameManager : MonoBehaviour
 	[SerializeField] float tweenDuration;
 	[SerializeField] float spawnPlayerDelay;
 	List<FallingSpawn> blocks1D = new List<FallingSpawn>();
-	List<FallingSpawn> barrier = new List<FallingSpawn>();	// stones & fences
+	List<FallingSpawn> barrier = new List<FallingSpawn>();  // stones & fences
+	bool spawnBlocksDone = false;
+	bool spawnBarrierDone = false;
 
 	[Header("Prefabs")]
 	[SerializeField] protected GameObject block;
@@ -324,6 +326,7 @@ public class GameManager : MonoBehaviour
 			StartCoroutine(fallingSpawn.FallIntoPlace(tweenStartingHeight, tweenStartingScale, tweenRotation, tweenDuration));
 			yield return new WaitForSeconds(delay);
 		}
+		spawnBlocksDone = true;
 	}
 	IEnumerator SpawnBarrier()
 	{
@@ -334,14 +337,20 @@ public class GameManager : MonoBehaviour
 			yield return new WaitForSeconds(delay);
 			//blockSound.Play();
 		}
+		spawnBarrierDone = true;
+	}
+	bool spawnLevelDone()
+	{
+		return spawnBlocksDone && spawnBarrierDone;
 	}
 	IEnumerator SpawnPlayer()
 	{
+		yield return new WaitUntil(spawnLevelDone);
 		yield return new WaitForSeconds(spawnPlayerDelay);
 		Player.Instance.gameObject.transform.Translate(0, tweenStartingHeight, 0);
 		Player.Instance.gameObject.SetActive(true);
 	}
-	
+
 	protected virtual void PlaceMines()
 	{
 		for (int i = 0; i < numMines; i++)
